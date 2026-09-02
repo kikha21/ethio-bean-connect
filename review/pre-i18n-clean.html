@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ethio Bean Connect | Ethiopian Coffee Suppliers and Exporters</title>
+<meta name="description" content="Ethio Bean Connect puts Ethiopian coffee suppliers in front of the exporters who need their lots. Yirgacheffe, Guji, Sidamo, Jimma, Limu, Nekemte and Harar, checked and matched.">
+<meta name="theme-color" content="#0E130F">
+<link rel="canonical" href="https://ethiobeanconnect.com/">
+<!-- DEPLOY STEP: patch og:url and og:image with the live absolute URL before zipping -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ethio Bean Connect">
+<meta property="og:description" content="Every lot has a buyer. We find them. You keep trading.">
+<meta property="og:url" content="https://REPLACE-AT-DEPLOY/">
+<meta property="og:image" content="https://REPLACE-AT-DEPLOY/assets/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230E130F'/%3E%3Ccircle cx='16' cy='16' r='10.5' fill='none' stroke='%23C8A44A' stroke-width='1.6'/%3E%3Cellipse cx='16' cy='16' rx='5' ry='8' fill='%235A3A22'/%3E%3Cpath d='M16 8.5c-2.2 3 -2.2 12 0 15' stroke='%23C8A44A' stroke-width='1.3' fill='none'/%3E%3Cpath d='M9 12c-2.5-1.5-4-4-3.5-6.5C8 6 10 8 10.4 10.6z' fill='%232F6B34'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Ethiopic:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Ethio Bean Connect",
+  "description": "A broker connecting Ethiopian coffee suppliers with Ethiopian coffee exporters.",
+  "areaServed": "ET",
+  "email": "ethiobeanconnect@gmail.com",
+  "telephone": ["+251929383806", "+251910006869"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Adam's Pavilion, Sarbet",
+    "addressLocality": "Addis Ababa",
+    "addressCountry": "ET"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "telephone": "+251929383806",
+    "email": "ethiobeanconnect@gmail.com",
+    "availableLanguage": ["en", "am"]
+  },
+  "knowsAbout": ["Ethiopian coffee", "Yirgacheffe", "Guji", "Sidamo", "Jimma", "Limu", "Nekemte", "Harar", "green coffee export"]
+}
+</script>
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  /* ============================================================
+     THEME: Offer Sheet x Ledger
+     Offer Sheet's readable paper ground, cooled toward Ledger's slate.
+     Ledger's confident green promoted to the action colour. Every value
+     below is measured, not guessed; the ratios are in the comments.
+     The previous dark Highland palette is kept in review/highland-backup.html
+     ============================================================ */
+  --canvas:#F1F4F2;          /* cool paper, not warm cream */
+  --canvas-2:#E5EAE7;
+  --panel:#FBFCFB;
+  --panel-edge:#D2DAD5;
+  --border-strong:#67736C;   /* 4.8:1 on --panel, so a field reads as a field */
+  /* the logo's gold, kept exactly, because it is the one colour anyone
+     recognises. On paper it can only carry as a FILL: dark ink on this gold
+     is 7.07:1, but the gold as text on the page is 2.14:1 and unreadable.
+     So fills use --accent and anything that is text or a thin line uses
+     --accent-ink, the same hue darkened until it passes. */
+  --accent:#C8A44A;          /* fills only. ink on it: 7.07:1 */
+  --accent-hover:#B8942F;    /* ink on it: 5.84:1 */
+  --accent-muted:rgba(200,164,74,.18);
+  --accent-ink:#8A6B1F;      /* gold as text or line. 4.5:1 on canvas */
+  --on-accent:#15201A;       /* what sits on a gold fill */
+  /* the three roles survive the theme change:
+     green = checked and verified.  brown = the physical coffee.
+     the deep green-teal = the deal, and nothing else. */
+  --green:#2F7D32;           /* verified. 4.6:1 on canvas */
+  --green-deep:#225C25;
+  --green-muted:rgba(47,125,50,.12);
+  --bean:#8A5028;            /* coffee. 5.8:1 on canvas, the one warm note */
+  --bean-muted:rgba(138,80,40,.11);
+  --text-primary:#15201A;    /* 15.1:1 */
+  --text-secondary:#525C55;  /* 6.3:1  */
+  --cream:#FBFCFB;
+  --warn:#A6412A;            /* 5.6:1 on canvas */
+  --warn-bg:rgba(166,65,42,.08);
+
+  /* surfaces the browser and the chrome sit on */
+  --chrome:rgba(241,244,242,.92);
+  --chrome-solid:rgba(251,252,251,.98);
+  --field-focus:#FFFFFF;
+  --slip-bg:#E7EDE9;         /* the lot slip is now a cooler card than the page */
+  --slip-ink:#15201A;
+  --slip-ink-2:#556059;
+  --slip-rule:rgba(21,32,26,.24);
+
+  /* anything sitting ON the hero photograph stays light whatever the page
+     theme does, because the scrims underneath it are always dark */
+  --on-media:#F6F4EC;
+  --on-media-2:#D2D8CE;
+  --on-media-edge:rgba(246,244,236,.42);
+  /* the hero's own ground. It must stay dark independent of the page theme,
+     or a hero image that fails to load leaves light text on a light page. */
+  --media-ground:#12180F;    /* on-media against it: 16.4:1 */
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-soft:cubic-bezier(.4,0,.2,1);
+  --tshadow:0 1px 2px rgba(5,8,5,.95),0 3px 12px rgba(5,8,5,.78),0 10px 44px rgba(5,8,5,.8);
+
+  --f-display:"Archivo",system-ui,sans-serif;
+  --f-body:"Source Sans 3",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+
+  --shell:min(1180px,92vw);
+
+  /* three fixed steps at a 1.25 ratio, then fluid headings above.
+     There were 27 distinct sizes here, which is no hierarchy at all. */
+  --t-xs:.875rem;    /* 14px  small labels, chips, meta, table heads */
+  --t-body:1.1rem;   /* 17.6px everything meant to be read           */
+  --t-lg:1.375rem;   /* 22px  card headings                          */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:hidden;overflow-x:clip}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--canvas);color:var(--text-primary);
+  font-family:var(--f-body);font-size:var(--t-body);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg,video{display:block;max-width:100%}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:700;line-height:1.02;margin:0;letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:2px}
+
+/* the surfaces the browser draws for you still belong to the design */
+::selection{background:var(--accent);color:var(--on-accent)}
+::-moz-selection{background:var(--accent);color:var(--on-accent)}
+input,textarea,select{caret-color:var(--accent)}
+html{scrollbar-color:var(--border-strong) var(--canvas);scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--canvas)}
+::-webkit-scrollbar-thumb{background:var(--panel-edge);border-radius:99px;border:3px solid var(--canvas)}
+::-webkit-scrollbar-thumb:hover{background:var(--border-strong)}
+a{text-underline-offset:.18em;text-decoration-thickness:1px}
+/* prices and quantities line up column-wise instead of dancing */
+td.p,.mono,.slip dd,.lotno{font-variant-numeric:tabular-nums}
+
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:var(--on-accent);padding:.7rem 1.1rem;font-weight:600;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+.mono{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.07em;text-transform:uppercase}
+
+/* Ethiopic. Archivo covers none of it, so every Amharic heading was falling
+   back to a system font, and the display face's negative tracking and 1.02
+   line-height are the opposite of what the script needs. */
+html[lang="am"] h1,html[lang="am"] h2,html[lang="am"] h3,html[lang="am"] .brand b{
+  font-family:"Noto Sans Ethiopic",var(--f-display);
+  letter-spacing:0;line-height:1.3;
+}
+html[lang="am"] body,html[lang="am"] input,html[lang="am"] select,html[lang="am"] textarea{
+  font-family:"Noto Sans Ethiopic",var(--f-body);
+}
+html[lang="am"] .mono,html[lang="am"] .lb,html[lang="am"] th,html[lang="am"] .slip dt{
+  letter-spacing:.02em;text-transform:none;
+}
+.shell{width:var(--shell);margin-inline:auto}
+
+/* ============================================================
+   THE ENVIRONMENT LAYER (one place, behind everything)
+   ============================================================ */
+.env{position:fixed;inset:0;z-index:0;pointer-events:none}
+/* the moving ground. A canvas rather than stacked CSS gradients, because the
+   fields have to drift independently and cross each other. Alphas are held low
+   deliberately: the luminance under body text must not move, or the contrast
+   work above stops being true. */
+.env canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.env::after{
+  content:"";position:absolute;inset:0;opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes envDrift{from{transform:translate3d(-2%,-1.5%,0) scale(1.04)}to{transform:translate3d(2.5%,2%,0) scale(1.1)}}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;gap:1.4rem;
+  padding:.85rem max(4vw,calc((100vw - var(--shell))/2));
+  transition:background .45s var(--ease),backdrop-filter .45s var(--ease),border-color .45s var(--ease);
+  border-bottom:1px solid transparent;
+}
+.nav.stuck{background:var(--chrome);backdrop-filter:blur(14px);border-bottom-color:var(--panel-edge)}
+
+/* A light band under the nav, on the hero itself.
+   Before the nav gains its background it floats over the photograph. That
+   photograph's top strip is bright sky, where the page ink reads at 15.9:1 and
+   light ink fails at 1.04:1, so dark ink is right. But if the image never
+   loads, the ground behind is dark and that same ink drops to 1.08:1.
+   Lightening the top of the hero satisfies both cases at once, and ties the
+   photograph to the paper page. Sits below the caption bands so it never
+   touches their text. */
+.stage::after,.static-hero::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:170px;z-index:4;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(241,244,242,.94),rgba(241,244,242,.62) 44%,rgba(241,244,242,0));
+}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;flex:0 0 auto}
+.brand svg{width:34px;height:34px;flex:0 0 auto}
+.brand b{font-family:var(--f-display);font-size:var(--t-body);letter-spacing:.03em;text-transform:uppercase;line-height:1}
+.brand b span{color:var(--accent-ink)}
+.nav-links{display:flex;gap:1.5rem;margin-left:auto;align-items:center}
+/* :not(.btn) matters. Without it this rule outranks .btn-primary's ink and the
+   nav's gold CTA renders its label at 1.24:1, effectively invisible. */
+.nav-links a:not(.btn){
+  text-decoration:none;font-size:var(--t-body);color:var(--text-secondary);
+  position:relative;padding:.2rem 0;transition:color .3s var(--ease);
+}
+.nav-links a:not(.btn)::after{
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--accent-ink);
+  transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);
+}
+.nav-links a:not(.btn):hover{color:var(--text-primary)}
+.nav-links a:not(.btn):hover::after{transform:scaleX(1)}
+
+.lang{display:flex;gap:0;border:1px solid var(--border-strong);border-radius:999px;overflow:hidden;flex:0 0 auto}
+.lang button{
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.05em;
+  background:transparent;color:var(--text-secondary);border:0;padding:.36rem .7rem;cursor:pointer;
+  min-width:44px;   /* the coarse-pointer rule set min-height only; these were 30px wide and touching */
+  transition:background .3s var(--ease),color .3s var(--ease);
+}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  font-family:var(--f-body);font-weight:600;font-size:var(--t-body);text-decoration:none;
+  padding:.72rem 1.35rem;border-radius:999px;border:1px solid transparent;cursor:pointer;
+  transition:transform .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease);
+  text-shadow:none;
+}
+.btn-primary{background:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px)}
+.btn-ghost{border-color:var(--border-strong);color:var(--text-primary);background:transparent}
+.btn-ghost:hover{border-color:var(--accent-ink);color:var(--accent-ink);transform:translateY(-2px)}
+
+.burger{display:none;background:transparent;border:1px solid var(--border-strong);border-radius:10px;width:44px;height:44px;flex:0 0 44px;cursor:pointer;padding:0;align-items:center;justify-content:center}
+.burger span{display:block;width:18px;height:1.5px;background:var(--text-primary);position:relative;transition:background .2s}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:18px;height:1.5px;background:var(--text-primary);transition:transform .35s var(--ease)}
+.burger span::before{top:-6px}
+.burger span::after{top:6px}
+body.menu-open .burger span{background:transparent}
+body.menu-open .burger span::before{transform:translateY(6px) rotate(45deg)}
+body.menu-open .burger span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;height:520vh;z-index:1}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--media-ground)}
+.poster,.hero-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  background-size:cover;background-position:52% 62%;
+  will-change:transform;transform:translateZ(0);
+}
+.hero-video{opacity:0;transition:opacity .9s var(--ease)}
+.stage.video-ready .hero-video{opacity:1}
+.stage.video-ready .poster{opacity:0;transition:opacity .9s var(--ease)}
+
+.scrim{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 120% 90% at 66% 48%,rgba(8,12,8,0) 28%,rgba(8,12,8,.52) 100%);
+}
+/* the caption lane. Measured against the worst pixel of the drying-bed hero,
+   which is considerably brighter than the frame it replaced. */
+.scrim-2{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to right,rgba(8,12,8,.80) 0%,rgba(8,12,8,.56) 32%,rgba(8,12,8,0) 66%);
+}
+.scrim-3{position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;background:linear-gradient(to top,rgba(8,12,8,.62),transparent)}
+
+.ring{position:absolute;right:2.2rem;bottom:2.2rem;width:44px;height:44px;color:var(--accent);opacity:.85;z-index:6}
+.ring circle{transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .18s linear}
+.cue{position:absolute;right:2.2rem;bottom:2.4rem;z-index:6;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--on-media-2)}
+.cue .mono{font-size:var(--t-xs)}
+.cue i{display:block;width:1px;height:34px;background:linear-gradient(to bottom,var(--on-media-2),transparent);animation:cueDrop 2.6s var(--ease-soft) infinite;animation-delay:-.8s}
+@keyframes cueDrop{0%{transform:scaleY(.2);transform-origin:top;opacity:0}40%{opacity:1}100%{transform:scaleY(1);transform-origin:top;opacity:0}}
+
+.bands{position:absolute;inset:0;z-index:5;pointer-events:none}
+.band{
+  position:absolute;top:0;left:0;height:100%;
+  width:min(560px,52vw);
+  padding-left:max(4vw,calc((100vw - var(--shell))/2));
+  display:flex;flex-direction:column;justify-content:center;
+  text-shadow:var(--tshadow);color:var(--on-media);
+}
+.band h1,.band h2{color:var(--on-media)}
+.js .band{opacity:0}
+/* no scripting: the scrub cannot run, so serve the composed static hero */
+html:not(.js) .stage{display:none}
+html:not(.js) .static-hero{display:block}
+.band::before{
+  content:"";position:absolute;inset:-6% -10% -6% -20%;pointer-events:none;z-index:-1;
+  /* deepened: at the previous value the headline measured 5.39:1 against the
+     worst pixel of the photograph, which passes but reads soft. This lands it
+     near 9:1, where it reads bold. */
+  opacity:calc(.42 + .58*var(--k,1));
+  background:radial-gradient(ellipse 82% 66% at 40% 50%,rgba(4,7,4,.70) 0%,rgba(4,7,4,.48) 48%,rgba(4,7,4,0) 80%);
+}
+/* the ch cap sits on the text element, so it resolves in the display font */
+.band h1,.band h2{font-size:clamp(2.1rem,5.1vw,4.05rem);max-width:15ch}
+.band .sub{margin-top:1.15rem;color:var(--on-media);opacity:.92;font-size:var(--t-body);max-width:34ch}
+.band .cta-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem;pointer-events:auto}
+.band .btn{text-shadow:none}
+
+/* split text */
+.vis-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.w{display:inline-block;white-space:pre}
+.c{display:inline-block;will-change:transform,opacity}
+
+/* (f) drift-down: band 1 */
+.e-drift .w{
+  --kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);
+  opacity:var(--kc);
+  transform:translateY(calc((1 - var(--kc)) * -26px));
+}
+/* (c) blur-to-sharp: band 2 */
+.e-blur{position:relative}
+.e-blur .soft{position:absolute;inset:0;filter:blur(11px);opacity:calc(1 - var(--k,0));pointer-events:none}
+.e-blur .sharp{opacity:var(--k,0)}
+/* (e) word rise into staged settle: band 3 */
+.e-rise .w{
+  --kc:clamp(0,(var(--k,0) - var(--th,0))*2.6,1);
+  opacity:var(--kc);
+  transform:translateY(calc((1 - var(--kc)) * 30px));
+}
+.e-rise .sub{--ks:clamp(0,(var(--k,0) - .66)*4,1);opacity:var(--ks);transform:translateY(calc((1 - var(--ks)) * 16px))}
+.e-rise .cta-row{--kb:clamp(0,(var(--k,0) - .78)*5,1);opacity:var(--kb);transform:translateY(calc((1 - var(--kb)) * 14px))}
+
+/* static hero */
+.static-hero{display:none;position:relative;min-height:92vh;overflow:hidden;background:var(--media-ground)}
+/* in CSS, not JS, so it survives a script failure. The element sits inside
+   .static-hero, which is display:none on scrub-capable screens, so those
+   visitors still never fetch it. */
+.static-hero .poster-still{position:absolute;inset:0;background-size:cover;background-position:56% 68%;
+  background-image:url('assets/hero-poster.jpg')}
+.static-hero .sh-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,12,8,.93) 6%,rgba(8,12,8,.55) 48%,rgba(8,12,8,.62) 100%)}
+.static-hero .sh-inner{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;min-height:92vh;padding:8rem 0 3.4rem}
+.static-hero .sh-inner{color:var(--on-media)}
+.static-hero h1{font-size:clamp(2.2rem,8.6vw,3.4rem);text-shadow:var(--tshadow);color:var(--on-media)}
+.static-hero .sub{margin-top:1rem;color:var(--on-media);opacity:.92;max-width:36ch;text-shadow:var(--tshadow)}
+/* the ghost button also sits on the photograph, so it borrows the media ink */
+.hero .btn-ghost,.static-hero .btn-ghost{border-color:var(--on-media-edge);color:var(--on-media)}
+.hero .btn-ghost:hover,.static-hero .btn-ghost:hover{border-color:var(--on-media);color:var(--on-media)}
+.static-hero .cta-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.7rem}
+
+/* ============================================================
+   THE GOLD ORIGIN THREAD (the signature)
+   ============================================================ */
+.threadwrap{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:visible}
+.threadwrap svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.thread-path{
+  fill:none;stroke:var(--accent-ink);stroke-width:1.5;opacity:.5;
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--draw,0));
+}
+.thread-glow{fill:none;stroke:var(--accent);stroke-width:7;opacity:.07;filter:blur(7px);
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--draw,0));}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+/* transparent on purpose. This carried an opaque --canvas fill, which painted
+   over the fixed environment layer for the entire page below the hero, so the
+   drifting ground was never visible anywhere. The base colour comes from body. */
+.body-wrap{position:relative;z-index:2;background:transparent}
+section{position:relative;padding:clamp(4.5rem,9vw,8rem) 0}
+/* anchor targets must clear the fixed nav */
+section[id],#main,#top{scroll-margin-top:96px}
+/* The alternating bands DARKEN the ground by a fixed amount rather than
+   painting a fixed colour over it. With a fixed colour the rhythm inverts
+   wherever the drifting light happens to be brighter than the band. */
+.alt{background:rgba(21,32,26,.05)}
+
+/* ============================================================
+   PHOTO PLATES
+   A section that sits on a photograph. It re-declares the palette tokens
+   locally, so every component inside it adapts on its own: cards, chips,
+   borders, icons and text all read the new values. No per-component
+   overrides, which is the whole reason the palette was tokenised.
+   The page alternates paper, plate, paper, plate down its length.
+   ============================================================ */
+.plate{
+  position:relative;
+  background-color:var(--media-ground);
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  color:var(--on-media);
+
+  --text-primary:var(--on-media);
+  --text-secondary:var(--on-media-2);
+  --panel:rgba(12,17,11,.62);
+  --panel-edge:rgba(246,244,236,.22);
+  --border-strong:rgba(246,244,236,.48);
+  --canvas:var(--media-ground);
+  --canvas-2:rgba(12,17,11,.55);
+  /* the three meanings have to lighten to survive on a dark plate */
+  --accent-ink:#E6CC85;
+  --green:#93CE94;
+  --green-deep:#93CE94;
+  --green-muted:rgba(147,206,148,.16);
+  --bean:#DCA97C;
+  --bean-muted:rgba(220,169,124,.15);
+  /* the form lives on a plate now, so its errors have to lighten too. The
+     paper terracotta reads 2.9:1 here, and an unreadable error message is the
+     worst thing on the page to get wrong. */
+  --warn:#F0947B;
+  --warn-bg:rgba(240,148,123,.14);
+  /* A focused field lifts AWAY from its surroundings. On paper that means
+     going white; on a dark plate white means near-white text on white, which
+     measured 1.1:1 and made the field unreadable the moment you clicked it.
+     Here the lift goes the other way. */
+  --field-focus:#20301C;
+}
+/* Two crossed gradients: one holds the left column where the text lives, the
+   other keeps the top and bottom edges from blowing out. These composite to
+   about 0.64 in the text zone, measured against the worst pixel of all four
+   photographs at 5.67:1. An earlier version composited to 0.93, which passed
+   easily and hid most of the photograph for no benefit. */
+.plate::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(to right,rgba(9,13,8,.62) 0%,rgba(9,13,8,.44) 40%,rgba(9,13,8,.22) 75%,rgba(9,13,8,.18) 100%),
+    linear-gradient(to bottom,rgba(9,13,8,.34),rgba(9,13,8,.06) 45%,rgba(9,13,8,.46));
+}
+.plate > .shell{position:relative;z-index:1}
+.plate h1,.plate h2,.plate h3{color:var(--on-media)}
+.plate .h2{color:var(--on-media)}
+.plate .btn-ghost{border-color:var(--border-strong);color:var(--on-media)}
+.plate .wall{background:var(--panel)}
+/* the lot slip stays paper even on a plate: it is a physical document */
+.plate .slip{--slip-bg:#E7EDE9}
+
+/* Narrow screens cover-crop a 16:9 photo to its CENTRE, which throws away the
+   dark left third these images were composed around, and the horizontal scrim
+   is at its weakest there. Measured: 3.66 to 3.96:1 on three of the four.
+   So on mobile the crop is pulled back toward the dark side and the scrim
+   becomes a uniform vertical one. Re-measured at 7.46:1 worst case. */
+@media (max-width:860px){
+  .plate{background-position:26% center}
+  .plate::before{
+    background:linear-gradient(to bottom,rgba(9,13,8,.76),rgba(9,13,8,.66) 45%,rgba(9,13,8,.80));
+  }
+}
+
+.plate--how{background-image:url('assets/sec-how.jpg')}
+.plate--origins{background-image:url('assets/sec-origins.jpg')}
+.plate--checks{background-image:url('assets/sec-checks.jpg')}
+.plate--post{background-image:url('assets/sec-post.jpg')}
+.h2{font-size:clamp(1.85rem,4vw,3rem);max-width:20ch}
+.lede{margin-top:1.1rem;color:var(--text-secondary);max-width:56ch;font-size:var(--t-body)}
+
+/* entrances. The hidden start state is gated on .js so the page ships
+   visible and readable when scripting never runs. */
+.rise{transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.js .rise{opacity:0;transform:translateY(26px)}
+.js .in.rise,.js .in .rise{opacity:1;transform:none}
+.in .rise:nth-child(1){transition-delay:0ms}
+.in .rise:nth-child(2){transition-delay:90ms}
+.in .rise:nth-child(3){transition-delay:180ms}
+.in .rise:nth-child(4){transition-delay:270ms}
+.in .rise:nth-child(5){transition-delay:360ms}
+.in .rise:nth-child(6){transition-delay:450ms}
+.in .rise:nth-child(7){transition-delay:540ms}
+/* retire the stagger so later hovers do not lag (must beat nth-child specificity) */
+.settled .rise:nth-child(1),.settled .rise:nth-child(2),.settled .rise:nth-child(3),
+.settled .rise:nth-child(4),.settled .rise:nth-child(5),.settled .rise:nth-child(6),
+.settled .rise:nth-child(7){transition-delay:0s !important}
+
+/* THE THREE WALLS */
+.walls{display:grid;gap:1.1rem;grid-template-columns:repeat(3,1fr);margin-top:3rem}
+.wall{
+  position:relative;padding:2rem 1.7rem 2rem;border:1px solid var(--panel-edge);border-radius:16px;
+  background:linear-gradient(160deg,var(--panel),var(--canvas-2));overflow:hidden;
+  transition:border-color .45s var(--ease),transform .45s var(--ease);
+}
+.wall:hover{border-color:var(--border-strong);transform:translateY(-4px)}
+.wall h3{font-size:var(--t-lg);margin:0 0 .7rem;letter-spacing:-.01em}
+.wall p{color:var(--text-secondary);font-size:var(--t-body)}
+.wall::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:linear-gradient(to right,var(--bean),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease);
+}
+.wall:hover::after,.in .wall::after{transform:scaleX(1)}
+
+/* HOW IT WORKS */
+.steps{display:grid;gap:1.1rem;grid-template-columns:repeat(4,1fr);margin-top:3rem}
+.step{padding:1.9rem 1.5rem;border:1px solid var(--panel-edge);border-radius:16px;background:var(--panel);transition:border-color .45s var(--ease),transform .45s var(--ease)}
+.step:hover{border-color:var(--bean);transform:translateY(-4px)}
+.step .ico{width:46px;height:46px;color:var(--bean);margin-bottom:1.1rem}
+.step .n{font-family:var(--f-mono);font-size:var(--t-xs);color:var(--text-secondary);letter-spacing:.06em}
+.step h3{font-size:var(--t-lg);margin:.6rem 0 .55rem}
+.step p{color:var(--text-secondary);font-size:var(--t-body)}
+
+/* MARKET */
+.market-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.4rem}
+.updated{font-family:var(--f-mono);font-size:var(--t-xs);color:var(--text-secondary);letter-spacing:.03em;border:1px solid var(--panel-edge);border-radius:999px;padding:.46rem 1rem;white-space:nowrap}
+.updated b{color:var(--accent-ink);font-weight:500}
+.tablewrap{margin-top:2.4rem;overflow-x:auto;border:1px solid var(--panel-edge);border-radius:16px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{text-align:left;padding:1rem 1.3rem;border-bottom:1px solid var(--panel-edge);font-size:var(--t-body)}
+th{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.05em;color:var(--text-secondary);font-weight:400}
+tbody tr{transition:background .3s var(--ease)}
+tbody tr:hover{background:var(--accent-muted)}
+tbody tr:last-child td{border-bottom:0}
+td.o{font-weight:600}
+.chip{display:inline-block;font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.04em;padding:.24rem .6rem;border-radius:6px;border:1px solid var(--panel-edge);color:var(--text-secondary)}
+.chip.g1{border-color:rgba(47,125,50,.42);color:var(--green-deep);background:var(--green-muted)}
+td.p{font-family:var(--f-mono);font-size:var(--t-body)}
+td.p.ask{color:var(--text-secondary)}
+.market-note{margin-top:1.3rem;color:var(--text-secondary);font-size:var(--t-body);max-width:64ch}
+
+/* ORIGINS */
+.origins{margin-top:3rem;display:grid;gap:0}
+.origin{
+  display:grid;grid-template-columns:auto 1fr auto;gap:1.6rem;align-items:baseline;
+  padding:1.6rem 0;border-bottom:1px solid var(--panel-edge);position:relative;
+}
+.origin:last-of-type{border-bottom:0}
+.origin .dot{width:9px;height:9px;border-radius:50%;background:var(--bean);align-self:center;box-shadow:0 0 0 0 var(--bean-muted);transition:box-shadow .5s var(--ease)}
+.origin:hover .dot{box-shadow:0 0 0 7px var(--bean-muted)}
+.origin h3{font-size:clamp(var(--t-lg),2.4vw,1.85rem)}
+.origin .meta{font-family:var(--f-mono);font-size:var(--t-xs);color:var(--text-secondary);letter-spacing:.02em;margin-top:.45rem}
+.origin .flavour{color:var(--text-secondary);font-size:var(--t-body);margin-top:.5rem;max-width:52ch}
+.origin .grade{font-family:var(--f-mono);font-size:var(--t-xs);color:var(--bean);white-space:nowrap;align-self:center}
+/* a panel, not a side-tab. A colored border above 1px on a callout is the
+   tell the craft floor refuses outright. */
+.season{margin-top:2.4rem;padding:1.5rem 1.7rem;border:1px solid var(--panel-edge);
+  background:var(--bean-muted);border-radius:14px;color:var(--text-secondary);max-width:64ch}
+
+/* THE SEAL (interactive moment) */
+.seal-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.4rem;align-items:center;margin-top:3rem}
+.slip{
+  position:relative;background:var(--slip-bg);color:var(--slip-ink);border-radius:6px;padding:2rem 1.9rem 2.2rem;
+  box-shadow:0 30px 70px rgba(0,0,0,.5);
+}
+.slip::before{
+  content:"";position:absolute;left:0;right:0;top:-1px;height:8px;
+  background:radial-gradient(circle at 5px 0,transparent 5px,var(--slip-bg) 5px);
+  background-size:12px 8px;background-position:0 -4px;
+}
+.slip .slip-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(27,33,25,.18);padding-bottom:.9rem}
+.slip .slip-head .mono{color:var(--slip-ink-2)}
+.slip .slip-head b{font-family:var(--f-display);font-size:var(--t-body);letter-spacing:.04em;text-transform:uppercase}
+.slip dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.05rem 1.4rem;margin-top:1.1rem}
+.slip dt{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.03em;color:var(--slip-ink-2);padding:.55rem 0}
+.slip dd{margin:0;padding:.55rem 0;font-weight:600;text-align:right;
+  opacity:.18;transform:translateX(6px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.slip.sealed dd{opacity:1;transform:none}
+.slip.sealed dd:nth-of-type(1){transition-delay:0ms}
+.slip.sealed dd:nth-of-type(2){transition-delay:110ms}
+.slip.sealed dd:nth-of-type(3){transition-delay:220ms}
+.slip.sealed dd:nth-of-type(4){transition-delay:330ms}
+.slip.sealed dd:nth-of-type(5){transition-delay:440ms}
+.slip .lotno{margin-top:1.3rem;padding-top:1.1rem;border-top:1px dashed var(--slip-rule);display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:var(--t-xs);color:var(--slip-ink-2)}
+.slip .lotno b{color:var(--slip-ink);letter-spacing:.1em;opacity:0;transition:opacity .6s var(--ease) .55s}
+.slip.sealed .lotno b{opacity:1}
+
+.sealbox{display:flex;flex-direction:column;align-items:flex-start;gap:1.3rem}
+.seal{
+  position:relative;width:150px;height:150px;border:0;background:transparent;cursor:pointer;padding:0;
+  touch-action:manipulation;
+}
+.seal svg{width:100%;height:100%;overflow:visible}
+/* the ring was #2B3A2C on the canvas: 1.56:1, under the 3:1 floor for a UI
+   boundary, so nobody could see there was a control here at all */
+.seal .track{fill:none;stroke:var(--border-strong);stroke-width:2}
+.seal .fill{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hold,0));transform:rotate(-90deg);transform-origin:50% 50%}
+.seal .mark{fill:var(--accent);opacity:calc(.62 + .38*var(--hold,0));transition:opacity .2s linear}
+.seal .glow{fill:none;stroke:var(--green);stroke-width:9;opacity:calc(var(--hold,0)*.22);filter:blur(8px);
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hold,0));transform:rotate(-90deg);transform-origin:50% 50%}
+/* the bean is fill="currentColor" and this is a <button>, so without an explicit
+   colour currentColor resolves to the UA's button text (black) and the mark
+   never picks up the accent at all */
+.seal{color:var(--accent-ink);transition:transform .3s var(--ease)}
+.seal .mark ellipse,.seal .mark path[fill]{fill:var(--accent-ink)}
+.seal .mark path[stroke]{stroke:var(--canvas)}
+.seal:hover{transform:translateY(-2px)}
+.seal:active{transform:scale(.985)}
+/* a resting pulse, so the control announces itself instead of hiding */
+.seal .track{animation:sealIdle 3.6s var(--ease-soft) infinite;animation-delay:-1.2s}
+@keyframes sealIdle{0%,100%{opacity:.55}50%{opacity:1}}
+.slip.sealed ~ * .seal .track,.seal.done .track{animation:none;opacity:1}
+.seal-hint{font-family:var(--f-body);font-size:var(--t-body);letter-spacing:0;color:var(--text-primary);max-width:22ch}
+.seal-done{color:var(--green)}
+
+/* CHECKS */
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:3rem}
+.check{display:flex;gap:1.1rem;align-items:flex-start;padding:1.6rem 1.5rem;border:1px solid var(--panel-edge);border-radius:14px;background:var(--panel);transition:border-color .4s var(--ease)}
+.check:hover{border-color:var(--border-strong)}
+.check svg{width:24px;height:24px;color:var(--green);flex:0 0 auto;margin-top:.2rem}
+.check b{display:block;margin-bottom:.3rem;font-size:var(--t-body)}
+.check p{color:var(--text-secondary);font-size:var(--t-body)}
+
+/* FAQ */
+.faq{margin-top:3rem;border-top:1px solid var(--panel-edge)}
+.q{border-bottom:1px solid var(--panel-edge)}
+.q summary{
+  list-style:none;cursor:pointer;padding:1.5rem 3rem 1.5rem 0;position:relative;
+  font-family:var(--f-display);font-size:clamp(var(--t-body),1.9vw,var(--t-lg));letter-spacing:-.01em;
+  transition:color .3s var(--ease);
+}
+.q summary::-webkit-details-marker{display:none}
+.q summary:hover{color:var(--accent-ink)}
+.q summary::after{
+  content:"";position:absolute;right:.4rem;top:50%;width:13px;height:13px;
+  border-right:1.5px solid var(--accent-ink);border-bottom:1.5px solid var(--accent-ink);
+  transform:translateY(-70%) rotate(45deg);transition:transform .4s var(--ease);
+}
+.q[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+.q .a{padding:0 3rem 1.7rem 0;color:var(--text-secondary);max-width:70ch}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:3.4rem;align-items:start;margin-top:3rem}
+.tabs{display:inline-flex;border:1px solid var(--border-strong);border-radius:999px;padding:3px;margin-bottom:1.7rem}
+.tabs button{
+  font-family:var(--f-body);font-weight:600;font-size:var(--t-body);background:transparent;border:0;color:var(--text-secondary);
+  padding:.52rem 1.15rem;border-radius:999px;cursor:pointer;transition:background .35s var(--ease),color .35s var(--ease);
+}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--on-accent)}
+form{display:grid;gap:1.05rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1.05rem}
+label{display:block}
+/* sentence case at a readable size. Small uppercase mono was the worst thing
+   on this page for anyone reading English as a second language. */
+label .lb{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--f-body);font-size:var(--t-body);font-weight:600;letter-spacing:0;color:var(--text-primary);margin-bottom:.45rem}
+label .lb .opt{font-weight:400}
+label .opt{color:var(--text-secondary);opacity:.7;text-transform:none;letter-spacing:.04em}
+input,select,textarea{
+  width:100%;font-family:var(--f-body);font-size:var(--t-body);color:var(--text-primary);
+  background:var(--panel);border:1px solid var(--border-strong);border-radius:10px;padding:.78rem .95rem;
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+input:hover,select:hover,textarea:hover{border-color:var(--accent-muted)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent-ink);background:var(--field-focus)}
+textarea{resize:vertical;min-height:96px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B4BFB0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.4rem}
+.other-in{margin-top:.55rem}
+.other-in[hidden]{display:none}
+
+/* errors: a message, not just a colour */
+.field-err{
+  display:flex;align-items:flex-start;gap:.4rem;
+  margin-top:.45rem;font-size:var(--t-xs);color:var(--warn);line-height:1.45;
+}
+.field-err svg{width:15px;height:15px;flex:0 0 auto;margin-top:.18rem}
+input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="true"]{
+  border-color:var(--warn);background:var(--warn-bg);
+}
+.err-summary{
+  display:none;padding:1rem 1.15rem;border:1px solid var(--warn);border-radius:12px;
+  background:var(--warn-bg);color:var(--text-primary);font-size:var(--t-body);
+}
+.err-summary.on{display:block}
+.err-summary b{display:block;margin-bottom:.35rem;color:var(--warn)}
+.err-summary ol{margin:0;padding-left:1.1rem;display:grid;gap:.2rem}
+.err-summary a{color:var(--text-primary)}
+.req-note{font-size:var(--t-xs);color:var(--text-secondary);margin-bottom:.2rem}
+.sendfail{
+  margin-top:1rem;padding:1.2rem 1.3rem;border:1px solid var(--warn);
+  border-radius:12px;background:var(--warn-bg);display:none;
+}
+.sendfail.on{display:block}
+.sendfail b{display:block;margin-bottom:.5rem;color:var(--warn)}
+.sendfail textarea{margin-top:.7rem;min-height:150px;font-family:var(--f-mono);font-size:var(--t-xs)}
+.sendfail .row-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem}
+.form-foot{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:.4rem}
+.form-note{color:var(--text-secondary);font-size:var(--t-xs);max-width:44ch}
+.success{
+  display:none;padding:1.6rem 1.7rem;border:1px solid var(--green);border-radius:14px;
+  background:var(--green-muted);
+}
+.success.on{display:block}
+.success b{color:var(--green-deep)}   /* on the tinted panel, --green is only 3.6:1 */
+.form-side .lot-facts{margin-top:1.8rem;display:grid;gap:.9rem}
+.lot-fact{display:flex;gap:.85rem;align-items:flex-start;color:var(--text-secondary);font-size:var(--t-body)}
+.lot-fact svg{width:18px;height:18px;color:var(--green);flex:0 0 auto;margin-top:.28rem}
+
+/* FOOTER */
+footer{position:relative;z-index:2;background:rgba(21,32,26,.05);border-top:1px solid var(--panel-edge);padding:4.5rem 0 2.2rem}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:3rem}
+.logo-card{background:var(--cream);border-radius:14px;padding:1rem;max-width:250px}
+.logo-card img{width:100%;height:auto;border-radius:8px}
+.foot-tag{margin-top:1.2rem;color:var(--text-secondary);max-width:32ch}
+footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;color:var(--text-secondary);font-weight:600;margin-bottom:1.1rem}
+.foot-list{list-style:none;padding:0;margin:0;display:grid;gap:.6rem;color:var(--text-secondary);font-size:var(--t-body)}
+.foot-list a{color:var(--text-secondary);text-decoration:none;font-size:var(--t-body);transition:color .3s var(--ease)}
+.foot-list a:hover{color:var(--accent-ink)}
+.foot-bottom{margin-top:3.4rem;padding-top:1.6rem;border-top:1px solid var(--panel-edge);display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;color:var(--text-secondary);font-size:var(--t-xs)}
+.tbd{color:var(--accent-ink);font-family:var(--f-mono);font-size:var(--t-xs)}
+
+/* ============================================================
+   THE CONTACT LAUNCHER (chat with us)
+   ============================================================ */
+.launcher{position:fixed;right:clamp(14px,2.2vw,26px);bottom:clamp(14px,2.2vw,26px);z-index:95;display:flex;flex-direction:column;align-items:flex-end;gap:.7rem}
+.launch-panel{
+  display:flex;flex-direction:column;gap:.4rem;padding:.5rem;
+  background:var(--chrome-solid);backdrop-filter:blur(14px);
+  border-radius:16px;
+  /* elevation OR a defined edge, not both. Both together is a generated-UI tell. */
+  box-shadow:0 24px 60px rgba(0,0,0,.6),0 4px 12px rgba(0,0,0,.4);
+  opacity:0;transform:translateY(10px) scale(.97);pointer-events:none;transform-origin:bottom right;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+.launcher.open .launch-panel{opacity:1;transform:none;pointer-events:auto}
+.launch-panel a{
+  display:flex;align-items:center;gap:.75rem;text-decoration:none;
+  padding:.7rem .9rem;border-radius:11px;min-width:210px;
+  transition:background .3s var(--ease);
+}
+.launch-panel a:hover{background:rgba(200,164,74,.10)}
+.launch-panel a svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent-ink)}
+.launch-panel b{display:block;font-size:var(--t-body);font-weight:600;line-height:1.3}
+.launch-panel span{display:block;font-size:var(--t-xs);color:var(--text-secondary);font-family:var(--f-mono)}
+.launch-btn{
+  width:56px;height:56px;border-radius:50%;border:0;cursor:pointer;
+  background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 34px rgba(0,0,0,.45);
+  transition:transform .35s var(--ease),background .35s var(--ease);
+}
+.launch-btn:hover{background:var(--accent-hover);transform:translateY(-2px)}
+.launch-btn svg{width:25px;height:25px}
+.launch-btn .x{display:none}
+.launcher.open .launch-btn .c{display:none}
+.launcher.open .launch-btn .x{display:block}
+
+/* ============================================================
+   THE MOBILE ACTION BAR
+   The nav CTA is hidden below 860px, which left roughly 10,000px of
+   scrolling with no way to act. This is that way.
+   ============================================================ */
+.mobile-cta,.mc-chat{display:none}
+@media (max-width:860px){
+  .mobile-cta{
+    display:block;position:fixed;left:0;right:0;bottom:0;z-index:94;
+    padding:.7rem max(4vw,14px);
+    padding-bottom:calc(.7rem + env(safe-area-inset-bottom,0px));
+    background:var(--chrome);backdrop-filter:blur(14px);
+    border-top:1px solid var(--panel-edge);
+    transform:translateY(115%);transition:transform .45s var(--ease);
+  }
+  .mobile-cta{display:flex;gap:.6rem;align-items:center}
+  .mobile-cta.on{transform:none}
+  .mobile-cta .btn{flex:1 1 auto}
+  .mc-chat{
+    flex:0 0 48px;width:48px;height:48px;border-radius:12px;cursor:pointer;
+    border:1px solid var(--border-strong);background:transparent;color:var(--accent-ink);
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .3s var(--ease),color .3s var(--ease);
+  }
+  .mc-chat:hover{border-color:var(--accent-ink)}
+  .mc-chat svg{width:22px;height:22px}
+  /* the floating button stops covering card text once the bar is up: the bar
+     carries the chat action instead */
+  .launcher{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+  .mobile-cta.on ~ .launcher .launch-btn{display:none}
+}
+
+/* whisper particles */
+.motes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.mote{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--bean);opacity:.16;animation:moteDrift linear infinite}
+@keyframes moteDrift{
+  from{transform:translate3d(0,20px,0)}
+  to{transform:translate3d(14px,-140px,0)}
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px){
+  .walls,.steps{grid-template-columns:repeat(2,1fr)}
+  .seal-grid,.form-grid{grid-template-columns:1fr;gap:2.4rem}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:2.4rem}
+}
+@media (max-width:860px){
+  .burger{display:inline-flex}
+  .nav-links{
+    position:fixed;inset:0 0 auto 0;top:0;padding:5.6rem 6vw 2.4rem;
+    flex-direction:column;align-items:flex-start;gap:.2rem;
+    background:var(--chrome-solid);backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--panel-edge);
+    transform:translateY(-102%);transition:transform .5s var(--ease);
+    margin-left:0;
+  }
+  body.menu-open .nav-links{transform:none}
+  .nav-links a:not(.btn){font-size:var(--t-lg);font-family:var(--f-display);color:var(--text-primary);padding:.62rem 0;width:100%}
+  .nav .btn-primary{display:none}
+  .nav-links .btn-primary{display:inline-flex;margin-top:1rem}
+  /* the links panel is fixed, so lang and burger are the only flex siblings left */
+  .lang{margin-left:auto}
+  /* keep the brand and controls above the open panel, or the logo appears to vanish */
+  .brand,.lang,.burger{position:relative;z-index:2}
+}
+@media (max-width:520px){
+  .nav{gap:.6rem;padding-left:14px;padding-right:14px}
+  .brand svg{width:28px;height:28px}
+  .brand b{font-size:var(--t-xs)}
+  .lang button{padding:.36rem .58rem;font-size:var(--t-xs)}
+}
+@media (max-width:360px){
+  .brand b{font-size:var(--t-xs)}
+}
+@media (max-width:720px){
+  .walls,.steps,.checks{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .origin{grid-template-columns:auto 1fr;gap:1rem}
+  .origin .grade{grid-column:2;margin-top:.5rem}
+  .q summary,.q .a{padding-right:2.2rem}
+
+  /* the table becomes cards. A horizontal scroller hid the price column
+     entirely at this width, which is the one column the section exists for. */
+  .tablewrap{border:0;background:transparent;overflow:visible;border-radius:0}
+  table{min-width:0;display:block}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  tbody{display:grid;gap:.75rem}
+  tbody tr{
+    display:grid;grid-template-columns:1fr auto;gap:.35rem .9rem;align-items:baseline;
+    padding:1.05rem 1.15rem;border:1px solid var(--panel-edge);border-radius:14px;background:var(--panel);
+  }
+  tbody tr:hover{background:var(--panel)}
+  tbody td{border:0;padding:0}
+  td.o{grid-column:1;grid-row:1;font-size:var(--t-body)}
+  tbody td:nth-child(2){grid-column:2;grid-row:1;justify-self:end}
+  tbody td:nth-child(3){grid-column:1;grid-row:2;color:var(--text-secondary);font-size:var(--t-body)}
+  td.p{grid-column:2;grid-row:2;justify-self:end}
+  footer{padding-bottom:6rem}
+}
+@media (max-height:560px){.cue,.ring{display:none}}
+@media (pointer:coarse){
+  .btn,.tabs button,.lang button{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  .q summary{min-height:44px}
+}
+
+/* THE FIVE STATIC-HERO GATES (must match the JS strings character for character) */
+@media (max-width: 720px),
+       (orientation: portrait) and (max-width: 1024px),
+       (orientation: portrait) and (pointer: coarse),
+       (orientation: landscape) and (pointer: coarse) and (max-height: 560px),
+       (prefers-reduced-motion: reduce){
+  .hero{height:auto}
+  .stage{display:none}
+  .static-hero{display:block}
+}
+
+/* REDUCED MOTION, honoured completely */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;transition-delay:0s !important;
+  }
+  .rise{opacity:1 !important;transform:none !important}
+  .slip dd{opacity:1 !important;transform:none !important}
+  .slip .lotno b{opacity:1 !important}
+  .thread-path,.thread-glow{stroke-dashoffset:0 !important}
+  .wall::after{transform:scaleX(1) !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+<div class="env" aria-hidden="true"><canvas id="envcanvas"></canvas></div>
+
+<nav class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Ethio Bean Connect, home">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="14.5" fill="none" stroke="#C8A44A" stroke-width="1.4" opacity=".85"/>
+      <path d="M20 5.5a14.5 14.5 0 0 1 0 29" fill="none" stroke="#3C8342" stroke-width="1.4"/>
+      <ellipse cx="20" cy="20" rx="6" ry="9.4" fill="#7A5233"/>
+      <path d="M20 10.8c-2.7 3.6 -2.7 14.8 0 18.4" stroke="#C8A44A" stroke-width="1.5" fill="none"/>
+      <path d="M11 15c-3-1.8-4.8-4.8-4.2-7.8C10 8.4 12.4 10.8 12.9 13.9z" fill="#3C8342"/>
+    </svg>
+    <b>Ethio<span>Bean</span> Connect</b>
+  </a>
+  <div class="nav-links" id="navlinks">
+    <a href="#market" data-i18n="nav.market">Market</a>
+    <a href="#origins" data-i18n="nav.origins">Origins</a>
+    <a href="#how" data-i18n="nav.how">How it works</a>
+    <a href="#checks" data-i18n="nav.checks">What we check</a>
+    <a href="#faq" data-i18n="nav.faq">Questions</a>
+    <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your lot</a>
+  </div>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="am" aria-pressed="false">አማ</button>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
+</nav>
+
+<main id="main" tabindex="-1">
+<span id="top"></span>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero" aria-label="Ethio Bean Connect">
+  <div class="stage" id="stage">
+    <div class="poster" id="poster"></div>
+    <video class="hero-video" id="hero-video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+    <div class="scrim"></div>
+    <div class="scrim-2"></div>
+    <div class="scrim-3"></div>
+
+    <div class="bands" id="bands">
+      <div class="band e-drift" data-a="0" data-b="0.30" data-seed="7">
+        <h1 data-split data-i18n="hero.b1">Ethiopia grows the coffee the world is asking for.</h1>
+      </div>
+      <div class="band e-blur" data-a="0.35" data-b="0.65" data-seed="19">
+        <h2 data-i18n="hero.b2">Finding the right buyer is the hard part.</h2>
+      </div>
+      <div class="band e-rise" data-a="0.72" data-b="1" data-seed="31">
+        <h2 data-split data-i18n="hero.b3">Every lot has a buyer.</h2>
+        <p class="sub" data-i18n="hero.b3sub">We find them. You keep trading.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your lot</a>
+          <a class="btn btn-ghost" href="#post" data-tab="need" data-i18n="cta.need">Looking for coffee instead?</a>
+        </div>
+      </div>
+    </div>
+
+    <svg class="ring" id="ring" viewBox="0 0 48 48" aria-hidden="true" style="display:none">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/>
+    </svg>
+    <div class="cue" id="cue" aria-hidden="true">
+      <span class="mono" data-i18n="hero.scroll">Scroll</span>
+      <i></i>
+    </div>
+  </div>
+
+  <div class="static-hero" id="statichero">
+    <div class="poster-still" id="poster-still"></div>
+    <div class="sh-scrim"></div>
+    <div class="sh-inner shell">
+      <h1 data-i18n="hero.b3">Every lot has a buyer.</h1>
+      <p class="sub" data-i18n="static.sub">Ethio Bean Connect puts Ethiopian coffee suppliers in front of the exporters who need their lots.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your lot</a>
+        <a class="btn btn-ghost" href="#post" data-tab="need" data-i18n="cta.need">Looking for coffee instead?</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="body-wrap">
+  <div class="threadwrap" id="threadwrap" aria-hidden="true">
+    <svg id="threadsvg" preserveAspectRatio="none" viewBox="0 0 100 1000">
+      <path class="thread-glow" id="threadglow" pathLength="1" d=""/>
+      <path class="thread-path" id="threadpath" pathLength="1" d=""/>
+    </svg>
+  </div>
+
+<!-- ================= THE THREE WALLS ================= -->
+<section id="walls">
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="walls.h">Three walls, and every lot hits at least one.</h2>
+    </div>
+    <div class="walls" data-stagger>
+      <article class="wall rise">
+        <h3 data-i18n="walls.1h">Quality swings between harvests.</h3>
+        <p data-i18n="walls.1p">A roaster wants the same coffee twice. Two harvests rarely give it to them, and one bad delivery ends the relationship.</p>
+      </article>
+      <article class="wall rise">
+        <h3 data-i18n="walls.2h">Paperwork loses contracts.</h3>
+        <p data-i18n="walls.2p">Europe now wants to know the exact ground a lot grew on. Lots with thin origin records get turned away at the door.</p>
+      </article>
+      <article class="wall rise">
+        <h3 data-i18n="walls.3h">Suppliers wait to get paid.</h3>
+        <p data-i18n="walls.3p">Coffee goes out, money comes back late or partly. Washing stations carry that risk alone.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section id="how" class="plate plate--how">
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="how.h">Four steps. No forms you need a lawyer for.</h2>
+    </div>
+    <div class="steps" data-stagger>
+      <article class="step rise">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <rect x="7" y="5" width="26" height="30" rx="3"/><path d="M13 14h14M13 20h14M13 26h8"/>
+        </svg>
+        <span class="n" data-i18n="how.n1">Step 01</span>
+        <h3 data-i18n="how.1h">Post the lot</h3>
+        <p data-i18n="how.1p">Origin, grade, quantity, what you want for it. Two minutes.</p>
+      </article>
+      <article class="step rise">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="18" cy="18" r="11"/><path d="M26 26l7 7"/><path d="M14 18l3 3 6-6"/>
+        </svg>
+        <span class="n" data-i18n="how.n2">Step 02</span>
+        <h3 data-i18n="how.2h">We check it</h3>
+        <p data-i18n="how.2p">Grade, moisture, and the origin record, before anyone sees it.</p>
+      </article>
+      <article class="step rise">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="11" cy="12" r="5"/><circle cx="29" cy="28" r="5"/><path d="M14.5 15.5l11 9"/><path d="M29 12h-6M32 20h-9" opacity=".55"/>
+        </svg>
+        <span class="n" data-i18n="how.n3">Step 03</span>
+        <h3 data-i18n="how.3h">We match it</h3>
+        <p data-i18n="how.3p">We already know which exporters are short of exactly your lot.</p>
+      </article>
+      <article class="step rise">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M5 26h30"/><path d="M9 26V16l11-7 11 7v10"/><path d="M16 26v-6h8v6"/>
+        </svg>
+        <span class="n" data-i18n="how.n4">Step 04</span>
+        <h3 data-i18n="how.4h">You trade</h3>
+        <p data-i18n="how.4p">You agree the price. We stay in it until the coffee moves.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MARKET ================= -->
+<section id="market">
+  <div class="shell">
+    <div class="market-head rise">
+      <div>
+        <h2 class="h2" data-i18n="market.h">What lots are moving at.</h2>
+      </div>
+      <div class="updated"><span data-i18n="market.updated">Last updated</span> <b id="mkt-date">&mdash;</b></div>
+    </div>
+    <div class="tablewrap rise">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="market.th1">Origin</th>
+            <th data-i18n="market.th2">Grade</th>
+            <th data-i18n="market.th3">Process</th>
+            <th data-i18n="market.th4">Level</th>
+          </tr>
+        </thead>
+        <!-- real rows, so the table is readable without scripting. JS replaces
+             this wholesale on load and on a language change. -->
+        <tbody id="mkt-body">
+          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="market-note rise" data-i18n="market.note">These are indicative levels, not a quote. Every lot is priced on its own cup, grade and moisture. Ask us and we will confirm the same day.</p>
+  </div>
+</section>
+
+<!-- ================= ORIGINS ================= -->
+<section id="origins" class="plate plate--origins">
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="origins.h">What each origin actually gives you.</h2>
+    </div>
+    <div class="origins" id="originlist" data-stagger>
+      <article class="origin rise"><span class="dot"></span><div><h3>Yirgacheffe</h3><div class="meta">Gedeo zone &nbsp;&middot;&nbsp; 1,800 to 2,200 m</div><p class="flavour">Floral and citrus, tea-like body. The lot most European roasters ask for by name.</p></div><span class="grade">G1 washed, reliable</span></article>
+      <article class="origin rise"><span class="dot"></span><div><h3>Guji</h3><div class="meta">Oromia &nbsp;&middot;&nbsp; 1,900 to 2,300 m</div><p class="flavour">Stone fruit and sweet spice. Naturals from here carry a room.</p></div><span class="grade">G1 washed and natural</span></article>
+      <article class="origin rise"><span class="dot"></span><div><h3>Sidamo</h3><div class="meta">Sidama &nbsp;&middot;&nbsp; 1,600 to 2,200 m</div><p class="flavour">Berry sweetness with a round body. The dependable middle of a blend.</p></div><span class="grade">G2, some G1</span></article>
+      <article class="origin rise"><span class="dot"></span><div><h3>Jimma</h3><div class="meta">Oromia &nbsp;&middot;&nbsp; 1,400 to 2,000 m</div><p class="flavour">Heavy body, low acidity. Where the volume work lives.</p></div><span class="grade">Mostly G3 and G4</span></article>
+      <article class="origin rise"><span class="dot"></span><div><h3>Limu</h3><div class="meta">Oromia &nbsp;&middot;&nbsp; 1,400 to 2,000 m</div><p class="flavour">Balanced and slightly winey. Quietly one of the easiest sells.</p></div><span class="grade">G2 washed</span></article>
+      <article class="origin rise"><span class="dot"></span><div><h3>Nekemte</h3><div class="meta">East Wollega &nbsp;&middot;&nbsp; 1,500 to 2,100 m</div><p class="flavour">Fruity and bold, sometimes called Lekempti on paperwork.</p></div><span class="grade">G4 and G5</span></article>
+      <article class="origin rise"><span class="dot"></span><div><h3>Harar</h3><div class="meta">Eastern highlands &nbsp;&middot;&nbsp; 1,500 to 2,100 m</div><p class="flavour">Blueberry and wine, dry processed by tradition. Not for every buyer.</p></div><span class="grade">Natural, little G1</span></article>
+    </div>
+    <p class="season rise" data-i18n="origins.season">This season the south is down and the west is having a bumper year. If your usual origin is short, we will tell you where the volume actually is.</p>
+  </div>
+</section>
+
+<!-- ================= THE SEAL ================= -->
+<section id="seal">
+  <div class="motes" id="motes" aria-hidden="true"></div>
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="seal.h">This is what a sealed lot looks like.</h2>
+      <p class="lede" data-i18n="seal.lede">Nothing reaches an exporter until it has been checked and sealed. Press and hold the seal to do it yourself.</p>
+    </div>
+    <div class="seal-grid">
+      <div class="slip rise" id="slip">
+        <div class="slip-head">
+          <b>Ethio Bean Connect</b>
+          <span class="mono" data-i18n="seal.slip">Lot record</span>
+        </div>
+        <dl>
+          <dt data-i18n="seal.f1">Origin</dt><dd>Guji, Oromia</dd>
+          <dt data-i18n="seal.f2">Grade</dt><dd>G1 Washed</dd>
+          <dt data-i18n="seal.f3">Quantity</dt><dd>30 MT</dd>
+          <dt data-i18n="seal.f4">Moisture</dt><dd>10.4 percent</dd>
+          <dt data-i18n="seal.f5">Origin record</dt><dd data-i18n="seal.f5v">Washing station level</dd>
+        </dl>
+        <div class="lotno"><span data-i18n="seal.lot">Lot number</span> <b id="lotno">&mdash;</b></div>
+      </div>
+      <div class="sealbox rise">
+        <button class="seal" id="sealbtn" aria-label="Press and hold to seal the lot">
+          <svg viewBox="0 0 150 150" aria-hidden="true">
+            <circle class="glow" cx="75" cy="75" r="62" pathLength="1"/>
+            <circle class="track" cx="75" cy="75" r="62"/>
+            <circle class="fill" cx="75" cy="75" r="62" pathLength="1"/>
+            <g class="mark">
+              <ellipse cx="75" cy="75" rx="15" ry="23" fill="currentColor" opacity=".9"/>
+              <path d="M75 52c-6.5 9 -6.5 37 0 46" stroke="#0E130F" stroke-width="3" fill="none"/>
+              <path d="M52 63c-7-4.4-11.4-11.8-10-19.2C49 46 54.7 51.8 56 59.4z" fill="currentColor" opacity=".75"/>
+            </g>
+          </svg>
+        </button>
+        <span class="seal-hint" id="sealhint" data-i18n="seal.hint">Press and hold the seal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHAT WE CHECK ================= -->
+<section id="checks" class="plate plate--checks">
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="checks.h">Nothing leaves here unchecked.</h2>
+    </div>
+    <div class="checks" data-stagger>
+      <div class="check rise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 12l6 6L21 6"/></svg>
+        <div><b data-i18n="checks.1h">Grade and screen size</b><p data-i18n="checks.1p">Read against the grading certificate, not against a promise on the phone.</p></div>
+      </div>
+      <div class="check rise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>
+        <div><b data-i18n="checks.2h">Moisture</b><p data-i18n="checks.2p">Measured before the lot is offered, so nobody finds out at the port.</p></div>
+      </div>
+      <div class="check rise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+        <div><b data-i18n="checks.3h">Origin record</b><p data-i18n="checks.3p">Down to the washing station, for European buyers who have to prove it.</p></div>
+      </div>
+      <div class="check rise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M7 7V5h10v2M6 7l1 13h10l1-13"/></svg>
+        <div><b data-i18n="checks.4h">A sample in your hands</b><p data-i18n="checks.4p">You cup it before you commit to a container. Always, without exception.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq">
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="faq.h">The questions people actually ask.</h2>
+    </div>
+    <div class="faq">
+      <details class="q rise"><summary data-i18n="faq.q1">Can I get a sample before I commit?</summary><div class="a" data-i18n="faq.a1">Yes, and you should. Nothing goes to container without a sample you have cupped and approved. The contract is written against that sample.</div></details>
+      <details class="q rise"><summary data-i18n="faq.q2">How do I know the delivery matches the sample?</summary><div class="a" data-i18n="faq.a2">The contract names the grade and the cup. If a delivery does not meet the description it is written against, it is not your problem to absorb.</div></details>
+      <details class="q rise"><summary data-i18n="faq.q3">When does the supplier get paid?</summary><div class="a" data-i18n="faq.a3">We agree the payment terms in writing before the coffee moves, and we hold both sides to them. Suppliers waiting months for money is the thing this business exists to stop.</div></details>
+      <details class="q rise"><summary data-i18n="faq.q4">Can you handle the European traceability paperwork?</summary><div class="a" data-i18n="faq.a4">We collect origin records at the washing station level as part of checking a lot, so it is ready when a buyer asks rather than scrambled for afterwards.</div></details>
+      <details class="q rise"><summary data-i18n="faq.q5">What does Ethio Bean Connect cost?</summary><div class="a" data-i18n="faq.a5">We take a commission on a completed deal, agreed with you up front. Nothing to post a lot, nothing to look.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE FORM ================= -->
+<section id="post" class="plate plate--post">
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" id="posth" data-i18n="post.h">Post your lot.</h2>
+    </div>
+    <div class="form-grid">
+      <div class="form-side rise">
+        <p class="lede" data-i18n="post.lede">Tell us what you have or what you are missing. We read every one and come back within a working day.</p>
+        <div class="lot-facts">
+          <div class="lot-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l6 6L21 6"/></svg><span data-i18n="post.f1">If your type, origin or grade is not on the list, choose Other and type it in.</span></div>
+          <div class="lot-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l6 6L21 6"/></svg><span data-i18n="post.f2">Nothing is published until we have checked it with you.</span></div>
+          <div class="lot-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l6 6L21 6"/></svg><span data-i18n="post.f3">Costs nothing to post, and nothing to look.</span></div>
+        </div>
+      </div>
+
+      <div class="rise">
+        <noscript>
+          <div class="err-summary on" style="margin-bottom:1.5rem">
+            <b>This form needs JavaScript, and it is switched off.</b>
+            <p>Reach us directly instead, all of these work right now:
+            <a href="tel:+251929383806">+251 92 938 3806</a>,
+            <a href="https://wa.me/251929383806">WhatsApp</a>, or
+            <a href="mailto:ethiobeanconnect@gmail.com">ethiobeanconnect@gmail.com</a>.</p>
+          </div>
+        </noscript>
+        <div class="tabs" role="tablist" aria-label="What are you posting">
+          <button type="button" role="tab" id="tab-have" aria-selected="true" data-mode="have" data-i18n="post.have">I have coffee</button>
+          <button type="button" role="tab" id="tab-need" aria-selected="false" data-mode="need" data-i18n="post.need">I need coffee</button>
+        </div>
+
+        <form id="postform" novalidate>
+          <p class="req-note" data-i18n="f.reqnote">Every field is required unless it says optional.</p>
+          <div class="row">
+            <label><span class="lb"><span data-i18n="f.name">Your name</span></span>
+              <input type="text" name="name" required autocomplete="name"></label>
+            <label><span class="lb"><span data-i18n="f.company">Company</span></span>
+              <input type="text" name="company" required autocomplete="organization"></label>
+          </div>
+          <div class="row">
+            <label><span class="lb"><span data-i18n="f.email">Email</span></span>
+              <input type="email" name="email" required autocomplete="email"></label>
+            <label><span class="lb"><span data-i18n="f.phone">Phone or WhatsApp</span></span>
+              <input type="tel" name="phone" required autocomplete="tel" inputmode="tel"
+                     placeholder="+251 ..."></label>
+          </div>
+          <div class="row">
+            <label><span class="lb"><span data-i18n="f.type">Coffee type</span></span>
+              <select name="type" required>
+                <option value="" data-i18n="f.choose">Choose one</option>
+                <option>Washed Arabica</option>
+                <option>Natural Arabica</option>
+                <option>Honey processed</option>
+                <option>Semi washed</option>
+                <option>Sun dried</option>
+                <option>Local market grade</option>
+                <option value="__other__" data-i18n="f.other">Other, let me type it</option>
+              </select>
+              <input class="other-in" type="text" name="type_other" hidden
+                     data-i18n-ph="f.typeOther" placeholder="Which coffee type?"></label>
+            <label><span class="lb"><span data-i18n="f.origin">Origin</span></span>
+              <select name="origin" required>
+                <option value="" data-i18n="f.choose">Choose one</option>
+                <option>Yirgacheffe</option><option>Guji</option><option>Sidamo</option>
+                <option>Jimma</option><option>Limu</option><option>Nekemte</option>
+                <option>Harar</option><option>Bale</option><option>Kaffa</option>
+                <option>Benchmaji</option><option>Illubabor</option><option>Gimbi</option>
+                <option value="__other__" data-i18n="f.other">Other, let me type it</option>
+              </select>
+              <input class="other-in" type="text" name="origin_other" hidden
+                     data-i18n-ph="f.originOther" placeholder="Which origin?"></label>
+          </div>
+          <div class="row">
+            <label><span class="lb"><span data-i18n="f.grade">Grade</span></span>
+              <select name="grade" required>
+                <option value="" data-i18n="f.choose">Choose one</option>
+                <option>G1</option><option>G2</option><option>G3</option>
+                <option>G4</option><option>G5</option>
+                <option>Ungraded</option>
+                <option value="__other__" data-i18n="f.other">Other, let me type it</option>
+              </select>
+              <input class="other-in" type="text" name="grade_other" hidden
+                     data-i18n-ph="f.gradeOther" placeholder="Which grade?"></label>
+            <label><span class="lb"><span data-i18n="f.qty">Quantity</span> <span class="opt" data-i18n="f.opt">optional</span></span>
+              <input type="text" name="quantity" placeholder="e.g. 30 MT"></label>
+          </div>
+          <label><span class="lb"><span id="lbl-notes" data-i18n="f.notes">Anything else we should know</span> <span class="opt" data-i18n="f.opt">optional</span></span>
+            <textarea name="notes"></textarea></label>
+
+          <div id="routeblock">
+            <span class="lb" style="display:flex"><span data-i18n="f.route">Send it how</span></span>
+            <div class="tabs" role="tablist" aria-label="How to send">
+              <button type="button" role="tab" id="route-wa" aria-selected="true" data-route="whatsapp" data-i18n="f.viaWa">WhatsApp</button>
+              <button type="button" role="tab" id="route-em" aria-selected="false" data-route="email" data-i18n="f.viaEmail">Email</button>
+            </div>
+          </div>
+
+          <div class="err-summary" id="errsummary" role="alert"></div>
+
+          <div class="form-foot">
+            <button class="btn btn-primary" type="submit" data-i18n="f.send">Send it to us</button>
+            <p class="form-note" id="formnote" data-i18n="f.note">This opens WhatsApp with your details filled in, ready to send to us.</p>
+          </div>
+        </form>
+
+        <div class="sendfail" id="sendfail">
+          <b data-i18n="f.failh">That did not open.</b>
+          <p data-i18n="f.failp">Your message is written out below, nothing is lost. Copy it and send it to us any way you like, or try one of these.</p>
+          <textarea id="failtext" readonly data-i18n-al="f.failta" aria-label="Your message, ready to copy"></textarea>
+          <div class="row-links">
+            <a class="btn btn-primary" id="faillink" href="#" target="_blank" rel="noopener" data-i18n="f.failwa">Try WhatsApp again</a>
+            <a class="btn btn-ghost" id="failmail" href="#" data-i18n="f.failem">Send it by email instead</a>
+          </div>
+        </div>
+
+        <div class="success" id="success" role="status">
+          <b data-i18n="f.okh">Sent to your WhatsApp.</b>
+          <p id="okbody" data-i18n="f.okp">Press send in WhatsApp and we will reply within one working day.</p>
+          <button type="button" class="btn btn-ghost" id="editagain" style="margin-top:1rem" data-i18n="f.editagain">Edit and send again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /body-wrap -->
+</main>
+
+<footer>
+  <div class="shell">
+    <div class="foot-grid">
+      <div>
+        <div class="logo-card"><img src="assets/logo.jpg" alt="Ethio Bean Connect, connecting Ethiopian coffee to the world" width="500" height="500" loading="lazy"></div>
+        <p class="foot-tag" data-i18n="foot.tag">Connecting Ethiopian coffee suppliers and exporters.</p>
+      </div>
+      <div>
+        <h3 data-i18n="foot.site">The site</h3>
+        <ul class="foot-list">
+          <li><a href="#market" data-i18n="nav.market">Market</a></li>
+          <li><a href="#origins" data-i18n="nav.origins">Origins</a></li>
+          <li><a href="#how" data-i18n="nav.how">How it works</a></li>
+          <li><a href="#checks" data-i18n="nav.checks">What we check</a></li>
+          <li><a href="#faq" data-i18n="nav.faq">Questions</a></li>
+          <li><a href="#post" data-i18n="cta.post">Post your lot</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-i18n="foot.reach">Reach us</h3>
+        <ul class="foot-list" id="footcontact">
+          <li><a href="tel:+251929383806">+251 92 938 3806</a></li>
+          <li><a href="tel:+251910006869">+251 91 000 6869</a></li>
+          <li><a href="https://wa.me/251929383806" target="_blank" rel="noopener">Chat on WhatsApp</a></li>
+          <li><a href="mailto:ethiobeanconnect@gmail.com">ethiobeanconnect@gmail.com</a></li>
+          <li>Adam's Pavilion, Sarbet, Addis Ababa, Ethiopia</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; <span id="yr">2026</span> Ethio Bean Connect</span>
+      <span data-i18n="foot.lang">English | አማርኛ</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-cta" id="mobilecta">
+  <button class="mc-chat" id="mcchat" type="button" aria-label="Chat with us" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/>
+    </svg>
+  </button>
+  <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your lot</a>
+</div>
+
+<div class="launcher" id="launcher" hidden>
+  <div class="launch-panel" id="launchpanel" role="dialog" aria-label="Contact Ethio Bean Connect"></div>
+  <button class="launch-btn" id="launchbtn" aria-expanded="false" aria-label="Chat with us">
+    <svg class="c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/>
+    </svg>
+    <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* Scripting is alive. Everything that hides content is gated on this class,
+   so a blocked or broken script leaves a readable page rather than a blank one. */
+document.documentElement.classList.add('js');
+
+/* ============================================================
+   0. CONFIG
+   ============================================================ */
+var HAS_VIDEO   = false;                      /* flip to true when assets/hero-scrub.mp4 exists */
+var VIDEO_URL   = 'assets/hero-scrub.mp4';
+var VIDEO_BYTES = 6000000;                    /* real byte size goes here when the video lands */
+/* ------------------------------------------------------------------
+   YOUR CONTACT DETAILS. Fill these three in and everything lights up:
+   the footer, the chat launcher, and both routes out of the form.
+   whatsapp must be digits only, with the country code, no + and no spaces.
+   ------------------------------------------------------------------ */
+var CONTACT = {
+  email:    'ethiobeanconnect@gmail.com',
+  whatsapp: '251929383806',            /* digits only, country code, no plus */
+  phone:    '+251 92 938 3806',
+  phone2:   '+251 91 000 6869',
+  address:  "Adam's Pavilion, Sarbet, Addis Ababa, Ethiopia"
+};
+
+var clamp = function(v,lo,hi){ return Math.min(hi, Math.max(lo, v)); };
+var smoothstep = function(p,e0,e1){ var t = clamp((p-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
+function rng(seed){ var s = seed>>>0; return function(){ s = (s*1664525 + 1013904223)>>>0; return s/4294967296; }; }
+
+/* ============================================================
+   1. TRANSLATIONS
+   Amharic is a first pass and wants a native speaker's eye.
+   ============================================================ */
+var I18N = {
+  en:{},
+  am:{
+    "skip":"ወደ ይዘቱ ዝለል",
+    "nav.market":"ገበያ","nav.origins":"መገኛዎች","nav.how":"እንዴት እንደሚሰራ","nav.checks":"የምንመረምረው","nav.faq":"ጥያቄዎች",
+    "cta.post":"ቡናዎን ያስመዝግቡ","cta.need":"ቡና እየፈለጉ ነው?",
+    "hero.kicker":"ኢትዮ ቢን ኮኔክት",
+    "hero.b1":"ኢትዮጵያ ዓለም የሚፈልገውን ቡና ታመርታለች።",
+    "hero.b2":"ትክክለኛውን ገዢ ማግኘት ነው ከባዱ።",
+    "hero.b3":"እያንዳንዱ ጭነት ገዢ አለው።",
+    "hero.b3sub":"እኛ እንፈልጋቸዋለን። እርስዎ ንግድዎን ይቀጥሉ።",
+    "hero.scroll":"ወደ ታች",
+    "static.sub":"ኢትዮ ቢን ኮኔክት የኢትዮጵያ ቡና አቅራቢዎችን ጭነታቸውን ከሚፈልጉ ላኪዎች ጋር ያገናኛል።",
+    "walls.kicker":"በእውነት የሚያጋጥሙ ችግሮች",
+    "walls.h":"ሦስት እንቅፋቶች፣ እያንዳንዱ ጭነት ቢያንስ አንዱን ያገኛል።",
+    "walls.1h":"ጥራት ከምርት ወደ ምርት ይለያያል።",
+    "walls.1p":"ገዢው ተመሳሳይ ቡና ሁለት ጊዜ ይፈልጋል። ሁለት ምርቶች ያንን አይሰጡም፣ አንድ መጥፎ ጭነት ደግሞ ግንኙነቱን ያቋርጣል።",
+    "walls.2h":"ሰነድ ውል ያስቀራል።",
+    "walls.2p":"አውሮፓ ቡናው የበቀለበትን ትክክለኛ ቦታ ማወቅ ትፈልጋለች። በቂ የመገኛ መዝገብ የሌላቸው ጭነቶች ይመለሳሉ።",
+    "walls.3h":"አቅራቢዎች ክፍያ ይጠብቃሉ።",
+    "walls.3p":"ቡናው ይወጣል፣ ገንዘቡ ግን ዘግይቶ ወይም በከፊል ይመጣል። ማጠቢያ ጣቢያዎች ያንን ስጋት ብቻቸውን ይሸከማሉ።",
+    "how.kicker":"ሙሉ ሂደቱ ከመጀመሪያ እስከ መጨረሻ",
+    "how.h":"አራት ደረጃዎች። ጠበቃ የሚያስፈልገው ቅጽ የለም።",
+    "how.n1":"ደረጃ 01","how.n2":"ደረጃ 02","how.n3":"ደረጃ 03","how.n4":"ደረጃ 04",
+    "how.1h":"ጭነቱን ያስመዝግቡ","how.1p":"መገኛ፣ ደረጃ፣ መጠን፣ የሚፈልጉት ዋጋ። ሁለት ደቂቃ።",
+    "how.2h":"እኛ እንመረምረዋለን","how.2p":"ደረጃ፣ እርጥበት እና የመገኛ መዝገብ፣ ማንም ከማየቱ በፊት።",
+    "how.3h":"እናገናኘዋለን","how.3p":"በትክክል የእርስዎን ጭነት የሚፈልጉ ላኪዎችን አስቀድመን እናውቃለን።",
+    "how.4h":"ንግዱን ይፈጽማሉ","how.4p":"ዋጋውን እርስዎ ይስማማሉ። ቡናው እስኪንቀሳቀስ ድረስ አብረን እንቆያለን።",
+    "market.kicker":"አመላካች ደረጃዎች","market.h":"ጭነቶች የሚንቀሳቀሱበት ዋጋ።","market.updated":"የተሻሻለው",
+    "market.th1":"መገኛ","market.th2":"ደረጃ","market.th3":"ዝግጅት","market.th4":"ዋጋ",
+    "market.note":"እነዚህ አመላካች ደረጃዎች እንጂ ዋጋ አይደሉም። እያንዳንዱ ጭነት በራሱ ጣዕም፣ ደረጃ እና እርጥበት ይተመናል። ይጠይቁን፣ በዚያኑ ቀን እናረጋግጣለን።",
+    "market.ask":"ይጠይቁን",
+    "origins.h":"እያንዳንዱ መገኛ በእውነት የሚሰጠው።",
+    "origins.season":"በዚህ ወቅት ደቡቡ ቀንሷል፣ ምዕራቡ ደግሞ የተትረፈረፈ ምርት አለው። የተለመደው መገኛዎ ካጠረ፣ መጠኑ የት እንዳለ እንነግርዎታለን።",
+    "seal.kicker":"ይሞክሩት","seal.h":"የታሸገ ጭነት ይህን ይመስላል።",
+    "seal.lede":"ተመርምሮ እስኪታሸግ ድረስ ምንም ነገር ወደ ላኪ አይደርስም። ማህተሙን ተጭነው በመያዝ እርስዎ ያድርጉት።",
+    "seal.slip":"የጭነት መዝገብ","seal.f1":"መገኛ","seal.f2":"ደረጃ","seal.f3":"መጠን","seal.f4":"እርጥበት",
+    "seal.f5":"የመገኛ መዝገብ","seal.f5v":"የማጠቢያ ጣቢያ ደረጃ","seal.lot":"የጭነት ቁጥር",
+    "seal.hint":"ማህተሙን ተጭነው ይያዙ","seal.done":"ታሽጓል። ሌላ ለማተም እንደገና ይጫኑ።",
+    "checks.kicker":"ማንኛውም ነገር ከመቅረቡ በፊት","checks.h":"ሳይመረመር ከዚህ የሚወጣ የለም።",
+    "checks.1h":"ደረጃ እና የወንፊት መጠን","checks.1p":"በስልክ በሚሰጥ ቃል ሳይሆን በደረጃ ማረጋገጫ ሰነድ ይነበባል።",
+    "checks.2h":"እርጥበት","checks.2p":"ጭነቱ ከመቅረቡ በፊት ይለካል፣ ማንም ወደብ ላይ እንዳያውቀው።",
+    "checks.3h":"የመገኛ መዝገብ","checks.3p":"እስከ ማጠቢያ ጣቢያ ድረስ፣ ማረጋገጥ ላለባቸው የአውሮፓ ገዢዎች።",
+    "checks.4h":"ናሙና በእጅዎ","checks.4p":"ኮንቴይነር ከመውሰድዎ በፊት ይቀምሱታል። ሁልጊዜ፣ ያለ ልዩነት።",
+    "faq.h":"ሰዎች በእውነት የሚጠይቁት።",
+    "faq.q1":"ከመወሰኔ በፊት ናሙና ማግኘት እችላለሁ?",
+    "faq.a1":"አዎ፣ እና ማግኘት አለብዎት። እርስዎ ቀምሰው ያላጸደቁት ናሙና ሳይኖር ምንም ወደ ኮንቴይነር አይገባም። ውሉ የሚጻፈው በዚያ ናሙና ላይ ነው።",
+    "faq.q2":"ጭነቱ ከናሙናው ጋር መመሳሰሉን እንዴት አውቃለሁ?",
+    "faq.a2":"ውሉ ደረጃውንና ጣዕሙን ይሰይማል። አንድ ጭነት የተጻፈበትን መግለጫ ካላሟላ፣ እርስዎ የሚሸከሙት ችግር አይሆንም።",
+    "faq.q3":"አቅራቢው መቼ ይከፈለዋል?",
+    "faq.a3":"ቡናው ከመንቀሳቀሱ በፊት የክፍያ ውሉን በጽሑፍ እንስማማለን፣ ሁለቱንም ወገን በዚያ እናስይዛለን። አቅራቢዎች ወራት ገንዘብ መጠበቃቸው ይህ ንግድ ሊያስቆመው የተነሳው ነገር ነው።",
+    "faq.q4":"የአውሮፓን የመገኛ ሰነድ ማስተናገድ ትችላላችሁ?",
+    "faq.a4":"ጭነት በምንመረምርበት ጊዜ የመገኛ መዝገቦችን እስከ ማጠቢያ ጣቢያ ደረጃ እንሰበስባለን፣ ስለዚህ ገዢ ሲጠይቅ ዝግጁ ይሆናል።",
+    "faq.q5":"ኢትዮ ቢን ኮኔክት ስንት ያስከፍላል?",
+    "faq.a5":"በተጠናቀቀ ስምምነት ላይ ኮሚሽን እንወስዳለን፣ አስቀድሞ ከእርስዎ ጋር ተስማምተን። ጭነት ማስመዝገብም ሆነ መመልከት ነጻ ነው።",
+    "post.kicker":"አንድ ቅጽ፣ ለሁለቱም ወገን","post.h":"ጭነትዎን ያስመዝግቡ።",
+    "post.lede":"ያለዎትን ወይም የጎደለዎትን ይንገሩን። እያንዳንዱን እናነባለን፣ በአንድ የስራ ቀን ውስጥ እንመልሳለን።",
+    "post.f1":"ዓይነትዎ፣ መገኛዎ ወይም ደረጃዎ ዝርዝሩ ውስጥ ከሌለ፣ ሌላ የሚለውን መርጠው ይጻፉት።",
+    "post.f2":"ከእርስዎ ጋር እስክናረጋግጥ ድረስ ምንም አይታተምም።",
+    "post.f3":"ማስመዝገብም ሆነ መመልከት ነጻ ነው።",
+    "post.have":"ቡና አለኝ","post.need":"ቡና እፈልጋለሁ",
+    "f.name":"ስምዎ","f.company":"ድርጅት","f.email":"ኢሜይል","f.phone":"ስልክ ወይም ዋትስአፕ",
+    "f.type":"የቡና ዓይነት","f.qty":"መጠን","f.origin":"መገኛ","f.grade":"ደረጃ",
+    "f.notes":"ሌላ ልናውቀው የሚገባ","f.opt":"አማራጭ","f.choose":"አንዱን ይምረጡ","f.any":"ምርጫ የለም",
+    "f.other":"ሌላ፣ ራሴ እጽፈዋለሁ",
+    "f.typeOther":"የትኛው የቡና ዓይነት?","f.originOther":"የትኛው መገኛ?","f.gradeOther":"የትኛው ደረጃ?",
+    "f.send":"ላኩልን",
+    "f.okh":"ወደ ዋትስአፕዎ ተልኳል።",
+    "f.okp":"በዋትስአፕ ላይ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።",
+    "f.okpEmail":"የኢሜይል መተግበሪያዎ መልእክቱ ተዘጋጅቶ መከፈት ነበረበት። እዚያ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።",
+    "f.editagain":"አስተካክለው እንደገና ይላኩ",
+    "f.reqnote":"አማራጭ ካልተባለ በስተቀር እያንዳንዱ መስክ ያስፈልጋል።",
+    "f.failh":"አልተከፈተም።",
+    "f.failp":"መልእክትዎ ከታች ተጽፏል፣ ምንም አልጠፋም። ገልብጠው በፈለጉት መንገድ ይላኩልን፣ ወይም ከእነዚህ አንዱን ይሞክሩ።",
+    "f.failwa":"ዋትስአፕን እንደገና ይሞክሩ",
+    "f.failem":"በኢሜይል ይላኩት",
+    "f.qtyHave":"ለምሳሌ 30 ቶን አለ",
+    "f.qtyNeed":"ለምሳሌ 20 ቶን ያስፈልጋል",
+    "post.hNeed":"የሚያስፈልግዎትን ይንገሩን።",
+    "e.required":"ይህኛው ግን ያስፈልገናል።",
+    "e.other":"እዚህ ይጻፉት፣ እኛም ወደ ዝርዝሩ እንጨምረዋለን።",
+    "e.email":"ይህ የኢሜይል አድራሻ አይመስልም። @ የጎደለ ወይም የፊደል ስህተት ይኑር ይመልከቱ።",
+    "e.phone":"በእውነት ልናገኝዎት የምንችልበትን ቁጥር ከአገር ኮድ ጋር ይስጡን።",
+    "e.summary":"ይህ ከመላኩ በፊት {n} ነገሮች መስተካከል አለባቸው፦",
+    "f.note":"ይህ ዋትስአፕን ዝርዝርዎ ተሞልቶ፣ ወደ እኛ ለመላክ ዝግጁ ሆኖ ይከፍታል።",
+    "f.noteEmail":"ይህ የኢሜይል መተግበሪያዎን ሁሉም ነገር ተሞልቶ ወደ እኛ ተልኮ ይከፍታል።",
+    "f.route":"እንዴት ይላክ","f.viaWa":"ዋትስአፕ","f.viaEmail":"ኢሜይል",
+    "chat.wa":"በዋትስአፕ ያውሩን","chat.call":"ይደውሉልን","chat.email":"ኢሜይል ይላኩ",
+    "foot.tag":"የኢትዮጵያ ቡና አቅራቢዎችንና ላኪዎችን እናገናኛለን።",
+    "foot.site":"ገጹ","foot.reach":"ያግኙን","foot.lang":"እንግሊዝኛ | አማርኛ"
+  }
+};
+/* build the English dictionary from the markup itself, so it is never out of sync */
+[].forEach.call(document.querySelectorAll('[data-i18n]'), function(el){
+  var k = el.getAttribute('data-i18n');
+  if (I18N.en[k] === undefined) I18N.en[k] = el.textContent;
+});
+[].forEach.call(document.querySelectorAll('[data-i18n-ph]'), function(el){
+  var k = el.getAttribute('data-i18n-ph');
+  if (I18N.en[k] === undefined) I18N.en[k] = el.placeholder;
+});
+/* strings that have no markup of their own */
+I18N.en['f.noteEmail'] = 'This opens your email app with everything filled in, addressed to us.';
+I18N.en['chat.wa']     = 'Chat on WhatsApp';
+I18N.en['chat.call']   = 'Call us';
+I18N.en['chat.email']  = 'Send an email';
+I18N.en['f.okpEmail']  = 'Your email app should have opened with the message ready. Press send there and we will reply within one working day.';
+I18N.en['f.qtyHave']   = 'e.g. 30 MT available';
+I18N.en['f.qtyNeed']   = 'e.g. 20 MT needed';
+I18N.en['post.hNeed']  = 'Tell us what you need.';
+I18N.en['e.required']  = 'This one we do need.';
+I18N.en['e.other']     = 'Type it in here, and we will add it to the list.';
+I18N.en['e.email']     = 'That does not look like an email address. Check for a missing @ or a typo.';
+I18N.en['e.phone']     = 'Please give a number we can actually reach you on, with the country code.';
+I18N.en['e.summary']   = 'There are {n} things to fix before this can send:';
+I18N.en['seal.done']   = 'Sealed. Press again to seal another.';
+
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k; }
+
+var lang = 'en';
+try { lang = localStorage.getItem('ebc-lang') || 'en'; } catch(e){}
+
+function applyLang(next){
+  lang = (next === 'am') ? 'am' : 'en';
+  var dict = I18N[lang];
+  [].forEach.call(document.querySelectorAll('[data-i18n]'), function(el){
+    var k = el.getAttribute('data-i18n');
+    var v = dict[k];
+    if (v === undefined) v = I18N.en[k];
+    if (v !== undefined){ el.removeAttribute('data-text'); el.textContent = v; }
+  });
+  [].forEach.call(document.querySelectorAll('[data-i18n-ph]'), function(el){
+    var k = el.getAttribute('data-i18n-ph');
+    var v = dict[k];
+    if (v === undefined) v = I18N.en[k];
+    if (v !== undefined) el.placeholder = v;
+  });
+  document.documentElement.lang = lang;
+  [].forEach.call(document.querySelectorAll('.lang button'), function(b){
+    b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+  });
+  try { localStorage.setItem('ebc-lang', lang); } catch(e){}
+  splitAll();          /* the hero words must be re-split in the new language */
+  renderMarket();      /* the market table carries translated labels */
+  renderOrigins();
+  if (typeof renderLauncher === 'function') renderLauncher();
+  if (typeof renderFooterContact === 'function') renderFooterContact();
+  if (typeof setRoute === 'function') setRoute(route);
+}
+[].forEach.call(document.querySelectorAll('.lang button'), function(b){
+  b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); });
+});
+
+/* ============================================================
+   2. NAV
+   ============================================================ */
+var nav = document.getElementById('nav');
+var burger = document.getElementById('burger');
+var navlinks = document.getElementById('navlinks');
+burger.addEventListener('click', function(){
+  var open = document.body.classList.toggle('menu-open');
+  burger.setAttribute('aria-expanded', String(open));
+});
+navlinks.addEventListener('click', function(e){
+  if (e.target.closest('a')) {
+    document.body.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded','false');
+  }
+});
+var navStuck = false;
+function navScroll(){
+  var s = window.scrollY > 40;
+  if (s !== navStuck){ navStuck = s; nav.classList.toggle('stuck', s); }
+}
+addEventListener('scroll', navScroll, {passive:true});
+navScroll();
+
+/* jump to the form with the right tab preselected */
+[].forEach.call(document.querySelectorAll('[data-tab]'), function(a){
+  a.addEventListener('click', function(){ setMode(a.getAttribute('data-tab')); });
+});
+
+/* ============================================================
+   3. TEXT SPLITTING
+   ============================================================ */
+function splitEl(el, seed){
+  if (!el) return;
+  var text = el.getAttribute('data-text') || el.textContent;
+  el.setAttribute('data-text', text);
+  var r = rng(seed);
+  var words = text.split(' ');
+  var html = '<span class="vis-hidden">' + text.replace(/[<>&]/g,'') + '</span><span aria-hidden="true">';
+  var total = 0; words.forEach(function(w){ total += w.length; });
+  var idx = 0;
+  words.forEach(function(w, wi){
+    var th = (idx/Math.max(1,total)) * 0.42 + r()*0.08;
+    html += '<span class="w" style="--th:' + th.toFixed(3) + '">';
+    for (var i=0;i<w.length;i++){
+      html += '<span class="c">' + w.charAt(i).replace('&','&amp;').replace('<','&lt;') + '</span>';
+      idx++;
+    }
+    html += '</span>';
+    if (wi < words.length-1){ html += '<span class="w"> </span>'; idx++; }
+  });
+  html += '</span>';
+  el.innerHTML = html;
+}
+function splitAll(){
+  [].forEach.call(document.querySelectorAll('.band'), function(band){
+    var seed = parseInt(band.getAttribute('data-seed'),10) || 1;
+    var t = band.querySelector('[data-split]');
+    if (t) splitEl(t, seed);
+    /* blur-to-sharp needs two stacked copies */
+    if (band.classList.contains('e-blur')){
+      var h = band.querySelector('h2');
+      if (h && !h.querySelector('.sharp')){
+        var txt = h.getAttribute('data-text') || h.textContent;
+        h.setAttribute('data-text', txt);
+        h.innerHTML = '<span class="soft" aria-hidden="true">'+txt+'</span><span class="sharp">'+txt+'</span>';
+      } else if (h){
+        var txt2 = h.getAttribute('data-text');
+        h.innerHTML = '<span class="soft" aria-hidden="true">'+txt2+'</span><span class="sharp">'+txt2+'</span>';
+      }
+    }
+  });
+}
+splitAll();
+
+/* ============================================================
+   4. THE HERO SCRUB
+   ============================================================ */
+var hero    = document.getElementById('hero');
+var stage   = document.getElementById('stage');
+var video   = document.getElementById('hero-video');
+var poster  = document.getElementById('poster');
+var ring    = document.getElementById('ring');
+var cue     = document.getElementById('cue');
+
+var bands = [].map.call(document.querySelectorAll('.band'), function(el){
+  return { el:el, a:parseFloat(el.getAttribute('data-a')), b:parseFloat(el.getAttribute('data-b')), op:-1, k:-1 };
+});
+
+var target = 0, shown = 0, rafId = null, lastTick = 0;
+var heroOnScreen = true, scrubOn = false, videoReady = false;
+
+function heroProgress(){
+  var r = hero.getBoundingClientRect();
+  var range = hero.offsetHeight - window.innerHeight;
+  if (range <= 0) return 0;
+  return clamp(-r.top / range, 0, 1);
+}
+
+function updateCaptions(p){
+  for (var i=0;i<bands.length;i++){
+    var bd = bands[i];
+    var f = Math.min(0.02, (bd.b - bd.a)/3);
+    var inRamp  = (i === 0) ? 1 : smoothstep(p, bd.a, bd.a + f);
+    var outRamp = (i === bands.length-1) ? 1 : (1 - smoothstep(p, bd.b - f, bd.b));
+    var op = inRamp * outRamp;
+    if (p < bd.a - 0.001 && i !== 0) op = 0;
+    if (p > bd.b + 0.001 && i !== bands.length-1) op = 0;
+
+    var ramp = Math.min(0.025, (bd.b - bd.a) * 0.35);
+    var k = clamp((p - bd.a)/ramp, 0, 1);
+    if (i === 0) k = Math.max(k, loadK);
+
+    if (Math.abs(op - bd.op) > 0.004){ bd.op = op; bd.el.style.opacity = op.toFixed(3); }
+    if (Math.abs(k - bd.k) > 0.008){ bd.k = k; bd.el.style.setProperty('--k', k.toFixed(3)); }
+  }
+  /* the still hero performs the descent with a transform when there is no video */
+  if (!videoReady){
+    poster.style.transform = 'scale(' + (1 + p*0.30).toFixed(4) + ') translate3d(' + (p*4.5).toFixed(2) + '%,' + (p*-5.5).toFixed(2) + '%,0)';
+  }
+  if (cue) {
+    var cueOp = p > 0.04 ? 0 : 1;
+    if (cue._o !== cueOp){ cue._o = cueOp; cue.style.opacity = cueOp; }
+  }
+}
+
+/* seek gating */
+var seekBusy = false, pendingTime = null;
+function requestSeek(t){
+  if (!videoReady || !video.duration) return;
+  if (seekBusy){ pendingTime = t; return; }
+  seekBusy = true;
+  video.currentTime = t;
+}
+video.addEventListener('seeked', function(){
+  seekBusy = false;
+  if (pendingTime !== null){ var t = pendingTime; pendingTime = null; requestSeek(t); }
+});
+video.addEventListener('error', function(){
+  seekBusy = false; pendingTime = null; failVideo();
+});
+
+/* the one-time load ramp for band one */
+var loadK = 0, loadStart = 0;
+function loadRamp(now){
+  if (!loadStart) loadStart = now;
+  loadK = clamp((now - loadStart)/900, 0, 1);
+  if (loadK < 1) requestAnimationFrame(loadRamp);
+  updateCaptions(shown);
+}
+requestAnimationFrame(loadRamp);
+/* failsafe: the opening headline assembles on animation frames, so on a
+   throttled tab or a paused compositor it would sit half-faded forever.
+   This guarantees it finishes regardless. */
+setTimeout(function(){
+  if (loadK < 1){ loadK = 1; bands.forEach(function(b){ b.k = -1; }); updateCaptions(shown); }
+}, 1500);
+
+function tick(now){
+  var dt = Math.min(100, now - (lastTick || now));
+  lastTick = now;
+  var k = 0.16;
+  shown += (target - shown) * (1 - Math.pow(1 - k, dt/16.667));
+  if (Math.abs(target - shown) < 0.0005){
+    shown = target; rafId = null; lastTick = 0;
+  } else {
+    rafId = requestAnimationFrame(tick);
+  }
+  if (videoReady && video.duration) requestSeek(shown * video.duration);
+  updateCaptions(shown);
+}
+function onScroll(){
+  target = heroProgress();
+  if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
+}
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(function(es){
+    heroOnScreen = es[0].isIntersecting;
+    if (heroOnScreen && scrubOn && rafId === null) rafId = requestAnimationFrame(tick);
+  }, {rootMargin:'10px'}).observe(hero);
+}
+
+/* the blob loader */
+var heroInit = false;
+function initHeroOnce(){
+  if (heroInit) return; heroInit = true;
+  poster.style.backgroundImage = "url('assets/hero-poster.jpg')";
+  if (!HAS_VIDEO) return;
+  ring.style.display = 'block';
+  var started = false;
+  function start(){ if (started) return; started = true; loadHeroBlob().catch(failVideo); }
+  var img = new Image();
+  img.onload = start; img.onerror = start;
+  img.src = 'assets/hero-poster.jpg';
+  setTimeout(start, 4000);
+}
+function loadHeroBlob(){
+  var ctrl = new AbortController();
+  var watchdog = setTimeout(function(){ ctrl.abort(); }, 20000);
+  return fetch(VIDEO_URL, {signal:ctrl.signal}).then(function(res){
+    if (!res.ok) throw new Error('video ' + res.status);
+    var total = Number(res.headers.get('Content-Length')) || VIDEO_BYTES;
+    var reader = res.body.getReader();
+    var chunks = [], got = 0, lastRing = 0;
+    function pump(){
+      return reader.read().then(function(r){
+        if (r.done) return;
+        clearTimeout(watchdog);
+        watchdog = setTimeout(function(){ ctrl.abort(); }, 20000);
+        chunks.push(r.value); got += r.value.length;
+        var frac = Math.min(1, got/total), now = performance.now();
+        if (now - lastRing > 100 || frac === 1){
+          lastRing = now;
+          ring.style.setProperty('--ld', Math.round(126*(1-frac)));
+        }
+        return pump();
+      });
+    }
+    return pump().then(function(){
+      clearTimeout(watchdog);
+      ring.style.setProperty('--ld', 0);
+      video.src = URL.createObjectURL(new Blob(chunks));
+      video.load();
+      video.addEventListener('canplay', function(){
+        videoReady = true;
+        ring.style.display = 'none';
+        requestSeek(heroProgress() * video.duration);
+        stage.classList.add('video-ready');
+      }, {once:true});
+    });
+  });
+}
+function failVideo(){
+  videoReady = false;
+  if (ring) ring.style.display = 'none';
+  stage.classList.add('video-failed');
+}
+
+/* the five gates, identical strings to the CSS */
+var GATES = [
+  '(max-width: 720px)',
+  '(orientation: portrait) and (max-width: 1024px)',
+  '(orientation: portrait) and (pointer: coarse)',
+  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
+  '(prefers-reduced-motion: reduce)'
+];
+function enableScrub(){
+  if (scrubOn) return; scrubOn = true;
+  initHeroOnce();
+  addEventListener('scroll', onScroll, {passive:true});
+  bands.forEach(function(b){ b.op = -1; b.k = -1; });
+  unpinFinalStates();
+  updateCaptions(heroProgress());
+  onScroll();
+}
+function disableScrub(){
+  if (!scrubOn) return; scrubOn = false;
+  removeEventListener('scroll', onScroll);
+  if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
+}
+var MQLS = GATES.map(function(q){ return matchMedia(q); });
+function applyHeroMode(){
+  var staticMode = MQLS.some(function(m){ return m.matches; });
+  if (staticMode){
+    disableScrub();   /* the static hero's image is set in CSS, not here */
+  } else {
+    enableScrub();
+  }
+}
+MQLS.forEach(function(m){
+  if (m.addEventListener) m.addEventListener('change', applyHeroMode);
+  else if (m.addListener) m.addListener(applyHeroMode);
+});
+/* the first applyHeroMode() call lives in the boot block at the end,
+   because arming the scrub touches the thread elements declared below */
+
+/* ============================================================
+   5. THE GOLD ORIGIN THREAD (the signature)
+   ============================================================ */
+var wrap = document.getElementById('threadwrap');
+var tsvg = document.getElementById('threadsvg');
+var tpath = document.getElementById('threadpath');
+var tglow = document.getElementById('threadglow');
+function buildThread(){
+  if (!wrap || !tsvg) return;
+  var h = wrap.offsetHeight, w = wrap.offsetWidth;
+  if (!h || !w) return;
+  /* pixel coordinates and a uniform aspect, so the stroke stays a thread
+     instead of being stretched into a ribbon */
+  tsvg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  tsvg.setAttribute('preserveAspectRatio', 'none');
+  tsvg.style.width = w + 'px';
+  var r = rng(5), y = 0;
+  var cx = w * 0.5, d = 'M ' + cx.toFixed(0) + ' 0';
+  while (y < h){
+    var step = 520 + r()*420;
+    var nx = w * (0.12 + r()*0.76);
+    d += ' C ' + cx.toFixed(0) + ' ' + (y+step*0.4).toFixed(0)
+      +  ', ' + nx.toFixed(0) + ' ' + (y+step*0.6).toFixed(0)
+      +  ', ' + nx.toFixed(0) + ' ' + (y+step).toFixed(0);
+    y += step; cx = nx;
+  }
+  tpath.setAttribute('d', d);
+  tglow.setAttribute('d', d);
+}
+var lastDraw = -1;
+function drawThread(){
+  if (!wrap) return;
+  var r = wrap.getBoundingClientRect();
+  var span = r.height - window.innerHeight * 0.4;
+  if (span <= 0) return;
+  var p = clamp((window.innerHeight * 0.75 - r.top) / span, 0, 1);
+  if (Math.abs(p - lastDraw) < 0.004) return;
+  lastDraw = p;
+  wrap.style.setProperty('--draw', p.toFixed(3));
+}
+addEventListener('scroll', drawThread, {passive:true});
+
+/* ============================================================
+   6. SECTION ENTRANCES
+   ============================================================ */
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      setTimeout(function(){ e.target.classList.add('settled'); }, 1200);
+      io.unobserve(e.target);
+    });
+  }, {rootMargin:'0px 0px -12% 0px', threshold:0.12});
+  [].forEach.call(document.querySelectorAll('section .shell > *, [data-stagger]'), function(el){ io.observe(el); });
+  /* failsafe: anything still hidden after a few seconds gets revealed anyway.
+     Hiding content behind an observer that might not fire is not worth a
+     missed sale. */
+  setTimeout(function(){
+    [].forEach.call(document.querySelectorAll('.rise'), function(el){
+      if (parseFloat(getComputedStyle(el).opacity) < 0.9 &&
+          el.getBoundingClientRect().top < window.innerHeight * 1.5){
+        el.classList.add('in');
+      }
+    });
+  }, 2500);
+} else {
+  /* no IntersectionObserver at all: show everything rather than nothing */
+  [].forEach.call(document.querySelectorAll('.rise'), function(el){ el.classList.add('in','settled'); });
+}
+function pinToFinalStates(){
+  disableScrub();   /* stop the drives here, so the re-arm later actually re-arms and unpins */
+  [].forEach.call(document.querySelectorAll('.rise'), function(el){ el.classList.add('in'); });
+  [].forEach.call(document.querySelectorAll('[data-stagger], section .shell > *'), function(el){ el.classList.add('in','settled'); });
+  wrap.style.setProperty('--draw', 1);
+  sealTo(1); finishSeal();
+}
+function unpinFinalStates(){
+  lastDraw = -1; drawThread();
+}
+
+/* ============================================================
+   7. THE MARKET TABLE (real data, real date)
+   ============================================================ */
+/* the page is complete without the fetch: this is the shipped default,
+   and assets/market.json overrides it whenever it can be read */
+var marketData = {
+  updated:"2026-08-31", currency:"USD",
+  rows:[
+    {origin:"Yirgacheffe", grade:"G1", process:"Washed",  price:null},
+    {origin:"Yirgacheffe", grade:"G1", process:"Natural", price:null},
+    {origin:"Guji",        grade:"G1", process:"Washed",  price:null},
+    {origin:"Guji",        grade:"G1", process:"Natural", price:null},
+    {origin:"Sidamo",      grade:"G2", process:"Washed",  price:null},
+    {origin:"Limu",        grade:"G2", process:"Washed",  price:null},
+    {origin:"Jimma",       grade:"G4", process:"Natural", price:null},
+    {origin:"Nekemte",     grade:"G4", process:"Natural", price:null},
+    {origin:"Harar",       grade:"G4", process:"Natural", price:null}
+  ]
+};
+function renderMarket(){
+  var body = document.getElementById('mkt-body');
+  if (!body || !marketData) return;
+  var ask = (lang === 'am') ? (I18N.am['market.ask'] || 'On request') : 'On request';
+  var html = '';
+  marketData.rows.forEach(function(r){
+    var g1 = /^G1$/.test(r.grade) ? ' g1' : '';
+    var price = (r.price === null || r.price === undefined)
+      ? '<td class="p ask">' + ask + '</td>'
+      : '<td class="p">' + marketData.currency + ' ' + r.price + '</td>';
+    html += '<tr><td class="o">' + r.origin + '</td>'
+          + '<td><span class="chip' + g1 + '">' + r.grade + '</span></td>'
+          + '<td>' + r.process + '</td>' + price + '</tr>';
+  });
+  body.innerHTML = html;
+  var d = document.getElementById('mkt-date');
+  if (d) {
+    var dt = new Date(marketData.updated + 'T00:00:00');
+    d.textContent = isNaN(dt) ? marketData.updated
+      : dt.toLocaleDateString(lang === 'am' ? 'am-ET' : 'en-GB', {day:'numeric', month:'short', year:'numeric'});
+  }
+}
+renderMarket();
+fetch('assets/market.json').then(function(r){ return r.json(); })
+  .then(function(j){ if (j && j.rows){ marketData = j; renderMarket(); } })
+  .catch(function(){ /* the shipped default above already rendered */ });
+
+/* ============================================================
+   8. ORIGINS
+   ============================================================ */
+var ORIGINS = [
+  {n:'Yirgacheffe', z:'Gedeo zone', alt:'1,800 to 2,200 m', g:'G1 washed, reliable',
+   f:{en:'Floral and citrus, tea-like body. The lot most European roasters ask for by name.', am:'አበባዊና ሲትረስ፣ የሻይ መሰል ሰውነት። አብዛኞቹ የአውሮፓ ጠባሾች በስም የሚጠይቁት።'}},
+  {n:'Guji', z:'Oromia', alt:'1,900 to 2,300 m', g:'G1 washed and natural',
+   f:{en:'Stone fruit and sweet spice. Naturals from here carry a room.', am:'የፍራፍሬና ጣፋጭ ቅመም። ከዚህ የሚመጡ ናቹራሎች ክፍል ይሞላሉ።'}},
+  {n:'Sidamo', z:'Sidama', alt:'1,600 to 2,200 m', g:'G2, some G1',
+   f:{en:'Berry sweetness with a round body. The dependable middle of a blend.', am:'የቤሪ ጣፋጭነት ከክብ ሰውነት ጋር። የቅይጥ አስተማማኝ መሃል።'}},
+  {n:'Jimma', z:'Oromia', alt:'1,400 to 2,000 m', g:'Mostly G3 and G4',
+   f:{en:'Heavy body, low acidity. Where the volume work lives.', am:'ከባድ ሰውነት፣ ዝቅተኛ አሲድነት። የመጠን ስራው የሚገኝበት።'}},
+  {n:'Limu', z:'Oromia', alt:'1,400 to 2,000 m', g:'G2 washed',
+   f:{en:'Balanced and slightly winey. Quietly one of the easiest sells.', am:'የተመጣጠነና ትንሽ ወይን መሰል። በጸጥታ በቀላሉ ከሚሸጡት አንዱ።'}},
+  {n:'Nekemte', z:'East Wollega', alt:'1,500 to 2,100 m', g:'G4 and G5',
+   f:{en:'Fruity and bold, sometimes called Lekempti on paperwork.', am:'ፍራፍሬያማና ጠንካራ፣ በሰነድ ላይ አንዳንዴ ለከምፕቲ ይባላል።'}},
+  {n:'Harar', z:'Eastern highlands', alt:'1,500 to 2,100 m', g:'Natural, little G1',
+   f:{en:'Blueberry and wine, dry processed by tradition. Not for every buyer.', am:'ሰማያዊ እንጆሪና ወይን፣ በባህል በደረቅ የተዘጋጀ። ለሁሉም ገዢ አይደለም።'}}
+];
+function renderOrigins(){
+  var host = document.getElementById('originlist');
+  if (!host) return;
+  var html = '';
+  ORIGINS.forEach(function(o){
+    html += '<article class="origin rise"><span class="dot"></span><div>'
+         +  '<h3>' + o.n + '</h3>'
+         +  '<div class="meta">' + o.z + ' &nbsp;&middot;&nbsp; ' + o.alt + '</div>'
+         +  '<p class="flavour">' + (lang === 'am' ? o.f.am : o.f.en) + '</p>'
+         +  '</div><span class="grade">' + o.g + '</span></article>';
+  });
+  host.innerHTML = html;
+}
+renderOrigins();
+
+/* ============================================================
+   9. THE INTERACTIVE MOMENT: press and hold to seal
+   ============================================================ */
+var sealBtn  = document.getElementById('sealbtn');
+var slip     = document.getElementById('slip');
+var sealHint = document.getElementById('sealhint');
+var lotEl    = document.getElementById('lotno');
+var hold = 0, holding = false, holdRaf = null, sealed = false, holdLast = 0;
+var HOLD_MS = 900, RELEASE_MS = 550;   /* real time, so every refresh rate feels the same */
+
+function sealTo(v){ if (!sealBtn) return; hold = clamp(v,0,1); sealBtn.style.setProperty('--hold', hold.toFixed(3)); }
+function finishSeal(){
+  if (sealed) return;
+  sealed = true;
+  sealBtn.classList.add('done');
+  slip.classList.add('sealed');
+  lotEl.textContent = 'EBC-' + (new Date()).getFullYear() + '-' + String(Math.floor(Math.random()*8999)+1000);
+  sealHint.textContent = t('seal.done');
+  sealHint.classList.add('seal-done');
+}
+/* it used to be dead after one use. Anyone who found it got exactly one go. */
+function resetSeal(){
+  sealed = false; holding = false; hold = 0; holdLast = 0;
+  sealTo(0);
+  sealBtn.classList.remove('done');
+  slip.classList.remove('sealed');
+  lotEl.textContent = '—';   /* placeholder glyph, matches the &mdash; in the markup */
+  sealHint.textContent = t('seal.hint');
+  sealHint.classList.remove('seal-done');
+}
+function holdLoop(now){
+  var dt = Math.min(100, now - (holdLast || now));
+  holdLast = now;
+  hold += holding ? (dt / HOLD_MS) : -(dt / RELEASE_MS);
+  sealTo(hold);
+  if (hold >= 1){ finishSeal(); holdRaf = null; holdLast = 0; return; }
+  if (hold <= 0 && !holding){ holdRaf = null; holdLast = 0; return; }
+  holdRaf = requestAnimationFrame(holdLoop);
+}
+function startHold(e){
+  if (sealed){ if (e && e.cancelable) e.preventDefault(); resetSeal(); return; }
+  if (e && e.cancelable) e.preventDefault();
+  holding = true;
+  if (holdRaf === null) holdRaf = requestAnimationFrame(holdLoop);
+}
+function endHold(){ holding = false; if (holdRaf === null && hold > 0) holdRaf = requestAnimationFrame(holdLoop); }
+sealBtn.addEventListener('mousedown', startHold);
+sealBtn.addEventListener('touchstart', startHold, {passive:false});
+addEventListener('mouseup', endHold);
+addEventListener('touchend', endHold);
+sealBtn.addEventListener('mouseleave', endHold);
+sealBtn.addEventListener('keydown', function(e){ if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); startHold(); } });
+sealBtn.addEventListener('keyup', function(e){ if (e.key === ' ' || e.key === 'Enter') endHold(); });
+
+/* ============================================================
+   10. THE FORM
+   ============================================================ */
+var mode = 'have';
+function setMode(m){
+  mode = (m === 'need') ? 'need' : 'have';
+  document.getElementById('tab-have').setAttribute('aria-selected', String(mode === 'have'));
+  document.getElementById('tab-need').setAttribute('aria-selected', String(mode === 'need'));
+  var qty = document.querySelector('input[name="quantity"]');
+  if (qty) qty.placeholder = t(mode === 'have' ? 'f.qtyHave' : 'f.qtyNeed');
+  /* an exporter should not be looking at a heading addressed to suppliers */
+  var h = document.getElementById('posth');
+  if (h) h.textContent = t(mode === 'have' ? 'post.h' : 'post.hNeed');
+}
+/* scoped to [data-mode]: the route buttons are also .tabs button, and without
+   this they silently reset the mode and send the opposite enquiry */
+[].forEach.call(document.querySelectorAll('.tabs button[data-mode]'), function(b){
+  b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+});
+setMode('have');
+
+/* which way the enquiry leaves: whatsapp or email */
+var route = CONTACT.whatsapp ? 'whatsapp' : 'email';
+function setRoute(r){
+  route = (r === 'email') ? 'email' : 'whatsapp';
+  var wa = document.getElementById('route-wa'), em = document.getElementById('route-em');
+  wa.setAttribute('aria-selected', String(route === 'whatsapp'));
+  em.setAttribute('aria-selected', String(route === 'email'));
+  var note = document.getElementById('formnote');
+  var d = I18N[lang];
+  note.textContent = (route === 'whatsapp')
+    ? (d['f.note'] || I18N.en['f.note'])
+    : (d['f.noteEmail'] || I18N.en['f.noteEmail']);
+}
+[].forEach.call(document.querySelectorAll('[data-route]'), function(b){
+  b.addEventListener('click', function(){ setRoute(b.getAttribute('data-route')); });
+});
+
+var form = document.getElementById('postform');
+var success = document.getElementById('success');
+
+/* the three lists that can never cover every coffee: each has an Other
+   escape that reveals a free-text box */
+var OTHER_FIELDS = ['type','origin','grade'];
+OTHER_FIELDS.forEach(function(n){
+  var sel = form.elements[n], oth = form.elements[n + '_other'];
+  if (!sel || !oth) return;
+  sel.addEventListener('change', function(){
+    var on = sel.value === '__other__';
+    oth.hidden = !on;
+    sel.style.borderColor = '';
+    if (on) oth.focus();
+  });
+});
+
+function val(n){ var el = form.elements[n]; return el ? String(el.value).trim() : ''; }
+function pick(n){ return val(n) === '__other__' ? val(n + '_other') : val(n); }
+
+function enquiryText(){
+  var lines = [];
+  lines.push(mode === 'have' ? 'I HAVE COFFEE' : 'I NEED COFFEE');
+  lines.push('Name: '        + val('name'));
+  lines.push('Company: '     + val('company'));
+  lines.push('Email: '       + val('email'));
+  lines.push('Phone: '       + val('phone'));
+  lines.push('Coffee type: ' + pick('type'));
+  lines.push('Origin: '      + pick('origin'));
+  lines.push('Grade: '       + pick('grade'));
+  if (val('quantity')) lines.push('Quantity: ' + val('quantity'));
+  if (val('notes'))    lines.push('Notes: '    + val('notes'));
+  return lines.join('\n');
+}
+
+/* required: name, company, email, phone, coffee type, origin, grade.
+   quantity and notes are deliberately optional. */
+var REQUIRED = ['name','company','email','phone','type','origin','grade'];
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+var errSummary = document.getElementById('errsummary');
+var sendFail   = document.getElementById('sendfail');
+
+function fieldLabel(n){
+  var el = form.elements[n.replace('_other','')];
+  var wrap = el && el.closest ? el.closest('label') : null;
+  var lb = wrap ? wrap.querySelector('.lb span') : null;
+  return lb ? lb.textContent : n;
+}
+function clearError(n){
+  var el = form.elements[n];
+  if (!el) return;
+  el.removeAttribute('aria-invalid');
+  el.removeAttribute('aria-describedby');
+  var box = document.getElementById('err-' + n);
+  if (box) box.parentNode.removeChild(box);
+}
+function showError(n, msg){
+  var el = form.elements[n];
+  if (!el) return;
+  el.setAttribute('aria-invalid', 'true');
+  var id = 'err-' + n, box = document.getElementById(id);
+  if (!box){
+    box = document.createElement('p');
+    box.className = 'field-err';
+    box.id = id;
+    box.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
+                  + '<circle cx="8" cy="8" r="6.6"/><path d="M8 4.4v4.2M8 11.3v.3"/></svg><span></span>';
+    var host = el.closest ? (el.closest('label') || el.parentNode) : el.parentNode;
+    host.appendChild(box);
+  }
+  box.querySelector('span').textContent = msg;
+  el.setAttribute('aria-describedby', id);
+}
+
+/* every problem is reported at once, not one per submit */
+function validate(){
+  var bad = [];
+  REQUIRED.forEach(function(n){
+    clearError(n);
+    clearError(n + '_other');
+    var el = form.elements[n];
+    var v = String(el.value).trim();
+    if (!v){ showError(n, t('e.required')); bad.push(n); return; }
+    if (el.value === '__other__'){
+      var oth = form.elements[n + '_other'];
+      if (oth && !oth.value.trim()){ showError(n + '_other', t('e.other')); bad.push(n + '_other'); }
+      return;
+    }
+    if (n === 'email' && !EMAIL_RE.test(v)){ showError(n, t('e.email')); bad.push(n); return; }
+    if (n === 'phone' && v.replace(/\D/g,'').length < 7){ showError(n, t('e.phone')); bad.push(n); return; }
+  });
+  return bad;
+}
+function showSummary(bad){
+  if (!bad.length){ errSummary.classList.remove('on'); errSummary.innerHTML = ''; return; }
+  var items = bad.map(function(n){
+    return '<li><a href="#" data-goto="' + n + '">' + fieldLabel(n) + '</a></li>';
+  }).join('');
+  errSummary.innerHTML = '<b>' + t('e.summary').replace('{n}', bad.length) + '</b><ol>' + items + '</ol>';
+  errSummary.classList.add('on');
+}
+errSummary.addEventListener('click', function(e){
+  var a = e.target.closest('[data-goto]');
+  if (!a) return;
+  e.preventDefault();
+  var el = form.elements[a.getAttribute('data-goto')];
+  if (el) el.focus();
+});
+/* clearing as they type, so the page stops nagging the moment they fix it */
+form.addEventListener('input', function(e){
+  if (e.target.name) clearError(e.target.name);
+});
+form.addEventListener('change', function(e){
+  if (e.target.name) clearError(e.target.name);
+});
+
+/* the draft survives an interruption; phones lose forms constantly */
+var DRAFT_KEY = 'ebc-draft';
+function saveDraft(){
+  try {
+    var d = {mode:mode, route:route};
+    [].forEach.call(form.elements, function(el){ if (el.name) d[el.name] = el.value; });
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(d));
+  } catch(e){}
+}
+function restoreDraft(){
+  try {
+    var raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    var d = JSON.parse(raw);
+    Object.keys(d).forEach(function(k){
+      if (k === 'mode' || k === 'route') return;
+      var el = form.elements[k];
+      if (el && d[k]) el.value = d[k];
+    });
+    OTHER_FIELDS.forEach(function(n){
+      var sel = form.elements[n], oth = form.elements[n + '_other'];
+      if (sel && oth && sel.value === '__other__') oth.hidden = false;
+    });
+    if (d.mode) setMode(d.mode);
+  } catch(e){}
+}
+form.addEventListener('input', saveDraft);
+form.addEventListener('change', saveDraft);
+
+function showSendFail(bodyText, subject){
+  document.getElementById('failtext').value = bodyText;
+  var wa = document.getElementById('faillink'), em = document.getElementById('failmail');
+  if (CONTACT.whatsapp){
+    wa.href = 'https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(subject + '\n\n' + bodyText);
+    wa.hidden = false;
+  } else { wa.hidden = true; }
+  if (CONTACT.email){
+    em.href = 'mailto:' + CONTACT.email + '?subject=' + encodeURIComponent(subject)
+            + '&body=' + encodeURIComponent(bodyText);
+    em.hidden = false;
+  } else { em.hidden = true; }
+  sendFail.classList.add('on');
+  sendFail.scrollIntoView({block:'nearest'});
+}
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  var bad = validate();
+  showSummary(bad);
+  if (bad.length){
+    var first = form.elements[bad[0]];
+    if (first) first.focus();
+    return;
+  }
+  sendFail.classList.remove('on');
+
+  var bodyText = enquiryText();
+  var subject  = 'Ethio Bean Connect, ' + (mode === 'have' ? 'lot offered' : 'lot wanted');
+  var handedOff = false;
+
+  if (route === 'whatsapp' && CONTACT.whatsapp){
+    /* the return value is the whole point: a blocked popup, or an in-app
+       browser that refuses the handoff, returns null. Claiming success there
+       is a promise to someone who will never get a reply. */
+    var win = window.open(
+      'https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(subject + '\n\n' + bodyText),
+      '_blank', 'noopener'
+    );
+    handedOff = !!win;
+  } else if (CONTACT.email){
+    window.location.href = 'mailto:' + CONTACT.email
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(bodyText);
+    handedOff = true;   /* a mailto navigation cannot be confirmed; the success panel says so */
+  }
+
+  if (!handedOff){ showSendFail(bodyText, subject); return; }
+
+  window.__ebcLastMessage = {body: bodyText, subject: subject};
+  form.style.display = 'none';
+  errSummary.classList.remove('on');
+  document.getElementById('okbody').textContent =
+    (route === 'whatsapp') ? t('f.okp') : t('f.okpEmail');
+  success.classList.add('on');
+});
+
+/* the way back: nothing is destroyed, the values are still in the form */
+document.getElementById('editagain').addEventListener('click', function(){
+  success.classList.remove('on');
+  form.style.display = '';
+  var m = window.__ebcLastMessage;
+  if (m) showSendFail(m.body, m.subject);
+  form.elements['name'].focus();
+});
+
+/* ============================================================
+   10b. THE CONTACT LAUNCHER
+   ============================================================ */
+function renderLauncher(){
+  var host = document.getElementById('launchpanel');
+  var box  = document.getElementById('launcher');
+  if (!host || !box) return;
+  var d = I18N[lang], en = I18N.en;
+  var t = function(k){ return d[k] || en[k]; };
+  var rows = '';
+  if (CONTACT.whatsapp){
+    rows += '<a href="https://wa.me/' + CONTACT.whatsapp + '" target="_blank" rel="noopener">'
+         +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/></svg>'
+         +  '<span style="display:block"><b>' + t('chat.wa') + '</b><span>' + CONTACT.phone + '</span></span></a>';
+  }
+  if (CONTACT.phone){
+    rows += '<a href="tel:' + CONTACT.phone.replace(/\s/g,'') + '">'
+         +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>'
+         +  '<span style="display:block"><b>' + t('chat.call') + '</b><span>' + CONTACT.phone + '</span></span></a>';
+  }
+  if (CONTACT.email){
+    rows += '<a href="mailto:' + CONTACT.email + '">'
+         +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2.5 6.5l9.5 7 9.5-7"/></svg>'
+         +  '<span style="display:block"><b>' + t('chat.email') + '</b><span>' + CONTACT.email + '</span></span></a>';
+  }
+  if (!rows){ box.hidden = true; return; }   /* nothing configured yet, so show nothing rather than a dead button */
+  box.hidden = false;
+  host.innerHTML = rows;
+}
+(function(){
+  var box = document.getElementById('launcher');
+  var btn = document.getElementById('launchbtn');
+  if (!box || !btn) return;
+  function toggle(trigger){
+    var open = box.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+    if (trigger) trigger.setAttribute('aria-expanded', String(open));
+  }
+  btn.addEventListener('click', function(){ toggle(null); });
+  /* the same panel, opened from the mobile action bar */
+  var mc = document.getElementById('mcchat');
+  if (mc) mc.addEventListener('click', function(e){ e.stopPropagation(); toggle(mc); });
+  document.addEventListener('click', function(e){
+    if (!box.contains(e.target) && box.classList.contains('open')){
+      box.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+    }
+  });
+  addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && box.classList.contains('open')){
+      box.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.focus();
+    }
+  });
+})();
+
+/* the footer contact list, from the same single source of truth */
+function renderFooterContact(){
+  var host = document.getElementById('footcontact');
+  if (!host) return;
+  var d = I18N[lang], en = I18N.en, t = function(k){ return d[k] || en[k]; };
+  var out = '';
+  if (CONTACT.phone)    out += '<li><a href="tel:' + CONTACT.phone.replace(/\s/g,'') + '">' + CONTACT.phone + '</a></li>';
+  if (CONTACT.phone2)   out += '<li><a href="tel:' + CONTACT.phone2.replace(/\s/g,'') + '">' + CONTACT.phone2 + '</a></li>';
+  if (CONTACT.whatsapp) out += '<li><a href="https://wa.me/' + CONTACT.whatsapp + '" target="_blank" rel="noopener">' + t('chat.wa') + '</a></li>';
+  if (CONTACT.email)    out += '<li><a href="mailto:' + CONTACT.email + '">' + CONTACT.email + '</a></li>';
+  if (CONTACT.address)  out += '<li>' + CONTACT.address + '</li>';
+  if (!out){
+    out = '<li><span class="tbd">Phone to be added</span></li>'
+        + '<li><span class="tbd">WhatsApp to be added</span></li>'
+        + '<li><span class="tbd">Email to be added</span></li>'
+        + '<li><span class="tbd">Address to be added</span></li>';
+  }
+  host.innerHTML = out;
+}
+
+/* ============================================================
+   10c. THE MOVING GROUND
+   Light fields drifting across the page, in the brand's three colours,
+   plus slow motes like dust over a drying bed. Held at low alpha on
+   purpose: this must not move the luminance under body text.
+   ============================================================ */
+(function(){
+  var cv = document.getElementById('envcanvas');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  var W = 0, H = 0, dpr = 1, raf = null, last = 0, paused = false;
+
+  /* the three brand colours, as light rather than as ink */
+  var FIELDS = [
+    {c:'200,164,74', a:.10, r:.62, x:.20, y:.16, vx: .0000180, vy: .0000122, px:0, py:0},
+    {c:'47,125,50',  a:.085,r:.58, x:.82, y:.70, vx:-.0000142, vy:-.0000168, px:0, py:0},
+    {c:'138,80,40',  a:.075,r:.70, x:.52, y:1.02,vx: .0000108, vy:-.0000101, px:0, py:0},
+    {c:'15,111,87',  a:.055,r:.48, x:.08, y:.86, vx: .0000205, vy:-.0000078, px:0, py:0}
+  ];
+  var MOTES = [];
+  function seedMotes(){
+    MOTES.length = 0;
+    var n = Math.min(34, Math.round((window.innerWidth * window.innerHeight) / 46000));
+    var s = 20;
+    var rnd = function(){ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    for (var i = 0; i < n; i++){
+      MOTES.push({x:rnd(), y:rnd(), r:.6 + rnd()*1.5, sp:.0000075 + rnd()*.000019, dr:(rnd()-.5)*.000012, o:.14 + rnd()*.2});
+    }
+  }
+
+  function size(){
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);   /* capped: this is ambience, not detail */
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seedMotes();
+  }
+
+  function draw(t){
+    ctx.clearRect(0, 0, W, H);
+    var big = Math.max(W, H);
+    for (var i = 0; i < FIELDS.length; i++){
+      var f = FIELDS[i];
+      /* drift on a slow lissajous so the fields never repeat a visible loop */
+      var x = (f.x + Math.sin(t * f.vx + i) * .16) * W;
+      var y = (f.y + Math.cos(t * f.vy + i * 1.7) * .14) * H;
+      var r = f.r * big;
+      var g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, 'rgba(' + f.c + ',' + f.a + ')');
+      g.addColorStop(.55, 'rgba(' + f.c + ',' + (f.a * .38).toFixed(4) + ')');
+      g.addColorStop(1, 'rgba(' + f.c + ',0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    }
+    for (var m = 0; m < MOTES.length; m++){
+      var p = MOTES[m];
+      var my = (p.y - t * p.sp) % 1; if (my < 0) my += 1;
+      var mx = (p.x + Math.sin(t * p.dr + m) * .03) % 1; if (mx < 0) mx += 1;
+      ctx.beginPath();
+      ctx.arc(mx * W, my * H, p.r, 0, 6.2832);
+      ctx.fillStyle = 'rgba(138,80,40,' + p.o + ')';
+      ctx.fill();
+    }
+  }
+
+  function frame(now){
+    raf = null;
+    if (paused) return;
+    if (now - last < 33){ raf = requestAnimationFrame(frame); return; }  /* ~30fps is plenty for drift */
+    last = now;
+    draw(now);
+    raf = requestAnimationFrame(frame);
+  }
+  function start(){ if (raf === null && !paused) raf = requestAnimationFrame(frame); }
+  function stop(){ if (raf !== null){ cancelAnimationFrame(raf); raf = null; } }
+
+  function apply(){
+    size();
+    stop();
+    /* paint one frame synchronously first. If animation frames never arrive
+       (a throttled tab, a paused compositor), the ground is still composed
+       rather than blank. */
+    draw(0);
+    if (reduce.matches) return;
+    start();
+  }
+  addEventListener('resize', function(){ size(); if (reduce.matches) draw(0); });
+  document.addEventListener('visibilitychange', function(){
+    paused = document.hidden;
+    if (paused) stop(); else if (!reduce.matches) start();
+  });
+  if (reduce.addEventListener) reduce.addEventListener('change', apply);
+  apply();
+})();
+
+/* ============================================================
+   11. WHISPER PARTICLES
+   ============================================================ */
+(function(){
+  var host = document.getElementById('motes');
+  if (!host) return;
+  var r = rng(11), html = '';
+  for (var i=0;i<16;i++){
+    html += '<i class="mote" style="left:' + (r()*100).toFixed(1) + '%;top:' + (r()*100).toFixed(1) + '%;'
+         +  'animation-duration:' + (16 + r()*16).toFixed(1) + 's;animation-delay:-' + (r()*18).toFixed(1) + 's;'
+         +  'opacity:' + (0.08 + r()*0.12).toFixed(2) + '"></i>';
+  }
+  host.innerHTML = html;
+})();
+
+/* ============================================================
+   12. REDUCED MOTION, LIVE, BOTH DIRECTIONS
+   ============================================================ */
+matchMedia('(prefers-reduced-motion: reduce)').addEventListener
+  ? matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', function(e){
+      if (e.matches) pinToFinalStates(); else applyHeroMode();
+    })
+  : null;
+
+/* pause everything on a hidden tab */
+document.addEventListener('visibilitychange', function(){
+  document.body.classList.toggle('paused', document.hidden);
+});
+
+/* ============================================================
+   13. BOOT
+   ============================================================ */
+/* the action bar appears once the hero is behind you, and gets out of the way
+   again when the form itself is on screen */
+(function(){
+  var bar = document.getElementById('mobilecta');
+  var heroEl = document.getElementById('hero');
+  var postEl = document.getElementById('post');
+  if (!bar || !heroEl || !postEl) return;
+  var on = false;
+  function ctaScroll(){
+    var show = heroEl.getBoundingClientRect().bottom < 60
+            && postEl.getBoundingClientRect().top > window.innerHeight * 0.55;
+    if (show !== on){ on = show; bar.classList.toggle('on', show); }
+  }
+  addEventListener('scroll', ctaScroll, {passive:true});
+  addEventListener('resize', ctaScroll);
+  ctaScroll();
+})();
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+renderLauncher();
+renderFooterContact();
+/* no route is configured yet, so do not offer a choice that cannot do anything */
+if (!CONTACT.whatsapp && !CONTACT.email){
+  document.getElementById('routeblock').hidden = true;
+  document.getElementById('formnote').textContent =
+    'We will come back to you here. Contact details are being added to this page.';
+} else {
+  setRoute(route);
+}
+restoreDraft();
+if (lang !== 'en') applyLang(lang);
+function relayout(){ buildThread(); lastDraw = -1; drawThread(); }
+addEventListener('resize', relayout);
+addEventListener('load', relayout);
+relayout();
+applyHeroMode();          /* arm the scrub or the static hero, now that everything exists */
+setTimeout(relayout, 400);
+
+})();
+</script>
+<style>
+body.paused *, body.paused *::before, body.paused *::after{animation-play-state:paused !important}
+</style>
+</body>
+</html>

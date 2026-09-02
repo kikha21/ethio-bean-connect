@@ -1,0 +1,407 @@
+<title>Ethio Bean Platform Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+:root{
+  --canvas:#F1F4F2; --canvas-2:#E5EAE7; --panel:#FBFCFB; --line:#D2DAD5;
+  --ink:#15201A; --ink-2:#525C55;
+  --gold:#C8A44A; --gold-ink:#8A6B1F; --green:#2F7D32; --green-deep:#225C25; --bean:#8A5028;
+  --warn:#A6412A;
+  --display:"Archivo",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --shell:min(1000px,100% - 2.2rem);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --canvas:#0E130F; --canvas-2:#141B15; --panel:#1A231B; --line:#2B3A2C;
+  --ink:#F3F0E6; --ink-2:#B4BFB0;
+  --gold:#C8A44A; --gold-ink:#E6CC85; --green:#5FA867; --green-deep:#93CE94; --bean:#C08A5A;
+  --warn:#E8836A;
+}}
+:root[data-theme="dark"]{
+  --canvas:#0E130F; --canvas-2:#141B15; --panel:#1A231B; --line:#2B3A2C;
+  --ink:#F3F0E6; --ink-2:#B4BFB0;
+  --gold:#C8A44A; --gold-ink:#E6CC85; --green:#5FA867; --green-deep:#93CE94; --bean:#C08A5A;
+  --warn:#E8836A;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--body);font-size:1.06rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+code{font-family:var(--mono);font-size:.9em}
+:focus-visible{outline:2px solid var(--gold-ink);outline-offset:3px}
+.wrap{width:var(--shell);margin-inline:auto}
+
+.top{padding:clamp(2.6rem,6vw,4.4rem) 0 1.4rem}
+.top h1{font-size:clamp(2rem,5.2vw,3.1rem);max-width:18ch}
+.top .lede{margin-top:1rem;color:var(--ink-2);max-width:64ch}
+
+.now{margin-top:1.9rem;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(1.2rem,3vw,1.9rem)}
+.now h2{font-size:1.2rem;margin-bottom:.8rem}
+.now .grid{display:grid;gap:.7rem;margin-top:1rem}
+@media (min-width:720px){.now .grid{grid-template-columns:1fr 1fr 1fr}}
+.fact{border:1px solid var(--line);border-radius:11px;padding:.85rem .95rem}
+.fact b{display:block;font-family:var(--mono);font-size:.78rem;color:var(--ink-2);letter-spacing:.04em;margin-bottom:.3rem}
+.fact span{display:block;font-size:.98rem}
+
+section{padding:clamp(2.2rem,5vw,3.2rem) 0 0}
+.sec-h{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;margin-bottom:.5rem}
+.sec-h h2{font-size:clamp(1.4rem,3.2vw,2rem)}
+.sec-h .tag{font-family:var(--mono);font-size:.78rem;color:var(--ink-2)}
+.sec-note{color:var(--ink-2);max-width:66ch;margin-bottom:1.5rem}
+
+/* stages */
+.stages{display:grid;gap:.75rem;counter-reset:stage}
+.stage{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:1.05rem 1.2rem;display:grid;gap:.55rem;
+}
+.stage.live{border-color:var(--green);background:color-mix(in srgb,var(--green) 7%,var(--panel))}
+.stage-h{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap}
+.stage-n{font-family:var(--mono);font-size:.8rem;color:var(--gold-ink);white-space:nowrap}
+.stage-h h3{font-size:1.14rem}
+.stage-size{margin-left:auto;font-family:var(--mono);font-size:.78rem;color:var(--ink-2);white-space:nowrap}
+.stage p{font-size:.98rem;color:var(--ink-2)}
+.stage .gives{font-size:.96rem;color:var(--ink)}
+.stage .gives b{color:var(--green-deep);font-weight:600}
+.pill{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:.14rem .5rem;border-radius:99px;border:1px solid var(--line);color:var(--ink-2)}
+.pill.done{border-color:var(--green);color:var(--green-deep)}
+
+/* data model */
+.tables{display:grid;gap:.6rem}
+@media (min-width:760px){.tables{grid-template-columns:1fr 1fr}}
+.tbl{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem}
+.tbl h3{font-family:var(--mono);font-size:.86rem;font-weight:500;color:var(--bean);margin-bottom:.4rem;letter-spacing:.02em}
+.tbl p{font-size:.92rem;color:var(--ink-2)}
+.tbl .cols{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);margin-top:.4rem;line-height:1.6;word-break:break-word}
+
+/* roles */
+.roles{display:grid;gap:.6rem}
+@media (min-width:760px){.roles{grid-template-columns:1fr 1fr}}
+.role{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.9rem 1.05rem}
+.role h3{font-size:1.02rem;margin-bottom:.35rem}
+.role .can{font-size:.93rem;color:var(--ink-2)}
+.role .cannot{font-size:.93rem;color:var(--warn);margin-top:.3rem}
+
+/* decisions */
+.decisions{display:grid;gap:.7rem}
+.dec{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:1rem 1.15rem}
+.dec h3{font-size:1.05rem;margin-bottom:.4rem}
+.dec p{font-size:.96rem;color:var(--ink-2)}
+.dec .rec{margin-top:.55rem;font-size:.95rem}
+.dec .rec b{color:var(--green-deep)}
+
+table{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:.4rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:.76rem;letter-spacing:.04em;color:var(--ink-2);font-weight:400}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+
+/* trust tiers */
+.tiers{display:grid;gap:.7rem}
+@media (min-width:820px){.tiers{grid-template-columns:repeat(3,1fr)}}
+.tier{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;display:grid;gap:.5rem;align-content:start}
+.tier.t1{border-color:var(--green)}
+.tier.t2{border-color:var(--gold)}
+.tier-h{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
+.tier-h h3{font-size:1.05rem}
+.badge{font-family:var(--mono);font-size:.74rem;padding:.2rem .55rem;border-radius:99px;white-space:nowrap;border:1px solid var(--line);color:var(--ink-2)}
+.badge.b1{border-color:var(--green);color:var(--green-deep);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.badge.b2{border-color:var(--gold);color:var(--gold-ink);background:color-mix(in srgb,var(--gold) 16%,transparent)}
+.tier p{font-size:.95rem;color:var(--ink-2)}
+.tier .crit{font-size:.9rem}
+.tier .crit b{color:var(--ink)}
+
+.callout{margin-top:1.4rem;border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 9%,var(--panel));border-radius:14px;padding:1.1rem 1.25rem}
+.callout b{color:var(--gold-ink)}
+.callout p{font-size:.97rem;color:var(--ink-2);margin-top:.3rem}
+
+footer{padding:2.6rem 0 4rem;color:var(--ink-2)}
+footer strong{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;animation-duration:.01ms !important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <h1>Ethio Bean Connect: the platform plan</h1>
+    <p class="lede">What exists today, what the full system needs, and the order to build it in so that every stage is usable on its own rather than disappearing for months. Written to be reviewed and costed before any code is written.</p>
+
+    <div class="now">
+      <h2>Where things actually stand</h2>
+      <p style="color:var(--ink-2);max-width:62ch">The marketing site is finished and tested. It is eight static files. There is no server, no database and no accounts, which is why an admin login cannot exist yet: there is nothing running to log in to.</p>
+      <div class="grid">
+        <div class="fact"><b>BUILT</b><span>The public site, bilingual, 11 detector findings, all known false positives</span></div>
+        <div class="fact"><b>NOT BUILT</b><span>Every account, dashboard, deal, commission and message in the original brief</span></div>
+        <div class="fact"><b>NOT ONLINE</b><span>No hosting yet, so no visitors and nothing to measure</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>The build order</h2><span class="tag">each stage works on its own</span></div>
+    <p class="sec-note">The principle throughout: never leave you with nothing usable. Every stage below ships something you can actually operate, and each one earns the next. Sizes are honest estimates, not quotes, and assume the work is done by one person.</p>
+
+    <div class="stages">
+
+      <div class="stage live">
+        <div class="stage-h"><span class="stage-n">STAGE 0</span><h3>The public site</h3><span class="stage-size"><span class="pill done">done</span></span></div>
+        <p>Hero, market table, origins, the sealed-lot demo, questions, and a form that reaches you by WhatsApp or email. English and Amharic.</p>
+        <p class="gives"><b>You already have this.</b> It works without any backend at all.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 1</span><h3>Get it online, and start measuring</h3><span class="stage-size">about a day</span></div>
+        <p>Hosting, a real domain, HTTPS, and analytics. Nothing custom.</p>
+        <p class="gives">Gives you: <b>a live site collecting real enquiries</b>, and the answer to who is visiting, from which country, on what device, and where they stop reading. Every later decision gets better because of this data.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 2</span><h3>Your login, and content you control</h3><span class="stage-size">about a week</span></div>
+        <p>The first real server and database. One admin account, yours. A simple editor for the things that change: market prices, section text, images, contact details, the origins list.</p>
+        <p class="gives">Gives you: <b>independence.</b> You stop needing anyone to change a price or a sentence. This is the smallest thing that answers "I need to edit anything on the web".</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 3</span><h3>Suppliers and exporters can register</h3><span class="stage-size">1 to 2 weeks</span></div>
+        <p>Registration with account type, company profile, logo. Your user list, with approve, suspend and the three trust tiers, plus the record of every check behind a badge. Password reset, sessions, the security basics done properly.</p>
+        <p class="gives">Gives you: <b>a real list of who is on each side of the trade, each carrying the badge you gave them</b>, instead of a phone full of contacts. The badges then ride along with every lot posted in stage 4.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 4</span><h3>Lots and requirements, with your approval queue</h3><span class="stage-size">2 to 3 weeks</span></div>
+        <p>Suppliers post available coffee. Exporters post what they need. Both land in a queue where you approve, reject, edit, hide, feature or archive. Only approved posts appear publicly, and they appear <b>without the poster's name, logo or exact location</b>, under a reference like EBC-2026-0412. Coffee types, origins, grades, processing and the rest become editable lists rather than fixed code.</p>
+        <p class="gives">Gives you: <b>the marketplace itself, with both sides anonymous until you decide otherwise</b>. The queue is also where you catch a photograph or a note that would identify someone before it goes public.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 5</span><h3>Enquiries and messaging through you</h3><span class="stage-size">1 to 2 weeks</span></div>
+        <p>An interested party contacts Ethio Bean Connect about a specific lot, never the other party directly. Threaded conversations, message history, status from new to closed. Identity is released only by you, at the moment you choose, and every release is recorded against the enquiry.</p>
+        <p class="gives">Gives you: <b>your position as the broker, enforced by the software rather than by trust.</b> This is the stage that protects your commission, and the one that makes going around you difficult rather than merely impolite.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 6</span><h3>Deals and commission</h3><span class="stage-size">2 weeks</span></div>
+        <p>A deal record linking supplier, exporter, lot, quantity, price and selling method. Eight statuses from new to commission paid. Total value calculated, commission as a percentage or a fixed amount, and tracking of expected, earned, paid and outstanding.</p>
+        <p class="gives">Gives you: <b>the money picture</b>, and a defensible record of what was agreed with whom.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 7</span><h3>Transport, matching and notifications</h3><span class="stage-size">2 to 3 weeks</span></div>
+        <p>Transport requests on both routes, with providers and status. Automatic matching that scores a requirement against available lots on type, origin, grade, processing, quantity and location, shown to you first. Notifications in each dashboard.</p>
+        <p class="gives">Gives you: <b>the system spotting matches before you do</b>, which is where a broker platform starts to earn its keep.</p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-h"><span class="stage-n">STAGE 8</span><h3>Reports, accessories, the rest of the CMS</h3><span class="stage-size">2 weeks</span></div>
+        <p>Registrations, listings, deals, deal value, commission and activity over time, with filters and charts. The accessories marketplace. Page building, media library, admin roles beyond your own.</p>
+        <p class="gives">Gives you: <b>the complete brief</b>, and numbers you can show a bank or a partner.</p>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <b>Roughly eleven to sixteen weeks to the full brief, one person.</b>
+      <p>But you are operating a real marketplace from stage 4, around week five or six. That gap is the entire argument for building in this order rather than launching everything at once.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>What the database holds</h2><span class="tag">the shape of the thing</span></div>
+    <p class="sec-note">Grouped by what they are for. The reference lists, coffee types, origins, grades and so on, are deliberately tables rather than values written into the code, because your brief was explicit that you must be able to change them without a developer.</p>
+
+    <div class="tables">
+      <div class="tbl"><h3>users</h3><p>One row per person who can log in.</p><div class="cols">role, email, phone, whatsapp, password_hash, status, language, last_seen</div></div>
+      <div class="tbl"><h3>companies</h3><p>The business behind a user, and what the public profile shows.</p><div class="cols">user_id, name, logo, country, city, address, description, verified_at</div></div>
+      <div class="tbl"><h3>listings</h3><p>A supplier's available coffee. The centre of the whole system.</p><div class="cols">company_id, coffee_type_id, origin_id, region, zone, woreda, grade_id, processing_id, quality_id, quantity, unit_id, price, packaging_id, selling_method_id, location, available_from, status, featured</div></div>
+      <div class="tbl"><h3>requirements</h3><p>An exporter's need. Same shape, opposite direction.</p><div class="cols">company_id, coffee_type_id, origin_id, grade_id, processing_id, quantity, unit_id, target_price, destination, needed_by, packaging_id, selling_method_id, notes, status</div></div>
+      <div class="tbl"><h3>enquiries + messages</h3><p>A conversation about one listing or requirement, always through you.</p><div class="cols">enquiry: subject_type, subject_id, from_company_id, status &middot; message: enquiry_id, author, body, sent_at, read_at</div></div>
+      <div class="tbl"><h3>deals</h3><p>A transaction, with its history preserved.</p><div class="cols">supplier_id, exporter_id, listing_id, quantity, unit_id, price, total_value, selling_method_id, status, agreed_at, notes &middot; plus a status history row per change</div></div>
+      <div class="tbl"><h3>commissions</h3><p>What you are owed and what has arrived.</p><div class="cols">deal_id, type, percentage, fixed_amount, calculated_amount, status, invoiced_at, paid_at</div></div>
+      <div class="tbl"><h3>transport_requests</h3><p>Both routes from your brief.</p><div class="cols">deal_id, route, pickup, destination, quantity, bags, vehicle_requirement, pickup_date, provider, status, notes</div></div>
+      <div class="tbl"><h3>market_prices</h3><p>Already exists as a file. Becomes a table you edit.</p><div class="cols">origin_id, grade_id, processing_id, price, unit_id, effective_date, published</div></div>
+      <div class="tbl"><h3>reference lists</h3><p>Everything the brief said you must control yourself.</p><div class="cols">coffee_types, origins, regions, zones, woredas, grades, processing_methods, quality_categories, selling_methods, packaging_types, units, accessory_categories &mdash; each with name_en, name_am, sort, active</div></div>
+      <div class="tbl"><h3>content</h3><p>The CMS side: what the public site says.</p><div class="cols">pages, page_blocks, media, settings &mdash; each text field carrying both languages</div></div>
+      <div class="tbl"><h3>activity_log</h3><p>Who did what, when. Your brief asked for this explicitly.</p><div class="cols">actor_id, action, subject_type, subject_id, meta, ip, created_at</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>Anonymity: protecting your position</h2><span class="tag">stages 4 and 5, the core rule</span></div>
+    <p class="sec-note">If a supplier's name appears on a public lot, an exporter who already knows them will call them directly and you never hear about the deal. This is the one risk that can quietly end a brokerage, and the software has to prevent it rather than rely on goodwill. The answer is not to hide everything, which would make lots unsellable. It is <b>staged disclosure</b>: identity is withheld until you decide it is time, and every release is recorded.</p>
+
+    <h3 style="font-size:1.05rem">The three stages of what a counterparty can see</h3>
+    <table style="margin-top:.6rem">
+      <tr><th>Stage</th><th>What is visible</th><th>Who controls it</th></tr>
+      <tr><td>Public listing</td><td>Origin, zone, grade, processing, quantity, price, availability, trust badge, and a reference like EBC-2026-0412. No name, no logo, no contact.</td><td>Automatic</td></tr>
+      <tr><td>Enquiry opened</td><td>Everything above, plus a conversation with <b>you</b>, not with the other party. You qualify the buyer before anything moves.</td><td>You</td></tr>
+      <tr><td>Identity released</td><td>Company name, contact person, exact location, documents. Released when you judge the deal real, typically at agreement.</td><td>You, and it is logged</td></tr>
+    </table>
+
+    <div class="callout" style="margin-top:1.4rem">
+      <b>Anonymity is only as good as its weakest leak, and most of the leaks are not the name field.</b>
+      <p>In a trade this small, people recognise each other from details long before they see a name. Every one of these has to be handled or the whole thing is theatre:</p>
+    </div>
+
+    <div class="tables" style="margin-top:.8rem">
+      <div class="tbl"><h3>the company logo</h3><p>Displaying it names them instantly. Hidden on public posts, shown only after release.</p></div>
+      <div class="tbl"><h3>photographs of the lot</h3><p>The biggest leak. A distinctive washing station, a painted wall, sacks with markings, a recognisable hillside. Anyone in the trade will know it. Photos are reviewed in your approval queue before publishing, and rejected if they identify.</p></div>
+      <div class="tbl"><h3>documents</h3><p>Grading certificates and licences carry the name in the header. Never attached to a public post; held for release.</p></div>
+      <div class="tbl"><h3>location precision</h3><p>Woreda plus a small origin can mean only one washing station. Public posts show zone level; the exact site is held back.</p></div>
+      <div class="tbl"><h3>the free text fields</h3><p>Suppliers will type their own name into the notes without thinking. The form warns them, and you see it in the queue before anyone else does.</p></div>
+      <div class="tbl"><h3>image metadata</h3><p>Photos carry GPS coordinates and device details. Stripped automatically on upload, not left to anyone remembering.</p></div>
+    </div>
+
+    <p class="sec-note" style="margin-top:1rem">Your approval queue in stage 4 is what makes this workable: nothing reaches the public until you have looked at it, which is exactly the moment to catch a leak. The queue was already in the plan for quality. It now carries a second job.</p>
+
+    <div class="callout">
+      <b>One genuine conflict, worth deciding early.</b>
+      <p>Your own site promises washing-station-level origin records for European buyers, because the EU deforestation rules require knowing exactly where coffee grew. That is incompatible with permanent anonymity. Staged disclosure resolves it, so long as you are clear with EU-bound buyers that full traceability arrives at commitment rather than at browsing. Worth saying so on the page rather than letting a buyer discover it late.</p>
+    </div>
+
+    <p class="sec-note" style="margin-top:1.1rem">Two further points. First, anonymity makes the trust badge <b>more</b> important, not less: when a buyer cannot see who they are dealing with, your verification becomes the only signal they have, which is an argument for holding the standard strictly. Second, brokers commonly ask both sides to accept a non-circumvention undertaking before identities are exchanged. The platform can present and record that acceptance at the moment of release, but the wording of such an agreement is a question for a lawyer in Ethiopia, not for me.</p>
+
+    <h3 style="font-size:1.05rem;margin-top:1.5rem">What this adds to the database</h3>
+    <div class="tables" style="margin-top:.7rem">
+      <div class="tbl"><h3>listings and requirements (extended)</h3><p>A public reference, and how precise the public location may be.</p><div class="cols">public_ref, identity_state, location_precision, media_cleared_at, cleared_by</div></div>
+      <div class="tbl"><h3>disclosures</h3><p>Every identity release, so you always know who learned what and when.</p><div class="cols">enquiry_id, released_company_id, released_to_company_id, released_by, released_at, undertaking_accepted_at</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>Verification and trust</h2><span class="tag">stage 3, visible everywhere</span></div>
+    <p class="sec-note">Three tiers, assigned by you and nobody else. Not a star rating: a star average implies many opinions you do not have, and 4.2 out of 5 tells an exporter nothing about whether a trade licence is real. A tier states that a specific standard was met and that you checked it. The criteria are published, which is what turns a badge into evidence rather than decoration, and what protects you when someone challenges it.</p>
+
+    <div class="tiers">
+      <div class="tier t0">
+        <div class="tier-h"><span class="badge b0">no badge</span><h3>Registered</h3></div>
+        <p>An account exists. Nothing has been checked. The absence of a badge is the signal, so there is nothing to display.</p>
+        <p class="crit">Requires: a confirmed email and phone number.</p>
+      </div>
+
+      <div class="tier t1">
+        <div class="tier-h"><span class="badge b1">&#10003; Verified</span><h3>Verified</h3></div>
+        <p>You have seen the paperwork and confirmed the business is real and reachable.</p>
+        <p class="crit"><b>Supplier requires:</b> trade licence seen, business address confirmed, washing station or site identified, a named person reachable by phone.</p>
+        <p class="crit"><b>Exporter requires:</b> export licence seen, business address confirmed, a named person reachable by phone.</p>
+      </div>
+
+      <div class="tier t2">
+        <div class="tier-h"><span class="badge b2">&#9733; Established</span><h3>Established</h3></div>
+        <p>Verified, plus a track record you have witnessed yourself.</p>
+        <p class="crit"><b>Requires:</b> everything in Verified, plus completed deals through Ethio Bean Connect, delivery matching the approved sample, and payment terms honoured. You set the number of deals; two or three is a sensible start.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.05rem;margin-top:1.8rem">Where the badge appears</h3>
+    <p class="sec-note" style="margin-top:.5rem">A badge is worthless if it only lives on a profile nobody opens. It rides with the company everywhere their name appears.</p>
+    <table>
+      <tr><th>Place</th><th>Who sees it</th><th>Form</th></tr>
+      <tr><td>Company profile</td><td>Anyone</td><td>Full badge and the criteria met</td></tr>
+      <tr><td>Every lot and requirement card</td><td>Anyone browsing the market</td><td>Small badge beside the company name</td></tr>
+      <tr><td>Market table rows</td><td>Anyone</td><td>Icon only</td></tr>
+      <tr><td>Search and filters</td><td>Anyone</td><td>Filter: verified only</td></tr>
+      <tr><td>Your admin queue</td><td>You</td><td>Badge, plus the private notes behind it</td></tr>
+    </table>
+
+    <div class="callout" style="margin-top:1.5rem">
+      <b>The part that carries risk.</b>
+      <p>A badge is a promise you are making with your own name. If someone you marked Verified defaults, the buyer will hold you responsible, and they will be partly right. Three things make that survivable: the criteria are written down and followed every time, every check is recorded against the company with a date and who did it, and a badge can be removed as easily as it was given. The plan includes all three. What it cannot include is the discipline to actually apply the standard on a busy day, and that part is yours.</p>
+    </div>
+
+    <h3 style="font-size:1.05rem;margin-top:1.7rem">What this adds to the database</h3>
+    <div class="tables" style="margin-top:.7rem">
+      <div class="tbl"><h3>companies (extended)</h3><p>The tier itself, and when it was granted.</p><div class="cols">trust_tier, tier_granted_at, tier_granted_by, tier_review_due, tier_private_notes</div></div>
+      <div class="tbl"><h3>verification_checks</h3><p>One row per check performed, so a badge is auditable rather than an opinion.</p><div class="cols">company_id, check_type, result, evidence_media_id, checked_by, checked_at, expires_at, notes</div></div>
+    </div>
+    <p class="sec-note" style="margin-top:.9rem">Licences expire, so <code>expires_at</code> matters: the system can warn you when a Verified company's trade licence is about to lapse, rather than letting a badge quietly become a lie.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>Who can do what</h2><span class="tag">5 roles</span></div>
+    <p class="sec-note">Permissions are enforced on the server, not by hiding buttons. A supplier who guesses another supplier's web address still gets refused.</p>
+    <div class="roles">
+      <div class="role"><h3>Super admin</h3><p class="can">Everything, including creating other admins and seeing all financial data.</p></div>
+      <div class="role"><h3>Business admin</h3><p class="can">Users, listings, requirements, deals, commission, transport, market prices, messages.</p><p class="cannot">Cannot change site content or create admins.</p></div>
+      <div class="role"><h3>Content admin</h3><p class="can">Pages, images, origins, market information, the public site's words.</p><p class="cannot">Cannot see deals, commission or user contact details.</p></div>
+      <div class="role"><h3>Supplier</h3><p class="can">Their own profile, lots, enquiries, deals and messages.</p><p class="cannot">Cannot see other suppliers, or any exporter's contact details.</p></div>
+      <div class="role"><h3>Exporter</h3><p class="can">Their own profile, requirements, enquiries, deals and messages.</p><p class="cannot">Cannot see other exporters, or any supplier's contact details until you release them.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>Decisions only you can make</h2><span class="tag">before stage 2</span></div>
+    <p class="sec-note">These change the cost and the shape of everything after, so they are worth settling before code starts.</p>
+    <div class="decisions">
+
+      <div class="dec">
+        <h3>Hosting has to change</h3>
+        <p>A static site can live on very cheap hosting. An application with a database cannot. Once stage 2 begins you need a host that runs code and keeps a database backed up.</p>
+        <p class="rec"><b>Recommended:</b> keep the cheap static hosting for now, and move to an application host at stage 2. Expect the monthly cost to rise from a few dollars to somewhere in the region of ten to thirty, depending on provider and how much storage the photographs need.</p>
+      </div>
+
+      <div class="dec">
+        <h3>Where the data physically lives</h3>
+        <p>Your suppliers are in Ethiopia and your buyers are in Europe and the Gulf. A server in Europe serves both acceptably; a server in the United States serves neither well.</p>
+        <p class="rec"><b>Recommended:</b> host in Europe, with daily automated backups you can actually restore from, tested at least once.</p>
+      </div>
+
+      <div class="dec">
+        <h3>Who owns the account</h3>
+        <p>Whoever creates the hosting, domain and database accounts controls the business. This is worth getting right at the start rather than untangling later.</p>
+        <p class="rec"><b>Recommended:</b> every account created in your name and your email, with billing on your card. I work inside accounts you own.</p>
+      </div>
+
+      <div class="dec">
+        <h3>Commission before it is built</h3>
+        <p>Stage 6 needs the rules written down: is it a percentage or a fixed amount, is it the same for every deal, who agrees it, when is it invoiced, what happens if a deal collapses after agreement.</p>
+        <p class="rec"><b>Recommended:</b> write these rules in plain sentences before stage 6 starts. Software cannot resolve a policy you have not decided.</p>
+      </div>
+
+      <div class="dec">
+        <h3>Payments stay out, for now</h3>
+        <p>Your brief lists online payments and escrow as future features. Handling money moves you into financial regulation and a far higher security burden.</p>
+        <p class="rec"><b>Recommended:</b> keep money outside the platform. Record deals and commission; let the payments themselves happen by bank transfer as they do today.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h"><h2>What I would not build</h2><span class="tag">honest subtractions</span></div>
+    <p class="sec-note">Your original brief is thorough, and a few items in it will cost more than they return. Worth arguing about now rather than paying for later.</p>
+    <table>
+      <tr><th>Item</th><th>Why</th><th>Instead</th></tr>
+      <tr><td>Accessories marketplace</td><td>A second marketplace with its own listings, categories and sellers, serving a different audience from coffee trading</td><td>Defer past stage 8</td></tr>
+      <tr><td>Website live chat</td><td>Real-time chat needs constant staffing to be worth having, and an unanswered chat is worse than none</td><td>WhatsApp, already live</td></tr>
+      <tr><td>AI matching</td><td>The rule-based match on type, origin, grade and quantity will do the job on your data volumes</td><td>Rules, revisit at scale</td></tr>
+      <tr><td>SMS notifications</td><td>Per-message cost, and Ethiopian delivery is unreliable</td><td>Email and WhatsApp</td></tr>
+      <tr><td><b>Peer</b> ratings, users scoring each other</td><td>With few users the average is noise, and a public bad score from one party can wreck a relationship you depend on. Note this is not the same as your own verification, which is being built: see Verification and trust above</td><td>Your trust tiers</td></tr>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p><strong>Nothing here is built yet, and nothing will be until you say so.</strong> The next concrete step is stage 1, getting the site online, which is a day and unblocks both the analytics you asked for and the editing you asked for.</p>
+  <p style="margin-top:.7rem">Estimates assume one person working steadily and will move once real requirements meet real users. Treat the stage order as firmer than the week counts.</p>
+</footer>

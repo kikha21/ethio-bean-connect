@@ -1,0 +1,6 @@
+node_modules/
+platform/data/*.db
+platform/data/*.db-wal
+platform/data/*.db-shm
+review/platform.log
+_impeccable/

@@ -1,0 +1,17 @@
+{
+  "updated": "2026-08-31",
+  "currency": "USD",
+  "unit": "per lb, FOB Djibouti",
+  "note": "Set a value on any row to publish it. Leave it null and the row shows On request.",
+  "rows": [
+    { "origin": "Yirgacheffe", "grade": "G1", "process": "Washed",  "price": null },
+    { "origin": "Yirgacheffe", "grade": "G1", "process": "Natural", "price": null },
+    { "origin": "Guji",        "grade": "G1", "process": "Washed",  "price": null },
+    { "origin": "Guji",        "grade": "G1", "process": "Natural", "price": null },
+    { "origin": "Sidamo",      "grade": "G2", "process": "Washed",  "price": null },
+    { "origin": "Limu",        "grade": "G2", "process": "Washed",  "price": null },
+    { "origin": "Jimma",       "grade": "G4", "process": "Natural", "price": null },
+    { "origin": "Nekemte",     "grade": "G4", "process": "Natural", "price": null },
+    { "origin": "Harar",       "grade": "G4", "process": "Natural", "price": null }
+  ]
+}

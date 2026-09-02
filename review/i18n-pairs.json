@@ -1,0 +1,642 @@
+[
+ {
+  "key": "chat.call",
+  "en": "Call us",
+  "am": "ይደውሉልን"
+ },
+ {
+  "key": "chat.email",
+  "en": "Send an email",
+  "am": "ኢሜይል ይላኩ"
+ },
+ {
+  "key": "chat.wa",
+  "en": "Chat on WhatsApp",
+  "am": "በዋትስአፕ ያውሩን"
+ },
+ {
+  "key": "checks.1h",
+  "en": "Grade and screen size",
+  "am": "ደረጃ እና የወንፊት መጠን"
+ },
+ {
+  "key": "checks.1p",
+  "en": "Read against the grading certificate, not against a promise on the phone.",
+  "am": "በስልክ በሚሰጥ ቃል ሳይሆን በደረጃ ማረጋገጫ ሰነድ ይነበባል።"
+ },
+ {
+  "key": "checks.2h",
+  "en": "Moisture",
+  "am": "እርጥበት"
+ },
+ {
+  "key": "checks.2p",
+  "en": "Measured before the lot is offered, so nobody finds out at the port.",
+  "am": "ጭነቱ ከመቅረቡ በፊት ይለካል፣ ማንም ወደብ ላይ እንዳያውቀው።"
+ },
+ {
+  "key": "checks.3h",
+  "en": "Origin record",
+  "am": "የመገኛ መዝገብ"
+ },
+ {
+  "key": "checks.3p",
+  "en": "Down to the washing station, for European buyers who have to prove it.",
+  "am": "እስከ ማጠቢያ ጣቢያ ድረስ፣ ማረጋገጥ ላለባቸው የአውሮፓ ገዢዎች።"
+ },
+ {
+  "key": "checks.4h",
+  "en": "A sample in your hands",
+  "am": "ናሙና በእጅዎ"
+ },
+ {
+  "key": "checks.4p",
+  "en": "You cup it before you commit to a container. Always, without exception.",
+  "am": "ኮንቴይነር ከመውሰድዎ በፊት ይቀምሱታል። ሁልጊዜ፣ ያለ ልዩነት።"
+ },
+ {
+  "key": "checks.h",
+  "en": "Nothing leaves here unchecked.",
+  "am": "ሳይመረመር ከዚህ የሚወጣ የለም።"
+ },
+ {
+  "key": "cta.need",
+  "en": "Looking for coffee instead?",
+  "am": "ቡና እየፈለጉ ነው?"
+ },
+ {
+  "key": "cta.post",
+  "en": "Post your lot",
+  "am": "ቡናዎን ያስመዝግቡ"
+ },
+ {
+  "key": "e.email",
+  "en": "That does not look like an email address. Check for a missing @ or a typo.",
+  "am": "ይህ የኢሜይል አድራሻ አይመስልም። @ የጎደለ ወይም የፊደል ስህተት ይኑር ይመልከቱ።"
+ },
+ {
+  "key": "e.other",
+  "en": "Type it in here, and we will add it to the list.",
+  "am": "እዚህ ይጻፉት፣ እኛም ወደ ዝርዝሩ እንጨምረዋለን።"
+ },
+ {
+  "key": "e.phone",
+  "en": "Please give a number we can actually reach you on, with the country code.",
+  "am": "በእውነት ልናገኝዎት የምንችልበትን ቁጥር ከአገር ኮድ ጋር ይስጡን።"
+ },
+ {
+  "key": "e.required",
+  "en": "This one we do need.",
+  "am": "ይህኛው ግን ያስፈልገናል።"
+ },
+ {
+  "key": "e.summary",
+  "en": "There are {n} things to fix before this can send:",
+  "am": "ይህ ከመላኩ በፊት {n} ነገሮች መስተካከል አለባቸው፦"
+ },
+ {
+  "key": "f.choose",
+  "en": "Choose one",
+  "am": "አንዱን ይምረጡ"
+ },
+ {
+  "key": "f.company",
+  "en": "Company",
+  "am": "ድርጅት"
+ },
+ {
+  "key": "f.editagain",
+  "en": "Edit and send again",
+  "am": "አስተካክለው እንደገና ይላኩ"
+ },
+ {
+  "key": "f.email",
+  "en": "Email",
+  "am": "ኢሜይል"
+ },
+ {
+  "key": "f.failem",
+  "en": "Send it by email instead",
+  "am": "በኢሜይል ይላኩት"
+ },
+ {
+  "key": "f.failh",
+  "en": "That did not open.",
+  "am": "አልተከፈተም።"
+ },
+ {
+  "key": "f.failp",
+  "en": "Your message is written out below, nothing is lost. Copy it and send it to us any way you like, or try one of these.",
+  "am": "መልእክትዎ ከታች ተጽፏል፣ ምንም አልጠፋም። ገልብጠው በፈለጉት መንገድ ይላኩልን፣ ወይም ከእነዚህ አንዱን ይሞክሩ።"
+ },
+ {
+  "key": "f.failwa",
+  "en": "Try WhatsApp again",
+  "am": "ዋትስአፕን እንደገና ይሞክሩ"
+ },
+ {
+  "key": "f.grade",
+  "en": "Grade",
+  "am": "ደረጃ"
+ },
+ {
+  "key": "f.gradeOther",
+  "en": "Which grade?",
+  "am": "የትኛው ደረጃ?"
+ },
+ {
+  "key": "f.name",
+  "en": "Your name",
+  "am": "ስምዎ"
+ },
+ {
+  "key": "f.note",
+  "en": "This opens WhatsApp with your details filled in, ready to send to us.",
+  "am": "ይህ ዋትስአፕን ዝርዝርዎ ተሞልቶ፣ ወደ እኛ ለመላክ ዝግጁ ሆኖ ይከፍታል።"
+ },
+ {
+  "key": "f.noteEmail",
+  "en": "This opens your email app with everything filled in, addressed to us.",
+  "am": "ይህ የኢሜይል መተግበሪያዎን ሁሉም ነገር ተሞልቶ ወደ እኛ ተልኮ ይከፍታል።"
+ },
+ {
+  "key": "f.notes",
+  "en": "Anything else we should know",
+  "am": "ሌላ ልናውቀው የሚገባ"
+ },
+ {
+  "key": "f.okh",
+  "en": "Sent to your WhatsApp.",
+  "am": "ወደ ዋትስአፕዎ ተልኳል።"
+ },
+ {
+  "key": "f.okp",
+  "en": "Press send in WhatsApp and we will reply within one working day.",
+  "am": "በዋትስአፕ ላይ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።"
+ },
+ {
+  "key": "f.okpEmail",
+  "en": "Your email app should have opened with the message ready. Press send there and we will reply within one working day.",
+  "am": "የኢሜይል መተግበሪያዎ መልእክቱ ተዘጋጅቶ መከፈት ነበረበት። እዚያ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።"
+ },
+ {
+  "key": "f.opt",
+  "en": "optional",
+  "am": "አማራጭ"
+ },
+ {
+  "key": "f.origin",
+  "en": "Origin",
+  "am": "መገኛ"
+ },
+ {
+  "key": "f.originOther",
+  "en": "Which origin?",
+  "am": "የትኛው መገኛ?"
+ },
+ {
+  "key": "f.other",
+  "en": "Other, let me type it",
+  "am": "ሌላ፣ ራሴ እጽፈዋለሁ"
+ },
+ {
+  "key": "f.phone",
+  "en": "Phone or WhatsApp",
+  "am": "ስልክ ወይም ዋትስአፕ"
+ },
+ {
+  "key": "f.qty",
+  "en": "Quantity",
+  "am": "መጠን"
+ },
+ {
+  "key": "f.qtyHave",
+  "en": "e.g. 30 MT available",
+  "am": "ለምሳሌ 30 ቶን አለ"
+ },
+ {
+  "key": "f.qtyNeed",
+  "en": "e.g. 20 MT needed",
+  "am": "ለምሳሌ 20 ቶን ያስፈልጋል"
+ },
+ {
+  "key": "f.reqnote",
+  "en": "Every field is required unless it says optional.",
+  "am": "አማራጭ ካልተባለ በስተቀር እያንዳንዱ መስክ ያስፈልጋል።"
+ },
+ {
+  "key": "f.route",
+  "en": "Send it how",
+  "am": "እንዴት ይላክ"
+ },
+ {
+  "key": "f.send",
+  "en": "Send it to us",
+  "am": "ላኩልን"
+ },
+ {
+  "key": "f.type",
+  "en": "Coffee type",
+  "am": "የቡና ዓይነት"
+ },
+ {
+  "key": "f.typeOther",
+  "en": "Which coffee type?",
+  "am": "የትኛው የቡና ዓይነት?"
+ },
+ {
+  "key": "f.viaEmail",
+  "en": "Email",
+  "am": "ኢሜይል"
+ },
+ {
+  "key": "f.viaWa",
+  "en": "WhatsApp",
+  "am": "ዋትስአፕ"
+ },
+ {
+  "key": "faq.a1",
+  "en": "Yes, and you should. Nothing goes to container without a sample you have cupped and approved. The contract is written against that sample.",
+  "am": "አዎ፣ እና ማግኘት አለብዎት። እርስዎ ቀምሰው ያላጸደቁት ናሙና ሳይኖር ምንም ወደ ኮንቴይነር አይገባም። ውሉ የሚጻፈው በዚያ ናሙና ላይ ነው።"
+ },
+ {
+  "key": "faq.a2",
+  "en": "The contract names the grade and the cup. If a delivery does not meet the description it is written against, it is not your problem to absorb.",
+  "am": "ውሉ ደረጃውንና ጣዕሙን ይሰይማል። አንድ ጭነት የተጻፈበትን መግለጫ ካላሟላ፣ እርስዎ የሚሸከሙት ችግር አይሆንም።"
+ },
+ {
+  "key": "faq.a3",
+  "en": "We agree the payment terms in writing before the coffee moves, and we hold both sides to them. Suppliers waiting months for money is the thing this business exists to stop.",
+  "am": "ቡናው ከመንቀሳቀሱ በፊት የክፍያ ውሉን በጽሑፍ እንስማማለን፣ ሁለቱንም ወገን በዚያ እናስይዛለን። አቅራቢዎች ወራት ገንዘብ መጠበቃቸው ይህ ንግድ ሊያስቆመው የተነሳው ነገር ነው።"
+ },
+ {
+  "key": "faq.a4",
+  "en": "We collect origin records at the washing station level as part of checking a lot, so it is ready when a buyer asks rather than scrambled for afterwards.",
+  "am": "ጭነት በምንመረምርበት ጊዜ የመገኛ መዝገቦችን እስከ ማጠቢያ ጣቢያ ደረጃ እንሰበስባለን፣ ስለዚህ ገዢ ሲጠይቅ ዝግጁ ይሆናል።"
+ },
+ {
+  "key": "faq.a5",
+  "en": "We take a commission on a completed deal, agreed with you up front. Nothing to post a lot, nothing to look.",
+  "am": "በተጠናቀቀ ስምምነት ላይ ኮሚሽን እንወስዳለን፣ አስቀድሞ ከእርስዎ ጋር ተስማምተን። ጭነት ማስመዝገብም ሆነ መመልከት ነጻ ነው።"
+ },
+ {
+  "key": "faq.h",
+  "en": "The questions people actually ask.",
+  "am": "ሰዎች በእውነት የሚጠይቁት።"
+ },
+ {
+  "key": "faq.q1",
+  "en": "Can I get a sample before I commit?",
+  "am": "ከመወሰኔ በፊት ናሙና ማግኘት እችላለሁ?"
+ },
+ {
+  "key": "faq.q2",
+  "en": "How do I know the delivery matches the sample?",
+  "am": "ጭነቱ ከናሙናው ጋር መመሳሰሉን እንዴት አውቃለሁ?"
+ },
+ {
+  "key": "faq.q3",
+  "en": "When does the supplier get paid?",
+  "am": "አቅራቢው መቼ ይከፈለዋል?"
+ },
+ {
+  "key": "faq.q4",
+  "en": "Can you handle the European traceability paperwork?",
+  "am": "የአውሮፓን የመገኛ ሰነድ ማስተናገድ ትችላላችሁ?"
+ },
+ {
+  "key": "faq.q5",
+  "en": "What does Ethio Bean Connect cost?",
+  "am": "ኢትዮ ቢን ኮኔክት ስንት ያስከፍላል?"
+ },
+ {
+  "key": "foot.lang",
+  "en": "English | አማርኛ",
+  "am": "እንግሊዝኛ | አማርኛ"
+ },
+ {
+  "key": "foot.reach",
+  "en": "Reach us",
+  "am": "ያግኙን"
+ },
+ {
+  "key": "foot.site",
+  "en": "The site",
+  "am": "ገጹ"
+ },
+ {
+  "key": "foot.tag",
+  "en": "Connecting Ethiopian coffee suppliers and exporters.",
+  "am": "የኢትዮጵያ ቡና አቅራቢዎችንና ላኪዎችን እናገናኛለን።"
+ },
+ {
+  "key": "hero.b1",
+  "en": "Ethiopia grows the coffee the world is asking for.",
+  "am": "ኢትዮጵያ ዓለም የሚፈልገውን ቡና ታመርታለች።"
+ },
+ {
+  "key": "hero.b2",
+  "en": "Finding the right buyer is the hard part.",
+  "am": "ትክክለኛውን ገዢ ማግኘት ነው ከባዱ።"
+ },
+ {
+  "key": "hero.b3",
+  "en": "Every lot has a buyer.",
+  "am": "እያንዳንዱ ጭነት ገዢ አለው።"
+ },
+ {
+  "key": "hero.b3sub",
+  "en": "We find them. You keep trading.",
+  "am": "እኛ እንፈልጋቸዋለን። እርስዎ ንግድዎን ይቀጥሉ።"
+ },
+ {
+  "key": "hero.scroll",
+  "en": "Scroll",
+  "am": "ወደ ታች"
+ },
+ {
+  "key": "how.1h",
+  "en": "Post the lot",
+  "am": "ጭነቱን ያስመዝግቡ"
+ },
+ {
+  "key": "how.1p",
+  "en": "Origin, grade, quantity, what you want for it. Two minutes.",
+  "am": "መገኛ፣ ደረጃ፣ መጠን፣ የሚፈልጉት ዋጋ። ሁለት ደቂቃ።"
+ },
+ {
+  "key": "how.2h",
+  "en": "We check it",
+  "am": "እኛ እንመረምረዋለን"
+ },
+ {
+  "key": "how.2p",
+  "en": "Grade, moisture, and the origin record, before anyone sees it.",
+  "am": "ደረጃ፣ እርጥበት እና የመገኛ መዝገብ፣ ማንም ከማየቱ በፊት።"
+ },
+ {
+  "key": "how.3h",
+  "en": "We match it",
+  "am": "እናገናኘዋለን"
+ },
+ {
+  "key": "how.3p",
+  "en": "We already know which exporters are short of exactly your lot.",
+  "am": "በትክክል የእርስዎን ጭነት የሚፈልጉ ላኪዎችን አስቀድመን እናውቃለን።"
+ },
+ {
+  "key": "how.4h",
+  "en": "You trade",
+  "am": "ንግዱን ይፈጽማሉ"
+ },
+ {
+  "key": "how.4p",
+  "en": "You agree the price. We stay in it until the coffee moves.",
+  "am": "ዋጋውን እርስዎ ይስማማሉ። ቡናው እስኪንቀሳቀስ ድረስ አብረን እንቆያለን።"
+ },
+ {
+  "key": "how.h",
+  "en": "Four steps, start to finish.",
+  "am": "አራት ደረጃዎች፣ ከመጀመሪያ እስከ መጨረሻ።"
+ },
+ {
+  "key": "how.n1",
+  "en": "Step 01",
+  "am": "ደረጃ 01"
+ },
+ {
+  "key": "how.n2",
+  "en": "Step 02",
+  "am": "ደረጃ 02"
+ },
+ {
+  "key": "how.n3",
+  "en": "Step 03",
+  "am": "ደረጃ 03"
+ },
+ {
+  "key": "how.n4",
+  "en": "Step 04",
+  "am": "ደረጃ 04"
+ },
+ {
+  "key": "market.ask",
+  "en": "",
+  "am": "ይጠይቁን"
+ },
+ {
+  "key": "market.h",
+  "en": "What lots are moving at.",
+  "am": "ጭነቶች የሚንቀሳቀሱበት ዋጋ።"
+ },
+ {
+  "key": "market.note",
+  "en": "These are indicative levels, not a quote. Every lot is priced on its own cup, grade and moisture. Ask us and we will confirm the same day.",
+  "am": "እነዚህ አመላካች ደረጃዎች እንጂ ዋጋ አይደሉም። እያንዳንዱ ጭነት በራሱ ጣዕም፣ ደረጃ እና እርጥበት ይተመናል። ይጠይቁን፣ በዚያኑ ቀን እናረጋግጣለን።"
+ },
+ {
+  "key": "market.th1",
+  "en": "Origin",
+  "am": "መገኛ"
+ },
+ {
+  "key": "market.th2",
+  "en": "Grade",
+  "am": "ደረጃ"
+ },
+ {
+  "key": "market.th3",
+  "en": "Process",
+  "am": "ዝግጅት"
+ },
+ {
+  "key": "market.th4",
+  "en": "Level",
+  "am": "ዋጋ"
+ },
+ {
+  "key": "market.updated",
+  "en": "Last updated",
+  "am": "የተሻሻለው"
+ },
+ {
+  "key": "nav.checks",
+  "en": "What we check",
+  "am": "የምንመረምረው"
+ },
+ {
+  "key": "nav.faq",
+  "en": "Questions",
+  "am": "ጥያቄዎች"
+ },
+ {
+  "key": "nav.how",
+  "en": "How it works",
+  "am": "እንዴት እንደሚሰራ"
+ },
+ {
+  "key": "nav.market",
+  "en": "Market",
+  "am": "ገበያ"
+ },
+ {
+  "key": "nav.origins",
+  "en": "Origins",
+  "am": "መገኛዎች"
+ },
+ {
+  "key": "origins.h",
+  "en": "What each origin actually gives you.",
+  "am": "እያንዳንዱ መገኛ በእውነት የሚሰጠው።"
+ },
+ {
+  "key": "origins.season",
+  "en": "This season the south is down and the west is having a bumper year. If your usual origin is short, we will tell you where the volume actually is.",
+  "am": "በዚህ ወቅት ደቡቡ ቀንሷል፣ ምዕራቡ ደግሞ የተትረፈረፈ ምርት አለው። የተለመደው መገኛዎ ካጠረ፣ መጠኑ የት እንዳለ እንነግርዎታለን።"
+ },
+ {
+  "key": "post.f1",
+  "en": "If your type, origin or grade is not on the list, choose Other and type it in.",
+  "am": "ዓይነትዎ፣ መገኛዎ ወይም ደረጃዎ ዝርዝሩ ውስጥ ከሌለ፣ ሌላ የሚለውን መርጠው ይጻፉት።"
+ },
+ {
+  "key": "post.f2",
+  "en": "Nothing is published until we have checked it with you.",
+  "am": "ከእርስዎ ጋር እስክናረጋግጥ ድረስ ምንም አይታተምም።"
+ },
+ {
+  "key": "post.f3",
+  "en": "Costs nothing to post, and nothing to look.",
+  "am": "ማስመዝገብም ሆነ መመልከት ነጻ ነው።"
+ },
+ {
+  "key": "post.h",
+  "en": "Post your lot.",
+  "am": "ጭነትዎን ያስመዝግቡ።"
+ },
+ {
+  "key": "post.hNeed",
+  "en": "Tell us what you need.",
+  "am": "የሚያስፈልግዎትን ይንገሩን።"
+ },
+ {
+  "key": "post.have",
+  "en": "I have coffee",
+  "am": "ቡና አለኝ"
+ },
+ {
+  "key": "post.lede",
+  "en": "Tell us what you have or what you are missing. We read every one and come back within a working day.",
+  "am": "ያለዎትን ወይም የጎደለዎትን ይንገሩን። እያንዳንዱን እናነባለን፣ በአንድ የስራ ቀን ውስጥ እንመልሳለን።"
+ },
+ {
+  "key": "post.need",
+  "en": "I need coffee",
+  "am": "ቡና እፈልጋለሁ"
+ },
+ {
+  "key": "seal.done",
+  "en": "Sealed. Press again to seal another.",
+  "am": "ታሽጓል። ሌላ ለማተም እንደገና ይጫኑ።"
+ },
+ {
+  "key": "seal.f1",
+  "en": "Origin",
+  "am": "መገኛ"
+ },
+ {
+  "key": "seal.f2",
+  "en": "Grade",
+  "am": "ደረጃ"
+ },
+ {
+  "key": "seal.f3",
+  "en": "Quantity",
+  "am": "መጠን"
+ },
+ {
+  "key": "seal.f4",
+  "en": "Moisture",
+  "am": "እርጥበት"
+ },
+ {
+  "key": "seal.f5",
+  "en": "Origin record",
+  "am": "የመገኛ መዝገብ"
+ },
+ {
+  "key": "seal.f5v",
+  "en": "Washing station level",
+  "am": "የማጠቢያ ጣቢያ ደረጃ"
+ },
+ {
+  "key": "seal.h",
+  "en": "This is what a sealed lot looks like.",
+  "am": "የታሸገ ጭነት ይህን ይመስላል።"
+ },
+ {
+  "key": "seal.hint",
+  "en": "Press and hold the seal",
+  "am": "ማህተሙን ተጭነው ይያዙ"
+ },
+ {
+  "key": "seal.lede",
+  "en": "Nothing reaches an exporter until it has been checked and sealed. Press and hold the seal to do it yourself.",
+  "am": "ተመርምሮ እስኪታሸግ ድረስ ምንም ነገር ወደ ላኪ አይደርስም። ማህተሙን ተጭነው በመያዝ እርስዎ ያድርጉት።"
+ },
+ {
+  "key": "seal.lot",
+  "en": "Lot number",
+  "am": "የጭነት ቁጥር"
+ },
+ {
+  "key": "seal.slip",
+  "en": "Lot record",
+  "am": "የጭነት መዝገብ"
+ },
+ {
+  "key": "skip",
+  "en": "Skip to content",
+  "am": "ወደ ይዘቱ ዝለል"
+ },
+ {
+  "key": "static.sub",
+  "en": "Ethio Bean Connect puts Ethiopian coffee suppliers in front of the exporters who need their lots.",
+  "am": "ኢትዮ ቢን ኮኔክት የኢትዮጵያ ቡና አቅራቢዎችን ጭነታቸውን ከሚፈልጉ ላኪዎች ጋር ያገናኛል።"
+ },
+ {
+  "key": "walls.1h",
+  "en": "Quality swings between harvests.",
+  "am": "ጥራት ከምርት ወደ ምርት ይለያያል።"
+ },
+ {
+  "key": "walls.1p",
+  "en": "A roaster wants the same coffee twice. Two harvests rarely give it to them, and one bad delivery ends the relationship.",
+  "am": "ገዢው ተመሳሳይ ቡና ሁለት ጊዜ ይፈልጋል። ሁለት ምርቶች ያንን አይሰጡም፣ አንድ መጥፎ ጭነት ደግሞ ግንኙነቱን ያቋርጣል።"
+ },
+ {
+  "key": "walls.2h",
+  "en": "Paperwork loses contracts.",
+  "am": "ሰነድ ውል ያስቀራል።"
+ },
+ {
+  "key": "walls.2p",
+  "en": "Europe now wants to know the exact ground a lot grew on. Lots with thin origin records get turned away at the door.",
+  "am": "አውሮፓ ቡናው የበቀለበትን ትክክለኛ ቦታ ማወቅ ትፈልጋለች። በቂ የመገኛ መዝገብ የሌላቸው ጭነቶች ይመለሳሉ።"
+ },
+ {
+  "key": "walls.3h",
+  "en": "Suppliers wait to get paid.",
+  "am": "አቅራቢዎች ክፍያ ይጠብቃሉ።"
+ },
+ {
+  "key": "walls.3p",
+  "en": "Coffee goes out, money comes back late or partly. Washing stations carry that risk alone.",
+  "am": "ቡናው ይወጣል፣ ገንዘቡ ግን ዘግይቶ ወይም በከፊል ይመጣል። ማጠቢያ ጣቢያዎች ያንን ስጋት ብቻቸውን ይሸከማሉ።"
+ },
+ {
+  "key": "walls.h",
+  "en": "Three walls, and every lot hits at least one.",
+  "am": "ሦስት እንቅፋቶች፣ እያንዳንዱ ጭነት ቢያንስ አንዱን ያገኛል።"
+ }
+]
