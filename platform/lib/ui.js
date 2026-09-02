@@ -117,6 +117,7 @@ th.private{color:var(--warn)}
   border-radius:6px;padding:.14rem .45rem;border:1px solid;white-space:nowrap}
 .badge.live{color:var(--green-deep);border-color:var(--green);background:color-mix(in srgb,var(--green) 10%,transparent)}
 .badge.draft{color:var(--ink-2);border-color:var(--line)}
+.badge.new{color:var(--gold-ink);border-color:var(--gold);background:color-mix(in srgb,var(--gold) 16%,transparent);font-weight:600}
 .badge.ex{color:var(--gold-ink);border-color:var(--gold)}
 .badge.warnb{color:var(--warn);border-color:var(--warn);background:var(--warn-bg);white-space:normal}
 .tierdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.4rem;vertical-align:middle}

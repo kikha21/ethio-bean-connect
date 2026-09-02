@@ -149,7 +149,7 @@ function boardCards(en) {
         <div class="lot-foot">
           <span class="tier ${tier}">${TIER_MARK[tier]}<span data-i18n="tier.${tier}">${escHtml(T('tier.' + tier, TIERS[tier].short))}</span>${deals}</span>
           ${stars(r.rating)}
-          <a class="lot-ask" href="#post" data-ref="${escAttr(r.ref)}" data-i18n="board.ask">${escHtml(T('board.ask', 'Ask about this'))}</a>
+          <a class="lot-ask" href="#contact" data-ref="${escAttr(r.ref)}" data-i18n="board.ask">${escHtml(T('board.ask', 'Ask about this'))}</a>
         </div>
       </article>`;
   };
@@ -215,6 +215,18 @@ function render() {
         '}';
       html = html.slice(0, cStart) + block + html.slice(cEnd + 1);
     }
+  }
+
+  /* 4b. the link preview. Until the address is set the two tags are
+        dropped rather than left pointing at a placeholder domain, because
+        a broken preview reads worse than none. */
+  const siteUrl = String(s.site_url || '').trim().replace(/\/+$/, '');
+  if (siteUrl) {
+    html = html.split('https://REPLACE-AT-DEPLOY').join(siteUrl);
+  } else {
+    html = html
+      .split('<meta property="og:url" content="https://REPLACE-AT-DEPLOY/">\n').join('')
+      .split('<meta property="og:image" content="https://REPLACE-AT-DEPLOY/assets/hero-poster.jpg">\n').join('');
   }
 
   /* 5. the market table body and its date, in the markup */

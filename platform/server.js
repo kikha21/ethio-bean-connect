@@ -7,6 +7,7 @@ const auth = require('./lib/auth');
 const { render, invalidate, marketJson, SITE_DIR } = require('./lib/render');
 const { layout, esc } = require('./lib/ui');
 const board = require('./lib/admin-board');
+const publicPost = require('./lib/public-post');
 
 const PORT = Number(process.env.PORT || 4400);
 
@@ -202,7 +203,7 @@ function contentPage(user, flash, q) {
 }
 
 function settingsPage(user, flash) {
-  const rows = db.prepare('SELECT * FROM settings WHERE key LIKE ? ORDER BY sort').all('contact_%');
+  const rows = db.prepare('SELECT * FROM settings WHERE key LIKE ? OR key = ? ORDER BY sort').all('contact_%','site_url');
   return layout({ title: 'Contact details', user, active: 'settings', flash, body: `
   <div class="head"><h1>Contact details</h1></div>
   <p class="lede">These drive five places at once: the chat button, both routes out of the enquiry form, the footer, and the data search engines read. Change one here and it changes everywhere.</p>
@@ -229,6 +230,36 @@ function activityPage(user, flash) {
 }
 
 /* ---------------- server ---------------- */
+
+
+/* Someone with scripting switched off still has to be told what happened,
+   and given a way back. */
+function plainResult(out) {
+  const ok = out.ok;
+  const list = ok ? '' :
+    '<ul>' + Object.keys(out.errors || {}).map(k =>
+      '<li>' + esc(k) + ': ' + esc(out.errors[k]) + '</li>').join('') + '</ul>';
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${ok ? 'Posted' : 'Not posted'} · Ethio Bean Connect</title>
+<style>
+ body{margin:0;background:#F1F4F2;color:#15201A;font:1rem/1.6 system-ui,sans-serif;
+      display:grid;place-items:center;min-height:100vh;padding:2rem}
+ .c{width:min(520px,100%);background:#FBFCFB;border:1px solid #D2DAD5;border-radius:16px;padding:2rem}
+ h1{font-size:1.4rem;margin:0 0 .6rem} p{color:#525C55;margin:0 0 1.2rem}
+ a{display:inline-block;background:#C8A44A;color:#15201A;text-decoration:none;
+   font-weight:600;border-radius:999px;padding:.6rem 1.3rem}
+ ul{color:#A6412A;margin:0 0 1.2rem;padding-left:1.1rem}
+ code{font-family:ui-monospace,monospace;background:#E5EAE7;border-radius:5px;padding:.1rem .35rem}
+</style></head><body><div class="c">
+${ok
+  ? '<h1>Posted.</h1><p>Your reference is <code>' + esc(out.ref || '') + '</code>. ' +
+    'We check every post before it goes on the board, and we will come back to you within a working day. ' +
+    'Your name is never shown on the board.</p>'
+  : '<h1>Not posted.</h1><p>' + esc(out.message || 'Some of it needs another look.') + '</p>' + list}
+<a href="/#post">Back to the form</a>
+</div></body></html>`;
+}
 
 const server = http.createServer(async (req, res) => {
   let url;
@@ -328,7 +359,7 @@ const server = http.createServer(async (req, res) => {
         }
 
         if (p === '/admin/settings') {
-          const rows = db.prepare('SELECT key, value FROM settings WHERE key LIKE ?').all('contact_%');
+          const rows = db.prepare('SELECT key, value FROM settings WHERE key LIKE ? OR key = ?').all('contact_%','site_url');
           const upd = db.prepare('UPDATE settings SET value=?, updated_at=?, updated_by=? WHERE key=?');
           let changed = 0;
           rows.forEach(r => {
@@ -364,6 +395,21 @@ const server = http.createServer(async (req, res) => {
       }
       return send(res, 404, 'text/plain', 'not found');
     }
+
+    /* ---- posting, straight into the board ---- */
+    if (p === '/post' && req.method === 'POST') {
+      const f = await body(req, 32e3);
+      const out = publicPost.submit(f, ipOf(req));
+      const wantsJson = String(req.headers.accept || '').indexOf('application/json') !== -1;
+      if (out.ok) invalidate();
+      if (wantsJson) {
+        return send(res, out.ok ? 200 : (out.rateLimited ? 429 : 400),
+                    'application/json; charset=utf-8', JSON.stringify(out));
+      }
+      /* no scripting: a real page, so the post is never silently lost */
+      return html(res, out.ok ? 200 : 400, plainResult(out));
+    }
+    if (p === '/post' && req.method === 'GET') return redirect(res, '/#post');
 
     /* ---- the public site ---- */
     if (p === '/' || p === '/index.html') {

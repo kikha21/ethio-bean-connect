@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>/* set before the stylesheet is read, so the no-script fallbacks never
+   match for a scripted visitor and their images are never fetched */
+document.documentElement.className+=" js";</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ethio Bean Connect | Ethiopian Coffee Suppliers and Exporters</title>
 <meta name="description" content="Ethio Bean Connect puts Ethiopian coffee suppliers in front of the exporters who need their lots. Yirgacheffe, Guji, Sidamo, Jimma, Limu, Nekemte and Harar, checked and matched.">
 <meta name="theme-color" content="#0E130F">
 <link rel="canonical" href="https://ethiobeanconnect.com/">
-<!-- DEPLOY STEP: patch og:url and og:image with the live absolute URL before zipping -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ethio Bean Connect">
 <meta property="og:description" content="Every lot has a buyer. We find them. You keep trading.">
@@ -459,10 +461,15 @@ section[id],#main,#top{scroll-margin-top:96px}
   }
 }
 
-.plate--how{background-image:url('assets/sec-how.jpg')}
-.plate--origins{background-image:url('assets/sec-origins.jpg')}
-.plate--checks{background-image:url('assets/sec-checks.jpg')}
-.plate--post{background-image:url('assets/sec-post.jpg')}
+.js .plate--how.lit{background-image:url('assets/sec-how.jpg')}
+.js .plate--origins.lit{background-image:url('assets/sec-origins.jpg')}
+.js .plate--checks.lit{background-image:url('assets/sec-checks.jpg')}
+.js .plate--post.lit{background-image:url('assets/sec-post.jpg')}
+/* scripting off: no observer will ever run, so load them outright */
+html:not(.js) .plate--how{background-image:url('assets/sec-how.jpg')}
+html:not(.js) .plate--origins{background-image:url('assets/sec-origins.jpg')}
+html:not(.js) .plate--checks{background-image:url('assets/sec-checks.jpg')}
+html:not(.js) .plate--post{background-image:url('assets/sec-post.jpg')}
 .h2{font-size:clamp(1.85rem,4vw,3rem);max-width:20ch}
 .lede{margin-top:1.1rem;color:var(--text-secondary);max-width:56ch;font-size:var(--t-body)}
 
@@ -821,6 +828,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 @media(max-width:520px){.qty{grid-template-columns:1fr}}
 .qty-conv{display:block;margin-top:.45rem;font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.04em;color:var(--text-secondary);min-height:1.25em}
 .fhint{display:block;margin-top:.45rem;color:var(--text-secondary);font-size:var(--t-xs);line-height:1.5}
+.okref-line{margin:.5rem 0 .3rem}
+.okref-line b{font-family:var(--f-mono);letter-spacing:.06em}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .other-in{margin-top:.55rem}
 .row[hidden]{display:none}
 .other-in[hidden]{display:none}
@@ -1467,7 +1477,11 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
           <button type="button" role="tab" id="tab-need" aria-selected="false" data-mode="need" data-i18n="post.need">I need coffee</button>
         </div>
 
-        <form id="postform" novalidate>
+        <form id="postform" method="post" action="/post" novalidate>
+          <div class="hp" aria-hidden="true">
+            <label for="website">Leave this empty</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <p class="req-note" data-i18n="f.reqnote">Every field is required unless it says optional.</p>
           <div class="row">
             <label><span class="lb"><span data-i18n="f.name">Your name</span></span>
@@ -1544,19 +1558,12 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
           <label><span class="lb"><span id="lbl-notes" data-i18n="f.notes">Anything else we should know</span> <span class="opt" data-i18n="f.opt">optional</span></span>
             <textarea name="notes"></textarea></label>
 
-          <div id="routeblock">
-            <span class="lb" style="display:flex"><span data-i18n="f.route">Send it how</span></span>
-            <div class="tabs" role="tablist" aria-label="How to send">
-              <button type="button" role="tab" id="route-wa" aria-selected="true" data-route="whatsapp" data-i18n="f.viaWa">WhatsApp</button>
-              <button type="button" role="tab" id="route-em" aria-selected="false" data-route="email" data-i18n="f.viaEmail">Email</button>
-            </div>
-          </div>
 
           <div class="err-summary" id="errsummary" role="alert"></div>
 
           <div class="form-foot">
-            <button class="btn btn-primary" type="submit" data-i18n="f.send">Send it to us</button>
-            <p class="form-note" id="formnote" data-i18n="f.note">This opens WhatsApp with your details filled in, ready to send to us.</p>
+            <button class="btn btn-primary" type="submit" data-i18n="f.send">Post it</button>
+            <p class="form-note" id="formnote" data-i18n="f.note">This goes straight onto our board. We check it first, and your name is never shown on it.</p>
           </div>
         </form>
 
@@ -1571,9 +1578,10 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
         </div>
 
         <div class="success" id="success" role="status">
-          <b data-i18n="f.okh">Sent to your WhatsApp.</b>
-          <p id="okbody" data-i18n="f.okp">Press send in WhatsApp and we will reply within one working day.</p>
-          <button type="button" class="btn btn-ghost" id="editagain" style="margin-top:1rem" data-i18n="f.editagain">Edit and send again</button>
+          <b data-i18n="f.okh">Posted.</b>
+          <p class="okref-line"><span data-i18n="f.okref">Your reference is</span> <b id="okref">&mdash;</b></p>
+          <p id="okbody" data-i18n="f.okp">We check every post before it goes on the board, and we come back to you within a working day. Your name is never shown.</p>
+          <button type="button" class="btn btn-ghost" id="editagain" style="margin-top:1rem" data-i18n="f.editagain">Post another</button>
         </div>
       </div>
     </div>
@@ -1743,7 +1751,7 @@ var I18N = {
     "f.send":"ላኩልን",
     "f.okh":"ወደ ዋትስአፕዎ ተልኳል።",
     "f.okp":"በዋትስአፕ ላይ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።",
-    "f.okpEmail":"የኢሜይል መተግበሪያዎ መልእክቱ ተዘጋጅቶ መከፈት ነበረበት። እዚያ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።",
+    
     "f.editagain":"አስተካክለው እንደገና ይላኩ",
     "f.reqnote":"አማራጭ ካልተባለ በስተቀር እያንዳንዱ መስክ ያስፈልጋል።",
     "f.failh":"አልተከፈተም።",
@@ -1759,8 +1767,8 @@ var I18N = {
     "e.phone":"በእውነት ልናገኝዎት የምንችልበትን ቁጥር ከአገር ኮድ ጋር ይስጡን።",
     "e.summary":"ይህ ከመላኩ በፊት {n} ነገሮች መስተካከል አለባቸው፦",
     "f.note":"ይህ ዋትስአፕን ዝርዝርዎ ተሞልቶ፣ ወደ እኛ ለመላክ ዝግጁ ሆኖ ይከፍታል።",
-    "f.noteEmail":"ይህ የኢሜይል መተግበሪያዎን ሁሉም ነገር ተሞልቶ ወደ እኛ ተልኮ ይከፍታል።",
-    "f.route":"እንዴት ይላክ","f.viaWa":"ዋትስአፕ","f.viaEmail":"ኢሜይል",
+    
+    
     "chat.wa":"በዋትስአፕ ያውሩን","chat.call":"ይደውሉልን","chat.email":"ኢሜይል ይላኩ",
     "foot.tag":"የኢትዮጵያ ቡና አቅራቢዎችንና ላኪዎችን እናገናኛለን።",
     "foot.site":"ገጹ","foot.reach":"ያግኙን","foot.lang":"እንግሊዝኛ | አማርኛ"
@@ -1776,13 +1784,20 @@ var I18N = {
   if (I18N.en[k] === undefined) I18N.en[k] = el.placeholder;
 });
 /* strings that have no markup of their own */
-I18N.en['f.noteEmail'] = 'This opens your email app with everything filled in, addressed to us.';
 I18N.en['chat.wa']     = 'Chat on WhatsApp';
 I18N.en['chat.call']   = 'Call us';
 I18N.en['chat.email']  = 'Send an email';
-I18N.en['f.okpEmail']  = 'Your email app should have opened with the message ready. Press send there and we will reply within one working day.';
 /* the marketplace board */
 I18N.en['market.thUnit']     = "Faresula / kg";
+I18N.en['f.okh'] = "Posted.";
+I18N.en['f.okref'] = "Your reference is";
+I18N.en['f.okp'] = "We check every post before it goes on the board, and we come back to you within a working day. Your name is never shown.";
+I18N.en['f.editagain'] = "Post another";
+I18N.en['f.note'] = "This goes straight onto our board. We check it first, and your name is never shown on it.";
+I18N.en['f.send'] = "Post it";
+I18N.en['f.sending'] = "Posting…";
+I18N.en['f.offline'] = "That did not reach us. You may be offline.";
+I18N.en['board.askMsg']     = "Hello, I am asking about";
 I18N.en['board.mExport']     = "Export standard";
 I18N.en['board.mExportNote'] = "Graded for export, G1 to G5.";
 I18N.en['board.mLocal']      = "Local and reject";
@@ -1858,7 +1873,6 @@ function applyLang(next){
   renderOrigins();
   if (typeof renderLauncher === 'function') renderLauncher();
   if (typeof renderFooterContact === 'function') renderFooterContact();
-  if (typeof setRoute === 'function') setRoute(route);
 }
 [].forEach.call(document.querySelectorAll('.lang button'), function(b){
   b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); });
@@ -2283,6 +2297,30 @@ fetch('assets/market.json').then(function(r){ return r.json(); })
   .catch(function(){ /* the shipped default above already rendered */ });
 
 /* ============================================================
+   6b. THE PLATE PHOTOGRAPHS
+   ============================================================ */
+/* Fetched as each plate comes within a screen of the viewport, which
+   keeps 628KB off the first load. The scrim and the tokens are already
+   in the stylesheet, so a plate that has not loaded yet is dark and
+   readable rather than broken. */
+(function(){
+  var plates = [].slice.call(document.querySelectorAll('.plate'));
+  if (!plates.length) return;
+  if (!('IntersectionObserver' in window)){
+    plates.forEach(function(p){ p.classList.add('lit'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('lit');
+      io.unobserve(e.target);
+    });
+  }, {rootMargin: '100% 0px'});
+  plates.forEach(function(p){ io.observe(p); });
+})();
+
+/* ============================================================
    7b. UNITS, AND THE BOARD
    ============================================================ */
 /* Faresula is how the Ethiopian trade quotes a PRICE, not a volume:
@@ -2460,29 +2498,35 @@ function qtyPhrase(){
   /* Asking about a lot puts you on the opposite side of it: a lot for
      sale is answered by a buyer, a lot wanted is answered by a seller.
      The reference travels with you so we can match the two ends. */
+  /* Asking about a lot is a conversation, not a post. It goes straight to
+     us on WhatsApp with the reference already in the message, and falls
+     back to the contact panel when WhatsApp is not configured or the
+     browser blocks the handoff. The lot never becomes a form to fill in:
+     the person asking is a buyer, and buyers talk to us. */
   var groupsWrap = document.getElementById('board-groups') || document;
   groupsWrap.addEventListener('click', function(e){
     var a = e.target.closest ? e.target.closest('.lot-ask') : null;
     if (!a) return;
+    e.preventDefault();
     var card = a.closest('.lot');
     var ref  = a.getAttribute('data-ref') || '';
-    var isOffer = card && card.getAttribute('data-kind') === 'offer';
-    try { setMode(isOffer ? 'need' : 'have'); } catch(err){}
-    var notes = document.querySelector('textarea[name="notes"]');
-    if (notes && ref && notes.value.indexOf(ref) === -1) {
-      notes.value = (notes.value ? notes.value.replace(/\s*$/, '') + '\n' : '') + 'Enquiry about ' + ref;
+    var what = card ? (card.querySelector('h3') || {}).textContent : '';
+    var msg  = t('board.askMsg') + ' ' + ref + (what ? ' (' + what.trim() + ')' : '') + '.';
+
+    if (CONTACT.whatsapp){
+      var win = window.open('https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(msg),
+                            '_blank', 'noopener');
+      if (win) return;
     }
-    var h3 = card ? card.querySelector('h3') : null;
-    if (h3) {
-      var parts = h3.textContent.trim().split(/\s+/);
-      var origin = parts.slice(0, -1).join(' ') || parts[0];
-      var grade  = parts.length > 1 ? parts[parts.length - 1] : '';
-      var os = document.querySelector('select[name="origin"]');
-      var gs = document.querySelector('select[name="grade"]');
-      if (os && origin) [].forEach.call(os.options, function(o){ if (o.textContent === origin) os.value = o.value; });
-      if (gs && grade)  [].forEach.call(gs.options, function(o){ if (o.textContent === grade)  gs.value = o.value; });
+    /* no WhatsApp, or the popup was blocked: open the contact panel so the
+       phone number and email are one tap away rather than a dead end */
+    var launcher = document.getElementById('launcher');
+    var trigger = launcher ? launcher.querySelector('button') : null;
+    if (trigger){ trigger.click(); return; }
+    if (CONTACT.email){
+      window.location.href = 'mailto:' + CONTACT.email +
+        '?subject=' + encodeURIComponent(ref) + '&body=' + encodeURIComponent(msg);
     }
-    try { saveDraft(); } catch(err){}
   });
 })();
 
@@ -2593,29 +2637,12 @@ function setMode(m){
   var h = document.getElementById('posth');
   if (h) h.textContent = t(mode === 'have' ? 'post.h' : 'post.hNeed');
 }
-/* scoped to [data-mode]: the route buttons are also .tabs button, and without
-   this they silently reset the mode and send the opposite enquiry */
+/* scoped to [data-mode], so only the two side tabs change the mode */
 [].forEach.call(document.querySelectorAll('.tabs button[data-mode]'), function(b){
   b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
 });
 setMode('have');
 
-/* which way the enquiry leaves: whatsapp or email */
-var route = CONTACT.whatsapp ? 'whatsapp' : 'email';
-function setRoute(r){
-  route = (r === 'email') ? 'email' : 'whatsapp';
-  var wa = document.getElementById('route-wa'), em = document.getElementById('route-em');
-  wa.setAttribute('aria-selected', String(route === 'whatsapp'));
-  em.setAttribute('aria-selected', String(route === 'email'));
-  var note = document.getElementById('formnote');
-  var d = I18N[lang];
-  note.textContent = (route === 'whatsapp')
-    ? (d['f.note'] || I18N.en['f.note'])
-    : (d['f.noteEmail'] || I18N.en['f.noteEmail']);
-}
-[].forEach.call(document.querySelectorAll('[data-route]'), function(b){
-  b.addEventListener('click', function(){ setRoute(b.getAttribute('data-route')); });
-});
 
 var form = document.getElementById('postform');
 var success = document.getElementById('success');
@@ -2741,7 +2768,7 @@ form.addEventListener('change', function(e){
 var DRAFT_KEY = 'ebc-draft';
 function saveDraft(){
   try {
-    var d = {mode:mode, route:route};
+    var d = {mode:mode};
     [].forEach.call(form.elements, function(el){ if (el.name) d[el.name] = el.value; });
     localStorage.setItem(DRAFT_KEY, JSON.stringify(d));
   } catch(e){}
@@ -2752,7 +2779,7 @@ function restoreDraft(){
     if (!raw) return;
     var d = JSON.parse(raw);
     Object.keys(d).forEach(function(k){
-      if (k === 'mode' || k === 'route') return;
+      if (k === 'mode') return;
       var el = form.elements[k];
       if (el && d[k]) el.value = d[k];
     });
@@ -2782,6 +2809,9 @@ function showSendFail(bodyText, subject){
   sendFail.scrollIntoView({block:'nearest'});
 }
 
+/* The post goes into the board itself. Nobody re-types it out of a
+   WhatsApp message, and the supplier gets a reference on the spot.
+   Talking to us is a separate thing, and lives on the chat button. */
 form.addEventListener('submit', function(e){
   e.preventDefault();
   var bad = validate();
@@ -2793,42 +2823,61 @@ form.addEventListener('submit', function(e){
   }
   sendFail.classList.remove('on');
 
-  var bodyText = enquiryText();
-  var subject  = 'Ethio Bean Connect, ' + (mode === 'have' ? 'lot offered' : 'lot wanted');
-  var handedOff = false;
+  var btn = form.querySelector('button[type=submit]');
+  var wasLabel = btn ? btn.textContent : '';
+  if (btn){ btn.disabled = true; btn.textContent = t('f.sending'); }
 
-  if (route === 'whatsapp' && CONTACT.whatsapp){
-    /* the return value is the whole point: a blocked popup, or an in-app
-       browser that refuses the handoff, returns null. Claiming success there
-       is a promise to someone who will never get a reply. */
-    var win = window.open(
-      'https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(subject + '\n\n' + bodyText),
-      '_blank', 'noopener'
-    );
-    handedOff = !!win;
-  } else if (CONTACT.email){
-    window.location.href = 'mailto:' + CONTACT.email
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + encodeURIComponent(bodyText);
-    handedOff = true;   /* a mailto navigation cannot be confirmed; the success panel says so */
-  }
+  var data = new FormData(form);
+  data.set('mode', mode);
+  var body = [];
+  data.forEach(function(v, k){ body.push(encodeURIComponent(k) + '=' + encodeURIComponent(v)); });
 
-  if (!handedOff){ showSendFail(bodyText, subject); return; }
+  fetch('/post', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/json'},
+    body: body.join('&')
+  })
+  .then(function(r){ return r.json().then(function(j){ j.__status = r.status; return j; }); })
+  .then(function(out){
+    if (btn){ btn.disabled = false; btn.textContent = wasLabel; }
 
-  window.__ebcLastMessage = {body: bodyText, subject: subject};
-  form.style.display = 'none';
-  errSummary.classList.remove('on');
-  document.getElementById('okbody').textContent =
-    (route === 'whatsapp') ? t('f.okp') : t('f.okpEmail');
-  success.classList.add('on');
+    if (out && out.ok){
+      /* the draft has done its job; leaving it would refill the form with
+         a lot that is already on the board */
+      try { localStorage.removeItem(DRAFT_KEY); } catch(err){}
+      form.style.display = 'none';
+      errSummary.classList.remove('on');
+      var ref = document.getElementById('okref');
+      if (ref) ref.textContent = out.ref || '';
+      document.getElementById('okbody').textContent = t('f.okp');
+      success.classList.add('on');
+      success.scrollIntoView({block:'center'});
+      return;
+    }
+
+    /* the server found something the browser did not, so say which field */
+    if (out && out.errors){
+      var keys = Object.keys(out.errors);
+      keys.forEach(function(k){ showError(k, out.errors[k]); });
+      showSummary(keys);
+      var el = form.elements[keys[0]];
+      if (el) el.focus();
+      return;
+    }
+    /* rate limited, or something else went wrong: never lose the lot,
+       offer to send it to us the old way instead */
+    showSendFail(enquiryText(), (out && out.message) || t('f.sendfailh'));
+  })
+  .catch(function(){
+    if (btn){ btn.disabled = false; btn.textContent = wasLabel; }
+    showSendFail(enquiryText(), t('f.offline'));
+  });
 });
 
 /* the way back: nothing is destroyed, the values are still in the form */
 document.getElementById('editagain').addEventListener('click', function(){
   success.classList.remove('on');
   form.style.display = '';
-  var m = window.__ebcLastMessage;
-  if (m) showSendFail(m.body, m.subject);
   form.elements['name'].focus();
 });
 
@@ -3118,13 +3167,10 @@ document.addEventListener('visibilitychange', function(){
 document.getElementById('yr').textContent = new Date().getFullYear();
 renderLauncher();
 renderFooterContact();
-/* no route is configured yet, so do not offer a choice that cannot do anything */
+/* the post itself never needs WhatsApp, but the reply does */
 if (!CONTACT.whatsapp && !CONTACT.email){
-  document.getElementById('routeblock').hidden = true;
-  document.getElementById('formnote').textContent =
-    'We will come back to you here. Contact details are being added to this page.';
-} else {
-  setRoute(route);
+  var fn = document.getElementById('formnote');
+  if (fn) fn.textContent = 'Contact details are being added to this page.';
 }
 restoreDraft();
 if (lang !== 'en') applyLang(lang);

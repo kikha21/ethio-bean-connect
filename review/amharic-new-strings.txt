@@ -1,147 +1,163 @@
 ETHIO BEAN CONNECT - NEW STRINGS ONLY
 =====================================
 
-These 35 strings are new since the last sheet.
+These 39 strings are new since the last sheet.
 Everything else you already have is unchanged.
 Fill in the AM: lines and send this file back.
 
-[1] KEY: nav.board
+[1] KEY: f.offline
+EN:  That did not reach us. You may be offline.
+AM:  
+
+[2] KEY: nav.board
 EN:  Marketplace
 AM:  
 
-[2] KEY: f.supply
+[3] KEY: f.okref
+EN:  Your reference is
+AM:  
+
+[4] KEY: f.sending
+EN:  Posting…
+AM:  
+
+[5] KEY: f.supply
 EN:  Where the coffee is
 AM:  
 
-[3] KEY: f.supplyH
+[6] KEY: f.supplyH
 EN:  Horizontal, in Addis Ababa
 AM:  
 
-[4] KEY: f.supplyHint
+[7] KEY: f.supplyHint
 EN:  Horizontal means it is already in an Addis Ababa warehouse and can move now. Vertical means it is still at the farm or your own store.
 AM:  
 
-[5] KEY: f.supplyV
+[8] KEY: f.supplyV
 EN:  Vertical, at the farm or supplier store
 AM:  
 
-[6] KEY: market.thUnit
+[9] KEY: market.thUnit
 EN:  Faresula / kg
 AM:  
 
-[7] KEY: board.all
+[10] KEY: board.all
 EN:  Everything
 AM:  
 
-[8] KEY: board.anon
+[11] KEY: board.anon
 EN:  No names appear on the board. Every post carries a reference only, and enquiries come through us, so neither side can be approached behind the other’s back.
 AM:  
 
-[9] KEY: board.ask
+[12] KEY: board.ask
 EN:  Ask about this
 AM:  
 
-[10] KEY: board.clearAll
+[13] KEY: board.askMsg
+EN:  Hello, I am asking about
+AM:  
+
+[14] KEY: board.clearAll
 EN:  Clear the search
 AM:  
 
-[11] KEY: board.dealsWithUs
+[15] KEY: board.dealsWithUs
 EN:  closed with us
 AM:  
 
-[12] KEY: board.emptyH
+[16] KEY: board.emptyH
 EN:  The board is open.
 AM:  
 
-[13] KEY: board.emptyP
+[17] KEY: board.emptyP
 EN:  Checked lots appear here as they clear. If you have coffee to sell, or you are looking for a lot, post it and we will place it.
 AM:  
 
-[14] KEY: board.forSale
+[18] KEY: board.forSale
 EN:  For sale
 AM:  
 
-[15] KEY: board.groupEmpty
+[19] KEY: board.groupEmpty
 EN:  Nothing on this board right now.
 AM:  
 
-[16] KEY: board.h
+[20] KEY: board.h
 EN:  What is on the board right now.
 AM:  
 
-[17] KEY: board.lede
+[21] KEY: board.lede
 EN:  Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.
 AM:  
 
-[18] KEY: board.mExport
+[22] KEY: board.mExport
 EN:  Export standard
 AM:  
 
-[19] KEY: board.mExportNote
+[23] KEY: board.mExportNote
 EN:  Graded for export, G1 to G5.
 AM:  
 
-[20] KEY: board.mLocal
+[24] KEY: board.mLocal
 EN:  Local and reject
 AM:  
 
-[21] KEY: board.mLocalNote
+[25] KEY: board.mLocalNote
 EN:  Below export grade, or sold on the domestic market.
 AM:  
 
-[22] KEY: board.needs
+[26] KEY: board.needs
 EN:  Coffee wanted
 AM:  
 
-[23] KEY: board.noMatch
+[27] KEY: board.noMatch
 EN:  Nothing on the board matches that.
 AM:  
 
-[24] KEY: board.offers
+[28] KEY: board.offers
 EN:  Coffee for sale
 AM:  
 
-[25] KEY: board.onRequest
+[29] KEY: board.onRequest
 EN:  On request
 AM:  
 
-[26] KEY: board.open
+[30] KEY: board.open
 EN:  open
 AM:  
 
-[27] KEY: board.per
+[31] KEY: board.per
 EN:  per
 AM:  
 
-[28] KEY: board.searchLabel
+[32] KEY: board.searchLabel
 EN:  Search the board
 AM:  
 
-[29] KEY: board.searchPh
+[33] KEY: board.searchPh
 EN:  Origin, grade, reference
 AM:  
 
-[30] KEY: board.wanted
+[34] KEY: board.wanted
 EN:  Wanted
 AM:  
 
-[31] KEY: supply.horizontal
+[35] KEY: supply.horizontal
 EN:  In Addis
 AM:  
 
-[32] KEY: supply.vertical
+[36] KEY: supply.vertical
 EN:  At the farm
 AM:  
 
-[33] KEY: tier.trusted
+[37] KEY: tier.trusted
 EN:  Trusted
 AM:  
 
-[34] KEY: tier.unverified
+[38] KEY: tier.unverified
 EN:  Unverified
 AM:  
 
-[35] KEY: tier.verified
+[39] KEY: tier.verified
 EN:  Verified
 AM:  
 

@@ -14,7 +14,12 @@ const { layout, esc } = require('./ui');
 const ORIGINS = ['Yirgacheffe', 'Guji', 'Sidamo', 'Limu', 'Jimma', 'Nekemte', 'Harar',
                  'Kaffa', 'Bench Maji', 'Illubabor', 'Gimbi', 'Lekempti', 'Tepi', 'Gomma'];
 const CURRENCIES = ['USD', 'ETB', 'EUR', 'GBP'];
-const STATUSES = { live: 'On the board', matched: 'Matched, off the board', closed: 'Closed' };
+const STATUSES = {
+  pending: 'Waiting for you to check it',
+  live: 'On the board',
+  matched: 'Matched, off the board',
+  closed: 'Closed'
+};
 
 const opts = (list, sel, blank) =>
   (blank ? '<option value="">' + esc(blank) + '</option>' : '') +
@@ -36,7 +41,8 @@ function counts() {
   return {
     offers: live('offer'),
     needs: live('need'),
-    drafts: db.prepare('SELECT COUNT(*) n FROM listings WHERE published=0').get().n,
+    pending: db.prepare("SELECT COUNT(*) n FROM listings WHERE status='pending'").get().n,
+    drafts: db.prepare("SELECT COUNT(*) n FROM listings WHERE published=0 AND status<>'pending'").get().n,
     examples: db.prepare('SELECT COUNT(*) n FROM listings WHERE is_example=1').get().n
   };
 }
@@ -44,11 +50,13 @@ function counts() {
 /* ---------------- the list ---------------- */
 function boardPage(user, flash, filter) {
   const c = counts();
-  const where = filter === 'draft'   ? 'WHERE published=0'
+  const where = filter === 'pending' ? "WHERE status='pending'"
+              : filter === 'draft'   ? "WHERE published=0 AND status<>'pending'"
               : filter === 'offer'   ? "WHERE kind='offer'"
               : filter === 'need'    ? "WHERE kind='need'"
               : filter === 'example' ? 'WHERE is_example=1' : '';
-  const rows = db.prepare('SELECT * FROM listings ' + where + ' ORDER BY published DESC, sort, id DESC').all();
+  const rows = db.prepare('SELECT * FROM listings ' + where +
+  " ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END, published DESC, sort, id DESC").all();
 
   const tab = (id, label, n) =>
     '<a href="/admin/marketplace' + (id ? '?show=' + id : '') + '" class="pill' +
@@ -79,7 +87,8 @@ function boardPage(user, flash, filter) {
       '<td class="private">' + esc(who) +
         (r.poster_phone ? '<br><span class="dim">' + esc(r.poster_phone) + '</span>' : '') + '</td>' +
       '<td>' +
-        (r.published ? '<span class="badge live">Live</span>' : '<span class="badge draft">Draft</span>') +
+        (r.status === 'pending' ? '<span class="badge new">From the site</span>'
+          : r.published ? '<span class="badge live">Live</span>' : '<span class="badge draft">Draft</span>') +
         (r.status !== 'live' ? '<br><span class="dim">' + esc(STATUSES[r.status] || r.status) + '</span>' : '') +
         (r.is_example ? '<br><span class="badge ex">Example</span>' : '') +
         (hints.length ? '<br><span class="badge warnb" title="' + esc(hints.map(h => h.text).join(', ')) +
@@ -106,6 +115,13 @@ function boardPage(user, flash, filter) {
     '<input type="hidden" name="do" value="clear_examples">' +
     '<button class="btn btn-ghost btn-sm" type="submit">Delete all examples</button></form></div>') : '';
 
+  const waiting = c.pending ? (
+    '<div class="flash ok" style="margin-top:1rem"><b>' + c.pending + ' post' +
+    (c.pending === 1 ? '' : 's') + ' came in from the site.</b> ' +
+    'Nothing is on the public board until you publish it. Open one to check the details, ' +
+    'set which board it belongs on, then publish. ' +
+    '<a href="/admin/marketplace?show=pending">Show them</a></div>') : '';
+
   const table = rows.length
     ? '<div class="card" style="margin-top:1.1rem;overflow-x:auto;padding:.4rem .7rem">' +
       '<table><thead><tr><th>Ref</th><th>Side</th><th>Coffee</th><th>Quantity</th><th>Price</th>' +
@@ -125,10 +141,11 @@ function boardPage(user, flash, filter) {
       '<p class="lede">Everything on the public board, plus the one thing the board never shows: who posted it. ' +
       'A visitor sees a reference and a rating. You see the name and the phone number.</p>' +
       '<div class="pills">' +
-        tab('', 'Everything') + tab('offer', 'For sale', c.offers) + tab('need', 'Wanted', c.needs) +
+        tab('', 'Everything') + (c.pending ? tab('pending', 'Waiting for you', c.pending) : '') +
+        tab('offer', 'For sale', c.offers) + tab('need', 'Wanted', c.needs) +
         tab('draft', 'Drafts', c.drafts) + (c.examples ? tab('example', 'Examples', c.examples) : '') +
         '<a class="btn btn-primary btn-sm" href="/admin/marketplace/edit" style="margin-left:auto">Add a post</a>' +
-      '</div>' + exampleWarning + table
+      '</div>' + waiting + exampleWarning + table
   });
 }
 
@@ -264,11 +281,13 @@ function handlePost(f, user, ip) {
   }
 
   if (act === 'toggle') {
-    const r = db.prepare('SELECT id, ref, published FROM listings WHERE id=?').get(f.id);
+    const r = db.prepare('SELECT id, ref, published, status FROM listings WHERE id=?').get(f.id);
     if (!r) return { to: '/admin/marketplace', kind: 'bad', msg: 'That post no longer exists.' };
     const now = r.published ? 0 : 1;
-    db.prepare('UPDATE listings SET published=?, is_example=0, updated_at=?, updated_by=? WHERE id=?')
-      .run(now, nowIso(), user.id, r.id);
+    db.prepare("UPDATE listings SET published=?, is_example=0," +
+      " status=CASE WHEN status='pending' AND ?=1 THEN 'live' ELSE status END," +
+      ' updated_at=?, updated_by=? WHERE id=?')
+      .run(now, now, nowIso(), user.id, r.id);
     log(user, now ? 'listing published' : 'listing unpublished', r.ref, '', ip);
     return { to: '/admin/marketplace', kind: 'ok',
              msg: now ? r.ref + ' is on the board now.' : r.ref + ' is off the board.' };
