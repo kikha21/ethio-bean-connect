@@ -84,7 +84,7 @@ function validate(f) {
 
   out.quantity_val  = clean(f.quantity, CAP.quantity).replace(/[^\d.,]/g, '');
   out.quantity_unit = QTY_UNIT_KEYS.indexOf(f.quantity_unit) === -1 ? 'bag85' : f.quantity_unit;
-  if (!out.quantity_val) out.quantity_unit = '';
+  if (!out.quantity_val) out.errors.quantity = out.errors.quantity || 'This is needed.';
   out.notes = clean(f.notes, CAP.notes);
 
   /* a grade off the list is kept as typed, because "Other" exists for

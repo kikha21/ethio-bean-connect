@@ -235,7 +235,7 @@ function editPage(user, flash, id) {
           '<label><span class="lb">Quantity</span>' +
             '<div class="two"><input type="text" name="quantity_val" value="' + esc(v.quantity_val) +
             '" placeholder="300"><select name="quantity_unit">' + qtyUnitOpts(v.quantity_unit) + '</select></div>' +
-            '<span class="hint">Optional. The board shows the kg equivalent itself.</span></label>' +
+            '<span class="hint">Required of anyone posting from the site. The board works out the kg.</span></label>' +
         '</div>' +
         '<div class="row2">' +
           '<label><span class="lb">Price</span>' +

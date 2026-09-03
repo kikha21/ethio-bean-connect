@@ -1678,9 +1678,9 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
               </select>
               <input class="other-in" type="text" name="grade_other" hidden
                      data-i18n-ph="f.gradeOther" placeholder="Which grade?"></label>
-            <label><span class="lb"><span data-i18n="f.qty">Quantity</span> <span class="opt" data-i18n="f.opt">optional</span></span>
+            <label><span class="lb"><span data-i18n="f.qty">How much</span></span>
               <div class="qty">
-                <input type="text" name="quantity" inputmode="decimal" placeholder="e.g. 300">
+                <input type="text" name="quantity" inputmode="decimal" required placeholder="e.g. 300">
                 <select name="quantity_unit" id="qtyunit" aria-label="How it is packed">
                   <option value="bag85" selected>Bags of 85 kg</option>
                   <option value="bag60">Bags of 60 kg</option>
@@ -2909,7 +2909,7 @@ function enquiryText(){
 
 /* required: name, company, email, phone, coffee type, origin, grade.
    quantity and notes are deliberately optional. */
-var REQUIRED = ['name','company','email','phone','type','origin','grade'];
+var REQUIRED = ['name','company','email','phone','type','origin','grade','quantity'];
 /* supply is required, but only for someone posting coffee they have */
 function requiredNow(){ return mode === 'have' ? REQUIRED.concat('supply') : REQUIRED; }
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
