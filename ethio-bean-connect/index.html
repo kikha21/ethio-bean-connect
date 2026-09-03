@@ -648,7 +648,9 @@ td.p.ask{color:var(--text-secondary)}
 .lot-kind.offer{color:var(--green-deep);border-color:rgba(47,125,50,.42);background:var(--green-muted)}
 .lot-kind.need{color:var(--bean);border-color:rgba(138,80,40,.42);background:rgba(138,80,40,.08)}
 
-.lot h3{font-size:var(--t-lg);letter-spacing:-.01em;line-height:1.14}
+/* card headings wrap on a narrow column, so they get more room than
+   the display headings do */
+.lot h3{font-size:var(--t-lg);letter-spacing:-.01em;line-height:1.28}
 .lot-spec{display:flex;flex-wrap:wrap;gap:.4rem}
 .lot-price{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1;letter-spacing:-.01em;color:var(--text-primary)}
 .lot-price .cur,.lot-price .per{font-family:var(--f-mono);font-weight:400;font-size:var(--t-xs);letter-spacing:.06em;color:var(--text-secondary)}
