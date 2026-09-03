@@ -1992,6 +1992,7 @@ I18N.en['f.offline'] = "That did not reach us. You may be offline.";
 I18N.en['chat.whichSide'] = "I am";
 I18N.en['chat.selling'] = "selling coffee";
 I18N.en['chat.buying'] = "buying coffee";
+I18N.en['chat.notifyBlocked'] = "Notifications are blocked for this site in your browser settings. The count on the chat button still works.";
 I18N.en['chat.notifyAsk'] = "Get our reply on this phone, even after you close the site?";
 I18N.en['chat.notifyOn'] = "Turn it on";
 I18N.en['chat.notifyDone'] = "Done. We will notify you here.";
@@ -3617,8 +3618,21 @@ function renderFooterContact(){
 
   function offerPush(){
     if (!notifyEl) return;
-    /* nothing to offer if it cannot work, is already on, or was refused */
-    notifyEl.hidden = !(canPush() && token && Notification.permission === 'default');
+    var ask = notifyEl.querySelector('span');
+    var btn = notifyEl.querySelector('button');
+    if (!canPush() || !token){ notifyEl.hidden = true; return; }
+
+    if (Notification.permission === 'denied'){
+      /* the browser will not ask again, so say where the switch is */
+      notifyEl.hidden = false;
+      if (ask) ask.textContent = t('chat.notifyBlocked');
+      if (btn) btn.hidden = true;
+      return;
+    }
+    if (Notification.permission === 'granted'){ notifyEl.hidden = true; return; }
+    notifyEl.hidden = false;
+    if (ask) ask.textContent = t('chat.notifyAsk');
+    if (btn) btn.hidden = false;
   }
 
   function turnOnPush(){
