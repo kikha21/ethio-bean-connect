@@ -101,6 +101,21 @@ function guessMarket(v) {
   return 'export';
 }
 
+/* A post arriving is the thing most worth being told about: it is a lot
+   that cannot go on the board until someone looks at it. Loaded lazily
+   because push.js reads its settings back out of the database. */
+function notifyUs(ref, kind, v) {
+  let push;
+  try { push = require('./push'); } catch (e) { return; }
+  const what = [v.origin, v.grade].filter(Boolean).join(' ');
+  const title = (kind === 'offer' ? 'New lot posted' : 'New requirement posted') + ' · ' + ref;
+  const body = [what, v.company || v.name].filter(Boolean).join(' — ');
+  db.prepare("SELECT id FROM users WHERE status='active'").all().forEach(u => {
+    push.sendTo('user:' + u.id, title, body || 'Open the queue to check it.',
+                '/admin/marketplace?show=pending').catch(() => {});
+  });
+}
+
 function submit(f, ip) {
   /* a bot fills every field it finds, including the one nobody can see.
      Accept it so the bot learns nothing, and store nothing. */
@@ -130,6 +145,7 @@ function submit(f, ip) {
 
   /* the log records that a post arrived and from where, never the body */
   log(null, 'post received', ref, kind === 'offer' ? 'offering coffee' : 'looking for coffee', ip);
+  notifyUs(ref, kind, v);
 
   return { ok: true, ref };
 }
