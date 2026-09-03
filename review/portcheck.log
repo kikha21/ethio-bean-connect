@@ -1,0 +1,10 @@
+
+> ethio-bean-connect@1.0.0 start
+> node platform/server.js
+
+
+  Ethio Bean Connect
+  ------------------
+  public site   http://localhost:4455/
+  admin         http://localhost:4455/admin
+

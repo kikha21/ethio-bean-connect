@@ -370,6 +370,11 @@ function seed() {
    admin can clear them all in one action. Nothing invented is ever shown
    to a visitor. */
 function seedExamples() {
+  /* Only on a genuinely fresh install. An empty board is not the same as a
+     new one: once there is an account, someone has been here and an empty
+     board is a decision. Seeding on emptiness alone brought the examples
+     back every time the last real post was removed. */
+  if (db.prepare('SELECT COUNT(*) n FROM users').get().n > 0) return { seeded: false };
   if (db.prepare('SELECT COUNT(*) n FROM listings').get().n > 0) return { seeded: false };
   const ins = db.prepare(
     `INSERT INTO listings (ref, kind, origin, grade, process, quantity_val, quantity_unit, price, price_unit,

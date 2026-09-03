@@ -1,5 +1,16 @@
 {
-  "dependencies": {
+  "name": "ethio-bean-connect",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ethio Bean Connect: the cinematic site and the platform that serves it.",
+  "main": "platform/server.js",
+  "scripts": {
+    "start": "node platform/server.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "devDependencies": {
     "css-select": "^7.0.0",
     "css-tree": "^3.2.1",
     "domutils": "^4.0.2",
