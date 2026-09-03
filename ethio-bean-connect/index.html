@@ -661,12 +661,12 @@ td.p.ask{color:var(--text-secondary)}
 .chip.soft{border-style:dashed;opacity:.85}
 /* where the lot physically is: a logistics fact, not a cup one */
 .plate .medal{box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 1px 2px rgba(0,0,0,.3)}
-.plate .medal.bronze{color:#E0A87C;border-color:rgba(224,168,124,.5);
-  background:linear-gradient(160deg,rgba(224,168,124,.24),rgba(124,74,36,.24))}
-.plate .medal.silver{color:#C3CAD3;border-color:rgba(195,202,211,.5);
-  background:linear-gradient(160deg,rgba(195,202,211,.22),rgba(86,93,102,.26))}
-.plate .medal.gold{color:#E6CC85;border-color:rgba(230,204,133,.55);
-  background:linear-gradient(160deg,rgba(230,204,133,.26),rgba(160,128,44,.26))}
+.plate .medal.bronze{color:#F0C39B;border-color:rgba(240,195,155,.75);
+  background:linear-gradient(160deg,rgba(196,124,74,.5),rgba(124,74,36,.5))}
+.plate .medal.silver{color:#DCE2EA;border-color:rgba(220,226,234,.75);
+  background:linear-gradient(160deg,rgba(140,150,164,.5),rgba(86,93,102,.55))}
+.plate .medal.gold{color:#F5DFA4;border-color:rgba(245,223,164,.8);
+  background:linear-gradient(160deg,rgba(190,152,58,.55),rgba(150,118,38,.55))}
 .chip.where{border-color:var(--edge-ui);color:var(--text-primary)}
 .chip.where.horizontal{background:var(--green-muted);border-color:rgba(47,125,50,.42);color:var(--green-deep)}
 .chip.where.vertical{background:var(--accent-wash);border-color:rgba(200,164,74,.5);color:var(--accent-ink)}
@@ -691,18 +691,18 @@ td.p.ask{color:var(--text-secondary)}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 1px 2px rgba(21,32,26,.08);
 }
 .medal svg{width:14px;height:14px;flex:0 0 14px}
-.medal b{font-weight:600}
+.medal b{font-weight:700}
 .medal.bronze{
-  color:#7C4A24;border-color:rgba(124,74,36,.5);
-  background:linear-gradient(160deg,rgba(196,124,74,.26),rgba(124,74,36,.14))
+  color:#63380F;border-color:rgba(124,74,36,.85);
+  background:linear-gradient(160deg,rgba(196,124,74,.52),rgba(150,92,44,.34))
 }
 .medal.silver{
-  color:#565D66;border-color:rgba(86,93,102,.5);
-  background:linear-gradient(160deg,rgba(158,166,176,.3),rgba(86,93,102,.14))
+  color:#3D444D;border-color:rgba(86,93,102,.85);
+  background:linear-gradient(160deg,rgba(170,178,188,.6),rgba(110,118,128,.34))
 }
 .medal.gold{
-  color:#6E5314;border-color:rgba(160,128,44,.62);
-  background:linear-gradient(160deg,rgba(226,196,110,.42),rgba(200,164,74,.2))
+  color:#54400B;border-color:rgba(160,128,44,.9);
+  background:linear-gradient(160deg,rgba(232,204,124,.78),rgba(200,164,74,.46))
 }
 .lot-ask{
   font-family:var(--f-body);font-size:var(--t-xs);font-weight:600;
@@ -1681,10 +1681,11 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
             <label><span class="lb"><span data-i18n="f.qty">Quantity</span> <span class="opt" data-i18n="f.opt">optional</span></span>
               <div class="qty">
                 <input type="text" name="quantity" inputmode="decimal" placeholder="e.g. 300">
-                <select name="quantity_unit" aria-label="Unit of weight">
-                  <option value="quintal" selected>Quintal, 100 kg</option>
+                <select name="quantity_unit" id="qtyunit" aria-label="How it is packed">
+                  <option value="bag85" selected>Bags of 85 kg</option>
+                  <option value="bag60">Bags of 60 kg</option>
+                  <option value="quintal">Quintal, 100 kg</option>
                   <option value="kg">Kg</option>
-                  <option value="bag60">Bag, 60 kg</option>
                   <option value="mt">Metric ton</option>
                   <option value="container">Container, 20ft</option>
                 </select>
@@ -1698,7 +1699,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
                 <option value="horizontal" data-i18n="f.supplyH">Horizontal, in Addis Ababa</option>
                 <option value="vertical" data-i18n="f.supplyV">Vertical, at the farm or supplier store</option>
               </select>
-              <span class="fhint" data-i18n="f.supplyHint">Horizontal means it is already in an Addis Ababa warehouse and can move now. Vertical means it is still at the farm or your own store.</span></label>
+              <span class="fhint" data-i18n="f.supplyHint">Horizontal means it is already in an Addis Ababa warehouse and can move now, packed in 85 kg or 60 kg bags. Vertical means it is still at the farm or your own store, in 85 kg bags.</span></label>
           </div>
           <label><span class="lb"><span id="lbl-notes" data-i18n="f.notes">Anything else we should know</span> <span class="opt" data-i18n="f.opt">optional</span></span>
             <textarea name="notes"></textarea></label>
@@ -2843,7 +2844,21 @@ function setMode(m){
   var srow = document.getElementById('supplyrow');
   var ssel = document.querySelector('select[name="supply"]');
   if (srow) srow.hidden = (mode !== 'have');
+  /* coffee still at the farm comes in 85 kg bags; once it is in Addis it is
+     packed either way, so only the vertical case is decided for them */
+  var qu = document.querySelector('select[name="quantity_unit"]');
+  if (qu && ssel && ssel.value === 'vertical' && qu.value === 'bag60') qu.value = 'bag85';
   if (ssel) { if (mode === 'have') ssel.setAttribute('required',''); else ssel.removeAttribute('required'); }
+  if (ssel && !ssel.__ebcBags){
+    ssel.__ebcBags = 1;
+    ssel.addEventListener('change', function(){
+      var u = document.querySelector('select[name="quantity_unit"]');
+      if (u && ssel.value === 'vertical' && u.value === 'bag60'){
+        u.value = 'bag85';
+        u.dispatchEvent(new Event('change'));
+      }
+    });
+  }
   var h = document.getElementById('posth');
   if (h) h.textContent = t(mode === 'have' ? 'post.h' : 'post.hNeed');
 }

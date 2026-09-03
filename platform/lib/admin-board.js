@@ -163,7 +163,7 @@ function editPage(user, flash, id) {
   const r = id ? db.prepare('SELECT * FROM listings WHERE id=?').get(id) : null;
   if (id && !r) return null;
   const v = r || {
-    kind: 'offer', market: 'export', supply: '', origin: '', grade: '', process: '', quantity_val: '', quantity_unit: 'quintal',
+    kind: 'offer', market: 'export', supply: '', origin: '', grade: '', process: '', quantity_val: '', quantity_unit: 'bag85',
     price: '', price_unit: 'kg', currency: 'USD', harvest: '', notes: '',
     poster_name: '', poster_org: '', poster_phone: '', poster_email: '', poster_region: '',
     tier: 'unverified', rating: '', deals: 0, status: 'live', published: 0
@@ -337,7 +337,7 @@ function handlePost(f, user, ip) {
     v.supply = (v.kind === 'offer' && SUPPLY[v.supply]) ? v.supply : '';
     v.status = STATUSES[v.status] ? v.status : 'live';
     v.tier = TIERS[v.tier] ? v.tier : 'unverified';
-    if (QTY_UNIT_KEYS.indexOf(v.quantity_unit) === -1) v.quantity_unit = 'quintal';
+    if (QTY_UNIT_KEYS.indexOf(v.quantity_unit) === -1) v.quantity_unit = 'bag85';
     if (PRICE_UNIT_KEYS.indexOf(v.price_unit) === -1) v.price_unit = 'kg';
     const price = v.price === '' ? null : v.price;
     const rating = (f.rating === '' || f.rating == null)

@@ -440,7 +440,7 @@ EN:  Horizontal, in Addis Ababa
 AM:  
 
 [98] KEY: f.supplyHint   [NEW, NEEDS AMHARIC]
-EN:  Horizontal means it is already in an Addis Ababa warehouse and can move now. Vertical means it is still at the farm or your own store.
+EN:  Horizontal means it is already in an Addis Ababa warehouse and can move now, packed in 85 kg or 60 kg bags. Vertical means it is still at the farm or your own store, in 85 kg bags.
 AM:  
 
 [99] KEY: f.supplyV   [NEW, NEEDS AMHARIC]

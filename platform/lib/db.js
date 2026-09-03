@@ -148,13 +148,14 @@ const UNITS = {
   kg:        { label: 'Kg',              am: 'ኪሎ ግራም', kg: 1,    short: 'kg' },
   faresula:  { label: 'Faresula',        am: 'ፈረሱላ',    kg: 17,   short: 'Faresula' },
   quintal:   { label: 'Quintal, 100 kg', am: 'ኩንታል',    kg: 100,  short: 'quintal' },
-  bag60:     { label: 'Bag, 60 kg',      am: 'ከረጢት',    kg: 60,   short: 'bags' },
+  bag85:     { label: 'Bags of 85 kg',   am: 'ከረጢት 85', kg: 85,   short: 'bags (85 kg)' },
+  bag60:     { label: 'Bags of 60 kg',   am: 'ከረጢት 60', kg: 60,   short: 'bags (60 kg)' },
   mt:        { label: 'Metric ton',      am: 'ቶን',      kg: 1000, short: 'MT' },
   container: { label: 'Container, 20ft', am: 'ኮንቴነር',   kg: null, short: 'containers' }
 };
 
-const QTY_UNIT_KEYS   = ['quintal', 'kg', 'bag60', 'mt', 'container'];
-const PRICE_UNIT_KEYS = ['kg', 'faresula', 'quintal', 'bag60', 'mt'];
+const QTY_UNIT_KEYS   = ['bag85', 'bag60', 'quintal', 'kg', 'mt', 'container'];
+const PRICE_UNIT_KEYS = ['kg', 'faresula', 'quintal', 'bag85', 'bag60', 'mt'];
 
 const num = n => Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 });
 
@@ -377,22 +378,22 @@ function seedExamples() {
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'live',1,0,?,?,?)`
   );
   const rows = [
-    ['offer','Yirgacheffe','G1','Washed','300','quintal','6.40','kg','USD','2025/26',
+    ['offer','Yirgacheffe','G1','Washed','350','bag85','6.40','kg','USD','2025/26',
      'Screen 15+, cup score 86. Warehouse in Addis, ready to move.',
      'Abebe Tadesse','Kochere Farmers Union','+251 91 234 5678','Gedeo','trusted',3,11],
-    ['offer','Guji','G1','Natural','170','quintal','8500','faresula','ETB','2025/26',
+    ['offer','Guji','G1','Natural','200','bag85','8500','faresula','ETB','2025/26',
      'Lot from Hambela. Cup score 87.5, jasmine and peach. Priced at farmgate.',
      'Meseret Bekele','Hambela Estate','+251 92 111 2233','Guji','verified',2,3],
-    ['offer','Sidamo','G2','Washed','450','quintal',null,'kg','USD','2025/26',
+    ['offer','Sidamo','G2','Washed','750','bag60',null,'kg','USD','2025/26',
      'Bulk lot, price on application. Sample available on request.',
      'Tesfaye Alemu','Bensa Coffee Supply','+251 91 887 6655','Sidama','verified',2,2],
     ['need','Yirgacheffe','G1','Washed','2','container',null,'kg','USD','2025/26',
      'Buyer in Trieste. Washed G1 only, EU MRL compliant.',
      'Marco Fenaroli','Adriatica Caffe SRL','+39 040 555 1212','Italy','trusted',3,7],
-    ['need','Guji','G1','Natural','100','quintal',null,'kg','USD','2025/26',
+    ['need','Guji','G1','Natural','120','bag85',null,'kg','USD','2025/26',
      'Roaster in Seoul looking for a single natural lot, cup 86+.',
      'Ji-woo Park','Seongsu Roasters','+82 10 5555 8888','South Korea','verified',2,1],
-    ['need','Limu','G2','Washed','250','quintal',null,'kg','USD','2025/26',
+    ['need','Limu','G2','Washed','300','bag60',null,'kg','USD','2025/26',
      'Blender needs steady volume, repeat contract if the first lot lands well.',
      'Sarah Whitfield','Northbridge Trading','+44 7700 900123','United Kingdom','unverified',null,0]
   ];
