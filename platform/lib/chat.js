@@ -148,17 +148,46 @@ function byToken(token) {
 
 /* ---------------- what the admin can do ---------------- */
 
-function inbox(side) {
-  const where = (side === 'seller' || side === 'buyer') ? " WHERE c.side = '" + side + "'" : '';
-  return db.prepare(
+/* what each filter would hold, so the tabs can carry their own numbers */
+function counts() {
+  const n = s => db.prepare('SELECT COUNT(*) n FROM conversations WHERE ' + s).get().n;
+  return {
+    all: n("status <> 'archived'"),
+    waiting: n('unread_us > 0'),
+    seller: n("side = 'seller' AND status <> 'archived'"),
+    buyer: n("side = 'buyer' AND status <> 'archived'"),
+    done: n("status = 'closed'"),
+    archived: n("status = 'archived'")
+  };
+}
+
+/* One list, narrowed by a filter and by a search across both the person and
+   everything either side ever wrote. Archived threads are out of the way but
+   never gone: ask for them and they are there. */
+function inbox(filter, q) {
+  const clauses = [];
+  if (filter === 'seller' || filter === 'buyer') clauses.push("c.side = '" + filter + "'");
+  if (filter === 'waiting') clauses.push('c.unread_us > 0');
+  else if (filter === 'done') clauses.push("c.status = 'closed'");
+  else if (filter === 'archived') clauses.push("c.status = 'archived'");
+  else clauses.push("c.status <> 'archived'");
+
+  const term = String(q || '').trim().toLowerCase();
+  if (term) {
+    clauses.push('(LOWER(c.name) LIKE @q OR LOWER(c.ref) LIKE @q OR LOWER(c.about) LIKE @q' +
+                 ' OR EXISTS (SELECT 1 FROM messages m WHERE m.convo_id = c.id AND LOWER(m.body) LIKE @q))');
+  }
+  const where = clauses.length ? ' WHERE ' + clauses.join(' AND ') : '';
+  const stmt = db.prepare(
     'SELECT c.*, (SELECT body FROM messages WHERE convo_id=c.id ORDER BY id DESC LIMIT 1) AS last_body,' +
     ' (SELECT side FROM messages WHERE convo_id=c.id ORDER BY id DESC LIMIT 1) AS last_side,' +
     ' (SELECT COUNT(*) FROM messages WHERE convo_id=c.id) AS n' +
     ' FROM conversations c' + where + ' ORDER BY (unread_us > 0) DESC, last_at DESC'
-  ).all();
+  );
+  return term ? stmt.all({ q: '%' + term + '%' }) : stmt.all();
 }
 
-const waiting = () => db.prepare('SELECT COUNT(*) n FROM conversations WHERE unread_us > 0').get().n;
+const waiting = () => db.prepare("SELECT COUNT(*) n FROM conversations WHERE unread_us > 0 AND status <> 'archived'").get().n;
 
 function conversation(id) {
   const c = db.prepare('SELECT * FROM conversations WHERE id = ?').get(id);
@@ -205,17 +234,27 @@ function setStatus(id, status, user, ip) {
   return { ok: true, status: s };
 }
 
-function remove(id, user, ip) {
+/* Archiving, not deleting. A conversation is the record of a deal being
+   made or lost, and a broker who cannot show what was said has nothing to
+   stand on later. It leaves the inbox and stays in the history. */
+function archive(id, user, ip) {
   const c = db.prepare('SELECT * FROM conversations WHERE id = ?').get(id);
   if (!c) return { ok: false };
-  db.prepare('DELETE FROM messages WHERE convo_id=?').run(c.id);
-  db.prepare('DELETE FROM conversations WHERE id=?').run(c.id);
-  log(user, 'chat deleted', c.ref, '', ip);
+  db.prepare("UPDATE conversations SET status='archived', unread_us=0 WHERE id=?").run(c.id);
+  log(user, 'chat archived', c.ref, '', ip);
+  return { ok: true };
+}
+
+function restore(id, user, ip) {
+  const c = db.prepare('SELECT * FROM conversations WHERE id = ?').get(id);
+  if (!c) return { ok: false };
+  db.prepare("UPDATE conversations SET status='open' WHERE id=?").run(c.id);
+  log(user, 'chat restored', c.ref, '', ip);
   return { ok: true };
 }
 
 module.exports = {
   start, send, thread, markSeen, byToken,
-  inbox, waiting, conversation, openConversation, reply, setStatus, setSide, remove,
+  inbox, waiting, counts, conversation, openConversation, reply, setStatus, setSide, archive, restore,
   MAX_BODY
 };

@@ -97,8 +97,14 @@ td input[type=text]{padding:.35rem .5rem;font-size:.92rem}
 
 
 /* the inbox: conversations on the left, the open one on the right */
+.convo-search{display:flex;gap:.35rem;align-items:center;margin-left:auto}
+.convo-search input[type=search]{width:min(16rem,42vw);padding:.32rem .6rem;font-size:.86rem;border-radius:999px}
+@media(max-width:760px){.convo-search{margin-left:0;width:100%}.convo-search input[type=search]{width:100%}}
 .chat-wrap{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.2rem}
-@media(min-width:900px){.chat-wrap{grid-template-columns:22rem 1fr;align-items:start}}
+@media(min-width:900px){.convo-search{display:flex;gap:.35rem;align-items:center;margin-left:auto}
+.convo-search input[type=search]{width:min(16rem,42vw);padding:.32rem .6rem;font-size:.86rem;border-radius:999px}
+@media(max-width:760px){.convo-search{margin-left:0;width:100%}.convo-search input[type=search]{width:100%}}
+.chat-wrap{grid-template-columns:22rem 1fr;align-items:start}}
 .convo-list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;max-height:34rem;overflow-y:auto}
 .convo{display:block;padding:.85rem 1rem;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
 .convo:last-child{border-bottom:0}

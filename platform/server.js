@@ -456,10 +456,14 @@ const server = http.createServer(async (req, res) => {
                         String(f.body).slice(0, 140), '/#chat').catch(() => {});
           } else if (f.do === 'close') { chat.setStatus(id, 'closed', user, ipOf(req)); msg = 'Marked done.'; }
           else if (f.do === 'open')  { chat.setStatus(id, 'open', user, ipOf(req)); msg = 'Opened again.'; }
-          else if (f.do === 'delete') {
-            chat.remove(id, user, ipOf(req));
-            return redirect(res, '/admin/chat', { 'Set-Cookie': flashCookie('ok', 'Conversation deleted.') });
+          else if (f.do === 'archive') {
+            /* archived, not deleted: a conversation is the record of a deal
+               being made or lost, and it stays in the history */
+            chat.archive(id, user, ipOf(req));
+            return redirect(res, '/admin/chat',
+              { 'Set-Cookie': flashCookie('ok', 'Moved to the history. Nothing was deleted.') });
           }
+          else if (f.do === 'restore') { chat.restore(id, user, ipOf(req)); msg = 'Back in the inbox.'; }
           return redirect(res, '/admin/chat?id=' + encodeURIComponent(id),
                           { 'Set-Cookie': flashCookie('ok', msg) });
         }
@@ -497,7 +501,8 @@ const server = http.createServer(async (req, res) => {
         return send(res, 200, 'application/json; charset=utf-8', JSON.stringify(out));
       }
       if (p === '/admin/chat')
-        return html(res, 200, adminChat.page(user, flash, url.searchParams.get('id')));
+        return html(res, 200, adminChat.page(user, flash, url.searchParams.get('id'),
+                    url.searchParams.get('show') || '', url.searchParams.get('q') || ''));
       if (p === '/admin/marketplace')
         return html(res, 200, board.boardPage(user, flash, url.searchParams.get('show') || ''));
       if (p === '/admin/marketplace/edit') {

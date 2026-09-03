@@ -38,16 +38,22 @@ function listItem(c, activeId) {
     '<span class="mono">' + esc(c.ref) + (c.about ? ' · ' + esc(c.about) : '') + '</span>' + sideTag +
     '<span class="preview">' + esc(preview) + '</span>' +
     (c.status === 'closed' ? '<span class="badge draft">Done</span>' : '') +
+    (c.status === 'archived' ? '<span class="badge draft">History</span>' : '') +
     '</a>';
 }
 
-function page(user, flash, id) {
-  const all = chat.inbox();
+function page(user, flash, id, filter, q) {
+  const c = chat.counts();
+  const all = chat.inbox(filter, q);
   const active = id ? chat.openConversation(id) : null;
 
   const list = all.length
-    ? all.map(c => listItem(c, id)).join('')
-    : '<p class="lede" style="padding:1rem">Nothing yet. When someone writes to you from the site it appears here.</p>';
+    ? all.map(cv => listItem(cv, id)).join('')
+    : '<p class="lede" style="padding:1rem">' +
+      (q ? 'Nothing matches “' + esc(q) + '”.'
+         : filter === 'archived' ? 'Nothing in the history yet.'
+         : filter ? 'Nothing here right now.'
+         : 'Nothing yet. When someone writes to you from the site it appears here.') + '</p>';
 
   let panel;
   if (!active) {
@@ -83,8 +89,12 @@ function page(user, flash, id) {
       '<form method="post" action="/admin/chat" class="chat-acts">' +
         '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
         '<input type="hidden" name="id" value="' + active.id + '">' +
-        '<button class="btn btn-ghost btn-sm" type="submit" name="do" value="' +
-          (active.status === 'closed' ? 'open">Reopen' : 'close">Mark done') + '</button>' +
+        (active.status === 'archived'
+          ? '<button class="btn btn-ghost btn-sm" type="submit" name="do" value="restore">Back to the inbox</button>'
+          : '<button class="btn btn-ghost btn-sm" type="submit" name="do" value="' +
+            (active.status === 'closed' ? 'open">Reopen' : 'close">Mark done') + '</button>' +
+            '<button class="btn btn-ghost btn-sm" type="submit" name="do" value="archive" ' +
+            'style="margin-left:.4rem">Archive</button>') +
       '</form></div>' +
       aboutLine +
       '<div class="chat-thread" id="thread">' + bubbles + '</div>' +
@@ -106,6 +116,24 @@ function page(user, flash, id) {
         (waiting ? waiting + ' waiting for a reply' : 'nothing waiting') + '</span></div>' +
       '<p class="lede">People writing to you from the website. Your reply appears on their screen where they are ' +
       'reading; it does not go out by email or WhatsApp.</p>' +
+      /* the whole history is reachable: what is waiting, what is done, and
+         what has been put away, none of it deleted */
+      '<div class="pills">' +
+        [['', 'Everything', c.all], ['waiting', 'Waiting', c.waiting],
+         ['seller', 'Sellers', c.seller], ['buyer', 'Buyers', c.buyer],
+         ['done', 'Done', c.done], ['archived', 'History', c.archived]]
+          .filter(t => t[2] || t[0] === '' || t[0] === (filter || ''))
+          .map(t => '<a class="pill' + ((filter || '') === t[0] ? ' on' : '') + '" href="/admin/chat' +
+                    (t[0] ? '?show=' + t[0] : '') + '">' + esc(t[1]) +
+                    ' <b>' + t[2] + '</b></a>').join('') +
+        '<form method="get" action="/admin/chat" class="convo-search">' +
+          (filter ? '<input type="hidden" name="show" value="' + esc(filter) + '">' : '') +
+          '<input type="search" name="q" value="' + esc(q || '') + '" placeholder="Search names and messages">' +
+          '<button class="btn btn-ghost btn-sm" type="submit">Search</button>' +
+          (q ? '<a class="btn btn-ghost btn-sm" href="/admin/chat' +
+               (filter ? '?show=' + esc(filter) : '') + '">Clear</a>' : '') +
+        '</form>' +
+      '</div>' +
       '<div class="chat-wrap"><div class="convo-list">' + list + '</div>' +
       '<div class="chat-panel">' + panel + '</div></div>' +
       /* The inbox keeps itself current: a reply that arrives while you are
