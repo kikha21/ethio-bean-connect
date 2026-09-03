@@ -992,6 +992,24 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 .chat-note.bad{color:var(--warn)}
 /* offered once a conversation exists, because asking a stranger for
    permission before they have said anything is how people learn to say no */
+/* folded shut, because the point of this panel is the box above it */
+.chat-alt{font-size:.72rem;color:var(--text-secondary)}
+.chat-alt summary{
+  cursor:pointer;list-style:none;padding:.15rem 0;
+  text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;
+  color:var(--accent-ink)
+}
+.chat-alt summary::-webkit-details-marker{display:none}
+.chat-alt summary:hover{color:var(--text-primary)}
+.chat-alt-rows{display:grid;gap:.3rem;margin-top:.5rem}
+.chat-alt-rows a{
+  display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--text-primary);
+  padding:.4rem .55rem;border:1px solid var(--panel-edge);border-radius:10px;min-height:38px
+}
+.chat-alt-rows a:hover{border-color:var(--accent-ink)}
+.chat-alt-rows svg{width:15px;height:15px;flex:0 0 15px;color:var(--accent-ink)}
+.chat-alt-rows b{font-weight:600;font-size:.74rem}
+.chat-alt-rows span{font-family:var(--f-mono);font-size:.68rem;color:var(--text-secondary);margin-left:auto}
 .chat-notify{
   display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;
   font-size:.72rem;color:var(--text-secondary);line-height:1.4
@@ -1769,6 +1787,10 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
           </button>
         </div>
         <p class="chat-note" id="chatnote"></p>
+        <details class="chat-alt" id="chatalt">
+          <summary data-i18n="chat.altOpen">Rather use WhatsApp or email?</summary>
+          <div class="chat-alt-rows" id="chataltrows"></div>
+        </details>
         <div class="chat-notify" id="chatnotify" hidden>
           <span data-i18n="chat.notifyAsk">Get our reply on this phone, even after you close the site?</span>
           <button type="button" id="chatnotifyon" data-i18n="chat.notifyOn">Turn it on</button>
@@ -1946,6 +1968,7 @@ I18N.en['chat.notifyDone'] = "Done. We will notify you here.";
 I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
 I18N.en['f.okchat'] = "Chat with us about this";
 I18N.en['f.okchatMsg'] = "This is about my post";
+I18N.en['chat.altOpen'] = "Rather use WhatsApp or email?";
 I18N.en['chat.about'] = "About";
 I18N.en['chat.title'] = "Chat with us";
 I18N.en['chat.sub'] = "We answer here, usually the same working day.";
@@ -3059,9 +3082,40 @@ document.getElementById('editagain').addEventListener('click', function(){
 /* The panel is the chat now. This only decides whether the button appears
    at all: with no way to reach us configured there is still a chat, so it
    always shows. */
+/* The panel is the chat. This shows the button, and fills the folded list
+   of other ways to reach us from whatever contact details are set. */
 function renderLauncher(){
   var box = document.getElementById('launcher');
   if (box) box.hidden = false;
+
+  var host = document.getElementById('chataltrows');
+  var fold = document.getElementById('chatalt');
+  if (!host || !fold) return;
+  var d = I18N[lang], en = I18N.en;
+  var tt = function(k){ return d[k] || en[k]; };
+
+  var ICON = {
+    wa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/></svg>',
+    call: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2.5 6.5l9.5 7 9.5-7"/></svg>'
+  };
+
+  var rows = '';
+  if (CONTACT.whatsapp){
+    rows += '<a href="https://wa.me/' + CONTACT.whatsapp + '" target="_blank" rel="noopener">' +
+            ICON.wa + '<b>' + tt('chat.wa') + '</b><span>' + CONTACT.phone + '</span></a>';
+  }
+  if (CONTACT.phone){
+    rows += '<a href="tel:' + CONTACT.phone.replace(/\s/g,'') + '">' +
+            ICON.call + '<b>' + tt('chat.call') + '</b><span>' + CONTACT.phone + '</span></a>';
+  }
+  if (CONTACT.email){
+    rows += '<a href="mailto:' + CONTACT.email + '">' +
+            ICON.mail + '<b>' + tt('chat.email') + '</b><span>' + CONTACT.email + '</span></a>';
+  }
+  /* nothing configured: no fold, rather than a fold that opens on nothing */
+  fold.hidden = !rows;
+  host.innerHTML = rows;
 }
 (function(){
   var box = document.getElementById('launcher');
