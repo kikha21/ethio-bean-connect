@@ -464,7 +464,12 @@ section[id],#main,#top{scroll-margin-top:96px}
   }
 }
 
+/* The board and the form share a photograph, which would read as the same
+   picture pasted twice. The board takes the top of it and mirrors it, so
+   the two sections show different sacks facing different ways. */
 .js .plate--board.lit{background-image:url('assets/sec-post.jpg')}
+.plate--board{background-position:70% 18%;transform:scaleX(-1)}
+.plate--board > *{transform:scaleX(-1)}
 .js .plate--how.lit{background-image:url('assets/sec-how.jpg')}
 .js .plate--origins.lit{background-image:url('assets/sec-origins.jpg')}
 .js .plate--checks.lit{background-image:url('assets/sec-checks.jpg')}
@@ -647,6 +652,12 @@ td.p.ask{color:var(--text-secondary)}
    its own, because what is behind it changes from card to card */
 .plate .lot{background:rgba(12,17,11,.74);backdrop-filter:blur(3px)}
 .plate .board-empty{background:rgba(12,17,11,.62)}
+/* the small empty line had only a dashed edge, so it sat on whatever the
+   photograph happened to be doing there. It carries its own ground now,
+   like every other piece of text on this section. */
+.plate .board-group-empty{background:rgba(12,17,11,.62)}
+.plate .board-group-note{background:rgba(12,17,11,.55);display:inline-block;padding:.3rem .6rem;border-radius:8px}
+.plate .board-anon{background:rgba(12,17,11,.55);padding:.6rem .8rem;border-radius:10px}
 .plate .board-markets button{background:rgba(12,17,11,.62)}
 .plate .board-search input[type=search]{background:rgba(12,17,11,.62)}
 .plate .board-filters button{background:rgba(12,17,11,.42)}
