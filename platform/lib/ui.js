@@ -35,6 +35,8 @@ nav.tabs{display:flex;gap:.15rem;margin-left:auto;flex-wrap:wrap}
 nav.tabs a{font-size:.92rem;text-decoration:none;color:var(--ink-2);padding:.4rem .7rem;border-radius:8px}
 nav.tabs a:hover{background:var(--canvas-2);color:var(--ink)}
 nav.tabs a.on{background:var(--ink);color:var(--canvas)}
+.navdot{background:var(--gold);color:var(--on-gold);font-family:var(--mono);font-size:.68rem;font-weight:600;
+  border-radius:999px;padding:.05rem .4rem;margin-left:-.4rem;align-self:center}
 .who{font-size:.86rem;color:var(--ink-2);display:flex;align-items:center;gap:.6rem}
 
 main{padding:1.8rem 0 4rem}
@@ -93,6 +95,38 @@ td input[type=text]{padding:.35rem .5rem;font-size:.92rem}
 .log td:first-child{font-family:var(--mono);font-size:.78rem;color:var(--ink-2);white-space:nowrap}
 .tag{font-family:var(--mono);font-size:.72rem;border:1px solid var(--line);border-radius:99px;padding:.1rem .45rem;color:var(--ink-2)}
 
+
+/* the inbox: conversations on the left, the open one on the right */
+.chat-wrap{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.2rem}
+@media(min-width:900px){.chat-wrap{grid-template-columns:22rem 1fr;align-items:start}}
+.convo-list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;max-height:34rem;overflow-y:auto}
+.convo{display:block;padding:.85rem 1rem;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.convo:last-child{border-bottom:0}
+.convo:hover{background:var(--canvas-2)}
+.convo.on{background:var(--canvas-2);box-shadow:inset 3px 0 0 var(--gold)}
+.convo.unread b{font-weight:700}
+.convo-top{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+.convo .mono{display:block;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);margin:.15rem 0 .3rem}
+.convo .preview{display:block;font-size:.86rem;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.convo .when{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);white-space:nowrap}
+.convo .dot{background:var(--gold);color:var(--on-gold);font-family:var(--mono);font-size:.7rem;font-weight:600;
+  border-radius:999px;padding:.05rem .45rem;white-space:nowrap}
+
+.chat-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;min-height:24rem}
+.chat-empty{padding:2.4rem;display:grid;place-items:center;text-align:center;min-height:24rem}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  padding:.9rem 1.1rem;border-bottom:1px solid var(--line)}
+.chat-head b{display:block}
+.chat-head .mono{font-family:var(--mono);font-size:.74rem;color:var(--ink-2)}
+.chat-thread{padding:1.1rem;display:flex;flex-direction:column;gap:.7rem;max-height:26rem;overflow-y:auto}
+.bubble{max-width:78%;padding:.6rem .85rem;border-radius:14px;font-size:.94rem;line-height:1.5}
+.bubble p{margin:0}
+.bubble .stamp{display:block;margin-top:.3rem;font-family:var(--mono);font-size:.68rem;opacity:.7}
+.bubble.them{align-self:flex-start;background:var(--canvas-2);border:1px solid var(--line);border-bottom-left-radius:5px}
+.bubble.us{align-self:flex-end;background:var(--gold);color:var(--on-gold);border-bottom-right-radius:5px}
+.chat-reply{display:flex;gap:.6rem;align-items:flex-end;padding:.9rem 1.1rem;border-top:1px solid var(--line)}
+.chat-reply textarea{flex:1;min-height:60px;margin:0}
+
 .center{min-height:100vh;display:grid;place-items:center;padding:2rem 1rem}
 .auth{width:min(430px,100%)}
 .auth h1{font-size:1.5rem;margin-bottom:.3rem}
@@ -135,6 +169,9 @@ label.check span{font-weight:600;font-size:.93rem}
 `;
 
 function layout({ title, user, active, body, flash }) {
+  /* the badge is read here rather than passed in, so every page shows it */
+  let waiting = 0;
+  try { waiting = require('./chat').waiting(); } catch (e) {}
   const tab = (href, label, id) =>
     `<a href="${href}"${active === id ? ' class="on"' : ''}>${esc(label)}</a>`;
   return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
@@ -148,6 +185,7 @@ ${user ? `<header class="top"><div class="shell">
   <a class="brand" href="/admin"><i></i>Ethio<span>Bean</span> admin</a>
   <nav class="tabs">
     ${tab('/admin', 'Overview', 'home')}
+    ${tab('/admin/chat', 'Chat', 'chat')}${waiting ? `<span class="navdot">${waiting}</span>` : ''}
     ${tab('/admin/marketplace', 'Marketplace', 'board')}
     ${tab('/admin/prices', 'Market prices', 'prices')}
     ${tab('/admin/content', 'Site text', 'content')}

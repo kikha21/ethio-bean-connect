@@ -921,6 +921,93 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 .launcher.open .launch-btn .c{display:none}
 .launcher.open .launch-btn .x{display:block}
 
+
+/* ============================================================
+   THE CHAT WINDOW
+   The conversation happens here. The panel is a column: a bar, the
+   messages, and the box you type in. It is sized so the messages get
+   the room and the composer never moves.
+   ============================================================ */
+.chat-box{display:flex;flex-direction:column;width:min(23rem,calc(100vw - 28px));height:min(30rem,70vh)}
+.chat-bar{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;
+  padding:.85rem .95rem;border-bottom:1px solid var(--panel-edge)
+}
+.chat-bar b{display:block;font-family:var(--f-display);font-size:var(--t-body);line-height:1.2}
+.chat-bar em{display:block;font-style:normal;font-size:var(--t-xs);color:var(--text-secondary);margin-top:.15rem}
+#chatclose{
+  background:transparent;border:0;color:var(--text-secondary);font-size:1.35rem;line-height:1;
+  cursor:pointer;padding:.1rem .3rem;border-radius:8px;flex:0 0 auto
+}
+#chatclose:hover{color:var(--text-primary);background:var(--canvas-2)}
+
+.chat-log{
+  flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.55rem;
+  scroll-behavior:smooth
+}
+.msg{max-width:82%;padding:.55rem .8rem;border-radius:14px;font-size:var(--t-xs);line-height:1.55}
+.msg p{margin:0;white-space:pre-wrap;word-break:break-word}
+.msg span{display:block;margin-top:.25rem;font-family:var(--f-mono);font-size:.68rem;opacity:.65}
+.msg.me{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:5px}
+.msg.us{align-self:flex-start;background:var(--canvas-2);border:1px solid var(--panel-edge);border-bottom-left-radius:5px}
+
+.chat-form{padding:.75rem .9rem .85rem;border-top:1px solid var(--panel-edge);display:grid;gap:.5rem}
+.chat-form input[type=text]{font-size:var(--t-xs);padding:.5rem .7rem;border-radius:10px}
+/* one tap, and whoever answers knows which end of the trade they are at */
+.chat-side{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;font-size:var(--t-xs);color:var(--text-secondary)}
+.chat-side button{
+  font-family:var(--f-body);font-size:var(--t-xs);cursor:pointer;
+  background:transparent;color:var(--text-secondary);
+  border:1px solid var(--edge-ui);border-radius:999px;padding:.3rem .7rem;min-height:34px;
+  transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+}
+.chat-side button:hover{border-color:var(--border-strong);color:var(--text-primary)}
+.chat-side button[aria-pressed="true"]{background:var(--text-primary);border-color:var(--text-primary);color:var(--canvas)}
+.chat-side[hidden]{display:none}
+.chat-send{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:end}
+.chat-send textarea{
+  min-height:44px;max-height:120px;resize:none;font-size:var(--t-xs);
+  padding:.6rem .75rem;border-radius:12px;line-height:1.5
+}
+#chatsend{
+  width:44px;height:44px;flex:0 0 44px;border-radius:50%;border:0;cursor:pointer;
+  background:var(--accent);color:var(--on-accent);display:grid;place-items:center;
+  transition:background .3s var(--ease)
+}
+#chatsend:hover{background:var(--accent-hover)}
+#chatsend:disabled{opacity:.55;cursor:default}
+#chatsend svg{width:19px;height:19px}
+.chat-note{margin:0;font-size:.72rem;color:var(--text-secondary);min-height:1em}
+.chat-note.bad{color:var(--warn)}
+/* offered once a conversation exists, because asking a stranger for
+   permission before they have said anything is how people learn to say no */
+.chat-notify{
+  display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;
+  font-size:.72rem;color:var(--text-secondary);line-height:1.4
+}
+.chat-notify[hidden]{display:none}
+.chat-notify button{
+  font-family:var(--f-body);font-size:.72rem;font-weight:600;cursor:pointer;
+  background:transparent;color:var(--accent-ink);border:1px solid var(--edge-ui);
+  border-radius:999px;padding:.22rem .6rem
+}
+.chat-notify button:hover{border-color:var(--accent-ink)}
+/* the count on the floating button, for anyone who said no to notifications */
+.launch-btn{position:relative}
+.launch-count{
+  position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:999px;
+  background:var(--warn);color:#fff;font-family:var(--f-mono);font-size:.66rem;font-weight:600;
+  display:grid;place-items:center;padding:0 .3rem;border:2px solid var(--canvas)
+}
+.launch-count[hidden]{display:none}
+
+/* the panel holds a whole window now, not a short list */
+.launch-panel{padding:0;overflow:hidden}
+.launch-panel a:hover{background:transparent}
+@media(max-width:520px){
+  .chat-box{width:calc(100vw - 24px);height:min(28rem,66vh)}
+}
+
 /* ============================================================
    THE MOBILE ACTION BAR
    The nav CTA is hidden below 860px, which left roughly 10,000px of
@@ -1636,8 +1723,46 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 </div>
 
 <div class="launcher" id="launcher" hidden>
-  <div class="launch-panel" id="launchpanel" role="dialog" aria-label="Contact Ethio Bean Connect"></div>
+  <div class="launch-panel" id="launchpanel" role="dialog" aria-label="Chat with Ethio Bean Connect">
+    <div class="chat-box" id="chatbox">
+      <div class="chat-bar">
+        <span><b data-i18n="chat.title">Chat with us</b>
+        <em id="chatstate" data-i18n="chat.sub">We answer here, usually the same working day.</em></span>
+        <button type="button" id="chatclose" aria-label="Close the chat">&times;</button>
+      </div>
+
+      <div class="chat-log" id="chatlog" role="log" aria-live="polite"></div>
+
+      <form class="chat-form" id="chatform" autocomplete="off">
+        <div class="chat-side" id="chatside" role="group" aria-label="Which side are you on">
+          <span data-i18n="chat.whichSide">I am</span>
+          <button type="button" data-side="seller" aria-pressed="false" data-i18n="chat.selling">selling coffee</button>
+          <button type="button" data-side="buyer" aria-pressed="false" data-i18n="chat.buying">buying coffee</button>
+        </div>
+        <label class="sr-only" for="chatname" data-i18n="chat.nameLabel">Your name</label>
+        <input type="text" id="chatname" maxlength="80" data-i18n-ph="chat.namePh"
+               placeholder="Your name, if you like">
+        <div class="chat-send">
+          <label class="sr-only" for="chatinput" data-i18n="chat.msgLabel">Your message</label>
+          <textarea id="chatinput" rows="1" maxlength="2000" required
+                    data-i18n-ph="chat.msgPh" placeholder="Type your message"></textarea>
+          <button type="submit" id="chatsend" aria-label="Send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 12h15M13 6l6 6-6 6"/>
+            </svg>
+          </button>
+        </div>
+        <p class="chat-note" id="chatnote"></p>
+        <div class="chat-notify" id="chatnotify" hidden>
+          <span data-i18n="chat.notifyAsk">Get our reply on this phone, even after you close the site?</span>
+          <button type="button" id="chatnotifyon" data-i18n="chat.notifyOn">Turn it on</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <button class="launch-btn" id="launchbtn" aria-expanded="false" aria-label="Chat with us">
+    <span class="launch-count" id="launchcount" hidden aria-hidden="true"></span>
     <svg class="c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/>
     </svg>
@@ -1797,6 +1922,22 @@ I18N.en['f.note'] = "This goes straight onto our board. We check it first, and y
 I18N.en['f.send'] = "Post it";
 I18N.en['f.sending'] = "Posting…";
 I18N.en['f.offline'] = "That did not reach us. You may be offline.";
+I18N.en['chat.whichSide'] = "I am";
+I18N.en['chat.selling'] = "selling coffee";
+I18N.en['chat.buying'] = "buying coffee";
+I18N.en['chat.notifyAsk'] = "Get our reply on this phone, even after you close the site?";
+I18N.en['chat.notifyOn'] = "Turn it on";
+I18N.en['chat.notifyDone'] = "Done. We will notify you here.";
+I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
+I18N.en['chat.title'] = "Chat with us";
+I18N.en['chat.sub'] = "We answer here, usually the same working day.";
+I18N.en['chat.namePh'] = "Your name, if you like";
+I18N.en['chat.nameLabel'] = "Your name";
+I18N.en['chat.msgPh'] = "Type your message";
+I18N.en['chat.msgLabel'] = "Your message";
+I18N.en['chat.done'] = "This conversation is marked done. Write again to reopen it.";
+I18N.en['chat.failed'] = "That did not send. Try again.";
+I18N.en['chat.offline'] = "That did not reach us. You may be offline.";
 I18N.en['board.askMsg']     = "Hello, I am asking about";
 I18N.en['board.mExport']     = "Export standard";
 I18N.en['board.mExportNote'] = "Graded for export, G1 to G5.";
@@ -2498,11 +2639,8 @@ function qtyPhrase(){
   /* Asking about a lot puts you on the opposite side of it: a lot for
      sale is answered by a buyer, a lot wanted is answered by a seller.
      The reference travels with you so we can match the two ends. */
-  /* Asking about a lot is a conversation, not a post. It goes straight to
-     us on WhatsApp with the reference already in the message, and falls
-     back to the contact panel when WhatsApp is not configured or the
-     browser blocks the handoff. The lot never becomes a form to fill in:
-     the person asking is a buyer, and buyers talk to us. */
+  /* Asking about a lot opens the chat with the reference already written,
+     so the conversation starts on the page the person is already reading. */
   var groupsWrap = document.getElementById('board-groups') || document;
   groupsWrap.addEventListener('click', function(e){
     var a = e.target.closest ? e.target.closest('.lot-ask') : null;
@@ -2511,21 +2649,16 @@ function qtyPhrase(){
     var card = a.closest('.lot');
     var ref  = a.getAttribute('data-ref') || '';
     var what = card ? (card.querySelector('h3') || {}).textContent : '';
-    var msg  = t('board.askMsg') + ' ' + ref + (what ? ' (' + what.trim() + ')' : '') + '.';
-
-    if (CONTACT.whatsapp){
-      var win = window.open('https://wa.me/' + CONTACT.whatsapp + '?text=' + encodeURIComponent(msg),
-                            '_blank', 'noopener');
-      if (win) return;
-    }
-    /* no WhatsApp, or the popup was blocked: open the contact panel so the
-       phone number and email are one tap away rather than a dead end */
+    if (window.__ebcChatAbout) window.__ebcChatAbout(ref);
+    var kind = card ? card.getAttribute('data-kind') : '';
+    if (window.__ebcChatSide) window.__ebcChatSide(kind === 'offer' ? 'buyer' : 'seller');
     var launcher = document.getElementById('launcher');
-    var trigger = launcher ? launcher.querySelector('button') : null;
-    if (trigger){ trigger.click(); return; }
-    if (CONTACT.email){
-      window.location.href = 'mailto:' + CONTACT.email +
-        '?subject=' + encodeURIComponent(ref) + '&body=' + encodeURIComponent(msg);
+    var btn = launcher ? launcher.querySelector('.launch-btn') : null;
+    if (launcher && !launcher.classList.contains('open') && btn) btn.click();
+    var box = document.getElementById('chatinput');
+    if (box && !box.value){
+      box.value = t('board.askMsg') + ' ' + ref + (what ? ' (' + what.trim() + ')' : '') + '.';
+      box.dispatchEvent(new Event('input'));
     }
   });
 })();
@@ -2884,31 +3017,12 @@ document.getElementById('editagain').addEventListener('click', function(){
 /* ============================================================
    10b. THE CONTACT LAUNCHER
    ============================================================ */
+/* The panel is the chat now. This only decides whether the button appears
+   at all: with no way to reach us configured there is still a chat, so it
+   always shows. */
 function renderLauncher(){
-  var host = document.getElementById('launchpanel');
-  var box  = document.getElementById('launcher');
-  if (!host || !box) return;
-  var d = I18N[lang], en = I18N.en;
-  var t = function(k){ return d[k] || en[k]; };
-  var rows = '';
-  if (CONTACT.whatsapp){
-    rows += '<a href="https://wa.me/' + CONTACT.whatsapp + '" target="_blank" rel="noopener">'
-         +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/></svg>'
-         +  '<span style="display:block"><b>' + t('chat.wa') + '</b><span>' + CONTACT.phone + '</span></span></a>';
-  }
-  if (CONTACT.phone){
-    rows += '<a href="tel:' + CONTACT.phone.replace(/\s/g,'') + '">'
-         +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>'
-         +  '<span style="display:block"><b>' + t('chat.call') + '</b><span>' + CONTACT.phone + '</span></span></a>';
-  }
-  if (CONTACT.email){
-    rows += '<a href="mailto:' + CONTACT.email + '">'
-         +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2.5 6.5l9.5 7 9.5-7"/></svg>'
-         +  '<span style="display:block"><b>' + t('chat.email') + '</b><span>' + CONTACT.email + '</span></span></a>';
-  }
-  if (!rows){ box.hidden = true; return; }   /* nothing configured yet, so show nothing rather than a dead button */
-  box.hidden = false;
-  host.innerHTML = rows;
+  var box = document.getElementById('launcher');
+  if (box) box.hidden = false;
 }
 (function(){
   var box = document.getElementById('launcher');
@@ -2918,6 +3032,9 @@ function renderLauncher(){
     var open = box.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
     if (trigger) trigger.setAttribute('aria-expanded', String(open));
+    /* the chat only polls while someone is looking at it */
+    if (open) { if (window.__ebcChatOpen) window.__ebcChatOpen(); }
+    else { if (window.__ebcChatClose) window.__ebcChatClose(); }
   }
   btn.addEventListener('click', function(){ toggle(null); });
   /* the same panel, opened from the mobile action bar */
@@ -2926,6 +3043,7 @@ function renderLauncher(){
   document.addEventListener('click', function(e){
     if (!box.contains(e.target) && box.classList.contains('open')){
       box.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+      if (window.__ebcChatClose) window.__ebcChatClose();
     }
   });
   addEventListener('keydown', function(e){
@@ -3111,6 +3229,279 @@ function renderFooterContact(){
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;   /* let open-in-new-tab work */
     e.preventDefault();
     jump();
+  });
+})();
+
+/* ============================================================
+   10c. CHAT, ON THIS PAGE
+   ============================================================ */
+/* The conversation lives on the site. A visitor types here, it is stored
+   on the server, and the reply comes back to this same panel. Nothing is
+   handed off to WhatsApp or to an email app.
+
+   There is no account, so the conversation is identified by a token the
+   server hands back once and this browser keeps. Lose the browser storage
+   and you lose the thread, which is the honest trade for not asking a
+   stranger to register before they can ask a question. */
+(function(){
+  var box   = document.getElementById('chatbox');
+  var logEl = document.getElementById('chatlog');
+  var form  = document.getElementById('chatform');
+  var input = document.getElementById('chatinput');
+  var nameEl= document.getElementById('chatname');
+  var note  = document.getElementById('chatnote');
+  var stateEl = document.getElementById('chatstate');
+  if (!box || !form || !input || !logEl) return;
+
+  var KEY = 'ebc-chat-token';
+  var sideEl = document.getElementById('chatside');
+  var side = '';
+  var token = null;
+  var lastId = 0;
+  var timer = null;
+  var open = false;
+
+  try { token = localStorage.getItem(KEY); } catch(e){}
+
+  function save(t){ token = t; try { localStorage.setItem(KEY, t); } catch(e){} }
+
+  function stamp(iso){
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  }
+
+  /* messages are plain text; the only markup they get is their own breaks */
+  function bubble(m){
+    var el = document.createElement('div');
+    el.className = 'msg ' + (m.side === 'us' ? 'us' : 'me');
+    var p = document.createElement('p');
+    p.textContent = m.body;
+    var s = document.createElement('span');
+    s.textContent = stamp(m.created_at);
+    el.appendChild(p); el.appendChild(s);
+    return el;
+  }
+
+  function add(list){
+    if (!list || !list.length) return;
+    list.forEach(function(m){
+      if (m.id > lastId) lastId = m.id;
+      logEl.appendChild(bubble(m));
+    });
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function say(text, bad){
+    note.textContent = text || '';
+    note.className = 'chat-note' + (bad ? ' bad' : '');
+  }
+
+  function post(url, data){
+    var body = [];
+    Object.keys(data).forEach(function(k){
+      if (data[k] !== undefined && data[k] !== null)
+        body.push(encodeURIComponent(k) + '=' + encodeURIComponent(data[k]));
+    });
+    return fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: body.join('&')
+    }).then(function(r){ return r.json(); });
+  }
+
+  function poll(){
+    if (!token) return;
+    post('/chat/poll', {token: token, since: lastId}).then(function(out){
+      if (!out.ok){
+        /* the thread is gone: forget it rather than polling a ghost */
+        try { localStorage.removeItem(KEY); } catch(e){}
+        token = null; lastId = 0;
+        return;
+      }
+      if (!open && out.messages && out.messages.length){
+        showCount(unseen + out.messages.filter(function(m){ return m.side === 'us'; }).length);
+      }
+      add(out.messages);
+      if (out.status === 'closed' && stateEl) stateEl.textContent = t('chat.done');
+    }).catch(function(){ /* offline; the next tick tries again */ });
+  }
+
+  /* polls only while the panel is open, and stops the moment it closes */
+  function startPolling(){
+    stopPolling();
+    if (token) { poll(); timer = setInterval(poll, open ? 4000 : 30000); }
+  }
+  /* with the panel shut it still checks, just rarely, so a reply raises the
+     count on the button without costing a request every four seconds */
+  function watchQuietly(){ if (token && !open) startPolling(); }
+  function stopPolling(){ if (timer) { clearInterval(timer); timer = null; } }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var text = String(input.value).trim();
+    if (!text) return;
+    var btn = document.getElementById('chatsend');
+    btn.disabled = true;
+    say('');
+
+    /* show it straight away, so the panel never feels like it swallowed
+       the message while the request is in flight */
+    add([{id: lastId + 0.5, side: 'me', body: text, created_at: new Date().toISOString()}]);
+    input.value = '';
+    input.style.height = '';
+
+    var done = function(out){
+      btn.disabled = false;
+      if (!out || !out.ok){
+        say((out && out.message) || t('chat.failed'), true);
+        return;
+      }
+      if (out.token) save(out.token);
+      /* the server's copy is authoritative, so redraw from it */
+      logEl.innerHTML = ''; lastId = 0;
+      add(out.messages);
+      if (nameEl) nameEl.style.display = 'none';
+      if (sideEl) sideEl.hidden = true;
+      offerPush();
+      startPolling();
+    };
+
+    if (token) post('/chat/send', {token: token, body: text}).then(done)
+                 .catch(function(){ btn.disabled = false; say(t('chat.offline'), true); });
+    else post('/chat/start', {body: text, name: nameEl ? nameEl.value : '', about: chatAbout, side: side})
+           .then(done)
+           .catch(function(){ btn.disabled = false; say(t('chat.offline'), true); });
+  });
+
+  /* the two side buttons behave as one choice, and can be unset again */
+  if (sideEl){
+    [].forEach.call(sideEl.querySelectorAll('button[data-side]'), function(b){
+      b.addEventListener('click', function(){
+        var want = b.getAttribute('data-side');
+        side = (side === want) ? '' : want;
+        [].forEach.call(sideEl.querySelectorAll('button[data-side]'), function(o){
+          o.setAttribute('aria-pressed', String(o.getAttribute('data-side') === side));
+        });
+      });
+    });
+  }
+  /* a card on the board already tells us which side the reader is on: a lot
+     for sale is read by a buyer, a lot wanted is read by a seller */
+  window.__ebcChatSide = function(s){
+    if (s !== 'seller' && s !== 'buyer') return;
+    side = s;
+    if (sideEl) [].forEach.call(sideEl.querySelectorAll('button[data-side]'), function(o){
+      o.setAttribute('aria-pressed', String(o.getAttribute('data-side') === side));
+    });
+  };
+
+  /* Enter sends, Shift+Enter makes a new line, and the box grows with it */
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit',{cancelable:true})); }
+  });
+  input.addEventListener('input', function(){
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  });
+
+  /* the reference of a lot, when the chat was opened from a card */
+  var chatAbout = '';
+  window.__ebcChatAbout = function(ref){ chatAbout = ref || ''; };
+
+  window.__ebcChatOpen = function(){
+    open = true;
+    box.classList.add('on');
+    if (token && !logEl.childNodes.length){ post('/chat/poll', {token: token}).then(function(out){
+      if (out.ok) { logEl.innerHTML = ''; lastId = 0; add(out.messages); }
+      else { try { localStorage.removeItem(KEY); } catch(e){} token = null; }
+    }); }
+    if (nameEl && token) nameEl.style.display = 'none';
+    if (sideEl && token) sideEl.hidden = true;
+    showCount(0);
+    offerPush();
+    startPolling();
+    setTimeout(function(){ input.focus(); }, 260);
+  };
+  window.__ebcChatClose = function(){ open = false; box.classList.remove('on'); startPolling(); };
+
+  /* and on load, so a reply left overnight is waiting on the button */
+  if (token) { showCount(0); watchQuietly(); }
+
+  /* ---- being told about a reply ----
+     Two layers, because they fail differently. The count on the button
+     needs no permission and works the moment a reply lands while the tab
+     is open. A push notification reaches the phone after the site is
+     closed, but only if the person allows it, and on an iPhone only once
+     the site has been added to the Home Screen. */
+  var countEl = document.getElementById('launchcount');
+  var notifyEl = document.getElementById('chatnotify');
+  var unseen = 0;
+
+  function showCount(n){
+    unseen = Math.max(0, n);
+    if (!countEl) return;
+    countEl.textContent = unseen > 9 ? '9+' : String(unseen);
+    countEl.hidden = unseen === 0;
+  }
+
+  function urlB64(s){
+    var pad = '='.repeat((4 - s.length % 4) % 4);
+    var raw = atob((s + pad).replace(/-/g, '+').replace(/_/g, '/'));
+    var out = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+    return out;
+  }
+
+  function canPush(){
+    return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  }
+
+  function offerPush(){
+    if (!notifyEl) return;
+    /* nothing to offer if it cannot work, is already on, or was refused */
+    notifyEl.hidden = !(canPush() && token && Notification.permission === 'default');
+  }
+
+  function turnOnPush(){
+    if (!canPush() || !token) return;
+    Notification.requestPermission().then(function(perm){
+      if (perm !== 'granted'){ offerPush(); return; }
+      return navigator.serviceWorker.register('/sw.js').then(function(reg){
+        return fetch('/push/key').then(function(r){ return r.json(); }).then(function(k){
+          return reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlB64(k.key)
+          });
+        }).then(function(sub){
+          return post('/push/subscribe', {token: token, sub: JSON.stringify(sub)});
+        }).then(function(){
+          if (notifyEl) notifyEl.hidden = true;
+          say(t('chat.notifyDone'));
+        });
+      });
+    }).catch(function(){ say(t('chat.notifyFailed'), true); });
+  }
+  var onBtn = document.getElementById('chatnotifyon');
+  if (onBtn) onBtn.addEventListener('click', turnOnPush);
+
+  /* a tap on the notification asks the page to open the chat */
+  if ('serviceWorker' in navigator){
+    navigator.serviceWorker.addEventListener('message', function(e){
+      if (e.data && e.data.ebc === 'open-chat'){
+        var b = document.querySelector('.launch-btn');
+        var l = document.getElementById('launcher');
+        if (l && !l.classList.contains('open') && b) b.click();
+      }
+    });
+  }
+
+  document.getElementById('chatclose').addEventListener('click', function(){
+    var l = document.getElementById('launcher');
+    if (l) l.classList.remove('open');
+    var b = l ? l.querySelector('.launch-btn') : null;
+    if (b) b.setAttribute('aria-expanded', 'false');
+    window.__ebcChatClose();
   });
 })();
 

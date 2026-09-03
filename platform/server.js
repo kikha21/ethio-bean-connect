@@ -7,7 +7,10 @@ const auth = require('./lib/auth');
 const { render, invalidate, marketJson, SITE_DIR } = require('./lib/render');
 const { layout, esc } = require('./lib/ui');
 const board = require('./lib/admin-board');
+const adminChat = require('./lib/admin-chat');
 const publicPost = require('./lib/public-post');
+const chat = require('./lib/chat');
+const push = require('./lib/push');
 
 const PORT = Number(process.env.PORT || 4400);
 
@@ -378,6 +381,26 @@ const server = http.createServer(async (req, res) => {
           invalidate();
           return redirect(res, '/admin/settings', { 'Set-Cookie': flashCookie('ok', 'Saved. The footer, chat button and form all updated.') });
         }
+        if (p === '/admin/chat') {
+          const id = f.id;
+          let msg = 'Sent.';
+          if (f.do === 'reply') {
+            const out = chat.reply(id, f.body, user, ipOf(req));
+            if (!out.ok) return redirect(res, '/admin/chat', { 'Set-Cookie': flashCookie('bad', out.message) });
+            /* not awaited: the push service is somebody else's server and
+               the person clicking Send should not wait for it */
+            push.sendTo('convo:' + id, 'Ethio Bean Connect',
+                        String(f.body).slice(0, 140), '/#chat').catch(() => {});
+          } else if (f.do === 'close') { chat.setStatus(id, 'closed', user, ipOf(req)); msg = 'Marked done.'; }
+          else if (f.do === 'open')  { chat.setStatus(id, 'open', user, ipOf(req)); msg = 'Opened again.'; }
+          else if (f.do === 'delete') {
+            chat.remove(id, user, ipOf(req));
+            return redirect(res, '/admin/chat', { 'Set-Cookie': flashCookie('ok', 'Conversation deleted.') });
+          }
+          return redirect(res, '/admin/chat?id=' + encodeURIComponent(id),
+                          { 'Set-Cookie': flashCookie('ok', msg) });
+        }
+
         if (p === '/admin/marketplace') {
           const out = board.handlePost(f, user, ipOf(req));
           if (!out) return send(res, 400, 'text/plain', 'unknown action');
@@ -393,6 +416,25 @@ const server = http.createServer(async (req, res) => {
       if (p === '/admin/content')  return html(res, 200, contentPage(user, flash, url.searchParams.get('q')));
       if (p === '/admin/settings') return html(res, 200, settingsPage(user, flash));
       if (p === '/admin/activity') return html(res, 200, activityPage(user, flash));
+      if (p === '/admin/chat/poll') {
+        /* what changed since the browser last looked: the number waiting,
+           and any new messages in the thread that is open */
+        const cid = url.searchParams.get('id');
+        const since = Number(url.searchParams.get('since') || 0);
+        const out = { waiting: chat.waiting(), messages: [] };
+        if (cid) {
+          const c = chat.conversation(cid);
+          if (c) {
+            out.messages = c.messages.filter(m => m.id > since)
+              .map(m => ({ id: m.id, side: m.side, body: m.body, created_at: m.created_at }));
+            /* looking at it is what marks it read */
+            if (out.messages.length) chat.openConversation(cid);
+          }
+        }
+        return send(res, 200, 'application/json; charset=utf-8', JSON.stringify(out));
+      }
+      if (p === '/admin/chat')
+        return html(res, 200, adminChat.page(user, flash, url.searchParams.get('id')));
       if (p === '/admin/marketplace')
         return html(res, 200, board.boardPage(user, flash, url.searchParams.get('show') || ''));
       if (p === '/admin/marketplace/edit') {
@@ -402,6 +444,64 @@ const server = http.createServer(async (req, res) => {
         return html(res, 200, page);
       }
       return send(res, 404, 'text/plain', 'not found');
+    }
+
+    /* ---- the service worker, and push subscriptions ---- */
+    if (p === '/sw.js') {
+      const sw = path.join(SITE_DIR, 'sw.js');
+      if (fs.existsSync(sw)) {
+        return send(res, 200, 'application/javascript; charset=utf-8', fs.readFileSync(sw),
+                    { 'Service-Worker-Allowed': '/', 'Cache-Control': 'no-cache' });
+      }
+      return send(res, 404, 'text/plain', 'not found');
+    }
+    if (p === '/push/key') {
+      return send(res, 200, 'application/json; charset=utf-8', JSON.stringify({ key: push.publicKey() }));
+    }
+    if (p === '/push/subscribe' && req.method === 'POST') {
+      const f = await body(req, 8e3);
+      let sub = null;
+      try { sub = JSON.parse(f.sub || 'null'); } catch (e) {}
+      /* a visitor may only attach a subscription to their own conversation,
+         which is what holding the token proves */
+      let owner = null;
+      if (f.token) {
+        const c = chat.byToken(f.token);
+        if (c) owner = 'convo:' + c.id;
+      } else {
+        const who = auth.userForSession(cookies(req).ebc_session);
+        if (who) owner = 'user:' + who.id;
+      }
+      if (!owner || !sub) return send(res, 400, 'application/json', JSON.stringify({ ok: false }));
+      const out = push.subscribe(owner, sub);
+      return send(res, out.ok ? 200 : 400, 'application/json', JSON.stringify(out));
+    }
+    if (p === '/push/unsubscribe' && req.method === 'POST') {
+      const f = await body(req, 8e3);
+      push.unsubscribe(f.endpoint);
+      return send(res, 200, 'application/json', JSON.stringify({ ok: true }));
+    }
+
+    /* ---- chat, on the website ---- */
+    if (p.indexOf('/chat/') === 0 && req.method === 'POST') {
+      const f = await body(req, 8e3);
+      const json = (code, obj) => send(res, code, 'application/json; charset=utf-8', JSON.stringify(obj));
+
+      if (p === '/chat/start') {
+        const out = chat.start(f, ipOf(req));
+        return json(out.ok ? 200 : 429, out);
+      }
+      if (p === '/chat/send') {
+        const out = chat.send(f, ipOf(req));
+        return json(out.ok ? 200 : 400, out);
+      }
+      if (p === '/chat/poll') {
+        const out = chat.thread(f.token, f.since);
+        if (out.ok && !f.since) chat.markSeen(f.token);
+        if (out.ok && f.since) chat.markSeen(f.token);
+        return json(200, out);
+      }
+      return json(404, { ok: false });
     }
 
     /* ---- posting, straight into the board ---- */
