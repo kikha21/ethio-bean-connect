@@ -11,11 +11,16 @@ const STYLE = `
   --green:#2F7D32;--green-deep:#225C25;--bean:#8A5028;--warn:#A6412A;--warn-bg:rgba(166,65,42,.08);
   --display:"Archivo",system-ui,sans-serif;--body:"Source Sans 3",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
+  /* the dropdowns here are drawn by the browser, and without this it
+     draws them light whatever the palette says: light text landing on
+     a white list */
+  color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root{
   --canvas:#0E130F;--canvas-2:#141B15;--panel:#1A231B;--line:#2B3A2C;--strong:#62806A;
   --ink:#F3F0E6;--ink-2:#B4BFB0;--gold-ink:#E6CC85;--green:#5FA867;--green-deep:#93CE94;
   --bean:#C08A5A;--warn:#E8836A;--warn-bg:rgba(232,131,106,.1);
+  color-scheme:dark;
 }}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -60,6 +65,7 @@ input[type=text],input[type=email],input[type=password],textarea,select{
   width:100%;font-family:var(--body);font-size:1rem;color:var(--ink);background:var(--canvas);
   border:1px solid var(--strong);border-radius:9px;padding:.55rem .7rem}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold-ink);background:var(--panel)}
+option{background-color:var(--panel);color:var(--ink)}
 textarea{resize:vertical;min-height:76px}
 .row2{display:grid;gap:.7rem}
 @media(min-width:760px){.row2{grid-template-columns:1fr 1fr}}

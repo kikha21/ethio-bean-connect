@@ -397,7 +397,10 @@ section[id],#main,#top{scroll-margin-top:96px}
    overrides, which is the whole reason the palette was tokenised.
    The page alternates paper, plate, paper, plate down its length.
    ============================================================ */
-.plate{
+/* the form on a photo section is a dark surface, and the browser draws
+   its own parts of a control, so it has to be told */
+.plate{color-scheme:dark;
+  
   position:relative;
   background-color:var(--media-ground);
   background-size:cover;background-position:center;background-repeat:no-repeat;
@@ -852,6 +855,13 @@ input:hover,select:hover,textarea:hover{border-color:var(--accent-muted)}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent-ink);background:var(--field-focus)}
 textarea{resize:vertical;min-height:96px}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B4BFB0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.4rem}
+/* The open list is drawn by the operating system and inherits almost
+   nothing from the closed control. On the photo sections the field carries
+   light text for the dark ground behind it, and that light text landed on
+   the system's white list: white on white, unreadable, on every dropdown
+   on this form. Both halves are stated outright. */
+option{background-color:var(--canvas);color:var(--text-primary)}
+.plate option{background-color:#141B15;color:#F6F4EC}
 /* quantity is a figure and a unit. Faresula is the unit the Ethiopian
    side of the trade actually quotes, so the conversion is shown live
    rather than left as homework. */
