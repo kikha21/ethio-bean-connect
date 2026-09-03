@@ -11,6 +11,8 @@ const board = require('./lib/admin-board');
 const adminChat = require('./lib/admin-chat');
 const publicPost = require('./lib/public-post');
 const chat = require('./lib/chat');
+const members = require('./lib/members');
+const memberPages = require('./lib/member-pages');
 const push = require('./lib/push');
 
 const PORT = Number(process.env.PORT || 4400);
@@ -550,6 +552,61 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, 'application/json', JSON.stringify({ ok: true }));
     }
 
+    /* who is reading, so the form can ask for the coffee and not for the
+       four things the account already knows */
+    if (p === '/me') {
+      const who = auth.userForSession(cookies(req).ebc_session);
+      return send(res, 200, 'application/json; charset=utf-8', JSON.stringify(
+        who ? { in: true, admin: members.isAdmin(who), name: who.name,
+                company: who.company, side: who.side }
+            : { in: false }));
+    }
+
+    /* ---- suppliers and exporters: their own way in ---- */
+    if (p === '/join') {
+      const who = auth.userForSession(cookies(req).ebc_session);
+      if (who) return redirect(res, members.isAdmin(who) ? '/admin' : '/my');
+      if (req.method === 'GET') return html(res, 200, memberPages.joinPage(null, null, null));
+      const f = await body(req);
+      const out = members.join(f, ipOf(req));
+      if (!out.ok) {
+        return html(res, out.message ? 429 : 400,
+          memberPages.joinPage(f, out.errors, out.message));
+      }
+      const sess = auth.startSession(out.user, ipOf(req));
+      return redirect(res, '/my', { 'Set-Cookie': sessionCookie(sess.id, auth.SESSION_DAYS) });
+    }
+
+    if (p === '/signin') {
+      const who = auth.userForSession(cookies(req).ebc_session);
+      if (who) return redirect(res, members.isAdmin(who) ? '/admin' : '/my');
+      if (req.method === 'GET') return html(res, 200, memberPages.signinPage(null, ''));
+      const f = await body(req);
+      const u = auth.authenticate(f.email, f.password);
+      if (!u) {
+        log(null, 'sign in failed', String(f.email || '').slice(0, 80), 'member', ipOf(req));
+        return html(res, 401, memberPages.signinPage('That email and password did not match.', f.email));
+      }
+      log(u, 'signed in', u.email, u.role, ipOf(req));
+      const sess = auth.startSession(u, ipOf(req));
+      return redirect(res, members.isAdmin(u) ? '/admin' : '/my',
+        { 'Set-Cookie': sessionCookie(sess.id, auth.SESSION_DAYS) });
+    }
+
+    if (p === '/signout' && req.method === 'POST') {
+      const jar = cookies(req);
+      auth.endSession(jar.ebc_session);
+      return redirect(res, '/', { 'Set-Cookie': sessionCookie('', 0) });
+    }
+
+    if (p === '/my') {
+      const who = auth.userForSession(cookies(req).ebc_session);
+      if (!who) return redirect(res, '/signin');
+      if (members.isAdmin(who)) return redirect(res, '/admin');
+      const flash = takeFlash(req, res);
+      return html(res, 200, memberPages.myPage(who, flash ? flash.text : null));
+    }
+
     /* ---- chat, on the website ---- */
     if (p.indexOf('/chat/') === 0 && req.method === 'POST') {
       const f = await body(req, 8e3);
@@ -574,8 +631,18 @@ const server = http.createServer(async (req, res) => {
 
     /* ---- posting, straight into the board ---- */
     if (p === '/post' && req.method === 'POST') {
+      /* posting is for members now: it is what lets us come back to them
+         about a lot, and what keeps a standing attached to a person */
+      const who = auth.userForSession(cookies(req).ebc_session);
+      if (!who || members.isAdmin(who)) {
+        const wantsJson = String(req.headers.accept || '').indexOf('application/json') !== -1;
+        if (wantsJson) return send(res, 401, 'application/json; charset=utf-8',
+          JSON.stringify({ ok: false, needsAccount: true,
+            message: 'Sign in to post. It takes a minute to create an account.' }));
+        return redirect(res, '/signin');
+      }
       const f = await body(req, 32e3);
-      const out = publicPost.submit(f, ipOf(req));
+      const out = publicPost.submit(f, ipOf(req), who);
       const wantsJson = String(req.headers.accept || '').indexOf('application/json') !== -1;
       if (out.ok) invalidate();
       if (wantsJson) {

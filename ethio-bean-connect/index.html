@@ -926,6 +926,20 @@ option{background-color:var(--canvas);color:var(--text-primary)}
 .ok-acts{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.1rem}
 .okref-line{margin:.5rem 0 .3rem}
 .okref-line b{font-family:var(--f-mono);letter-spacing:.06em}
+/* Somebody who is not signed in should be told before they fill anything
+   in, not after. The gate covers the form rather than hiding it, so they
+   can still read what is being asked. */
+.post-gate{
+  border:1px solid var(--accent-ink);border-radius:14px;padding:1.2rem 1.3rem;
+  background:var(--accent-wash);display:grid;gap:.5rem;justify-items:start;margin-bottom:1.2rem
+}
+.post-gate[hidden]{display:none}
+.post-gate b{font-family:var(--f-display);font-size:var(--t-lg)}
+.post-gate p{margin:0;color:var(--text-secondary);font-size:var(--t-xs);max-width:52ch}
+.post-gate .btn{margin-top:.3rem;margin-right:.4rem}
+.post-as{margin:0 0 .6rem;font-size:var(--t-xs);color:var(--text-secondary)}
+.post-as[hidden]{display:none}
+.post-as b{color:var(--text-primary)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .other-in{margin-top:.55rem}
 .row[hidden]{display:none}
@@ -1697,6 +1711,13 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
             <label for="website">Leave this empty</label>
             <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
           </div>
+          <div class="post-gate" id="postgate" hidden>
+            <b data-i18n="f.gateH">You need an account to post</b>
+            <p data-i18n="f.gateP">It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.</p>
+            <a class="btn btn-primary" href="/join" data-i18n="f.gateJoin">Create an account</a>
+            <a class="btn btn-ghost" href="/signin" data-i18n="f.gateIn">Sign in</a>
+          </div>
+          <p class="post-as" id="postas" hidden></p>
           <p class="req-note" data-i18n="f.reqnote">Every field is required unless it says optional.</p>
           <div class="row">
             <label><span class="lb"><span data-i18n="f.name">Your name</span></span>
@@ -2067,6 +2088,11 @@ I18N.en['chat.notifyAsk'] = "Get our reply on this phone, even after you close t
 I18N.en['chat.notifyOn'] = "Turn it on";
 I18N.en['chat.notifyDone'] = "Done. We will notify you here.";
 I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
+I18N.en['f.gateH'] = "You need an account to post";
+I18N.en['f.gateP'] = "It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.";
+I18N.en['f.gateJoin'] = "Create an account";
+I18N.en['f.gateIn'] = "Sign in";
+I18N.en['f.postingAs'] = "Posting as";
 I18N.en['f.okchat'] = "Chat with us about this";
 I18N.en['f.okchatMsg'] = "This is about my post";
 I18N.en['chat.altOpen'] = "Rather use WhatsApp or email?";
@@ -3442,6 +3468,62 @@ function renderFooterContact(){
     e.preventDefault();
     jump();
   });
+})();
+
+/* ============================================================
+   10b2. WHO IS POSTING
+   ============================================================ */
+/* The form asks for the coffee. Who is offering it comes from the account,
+   so somebody signed in never retypes their name, and somebody who is not
+   is told before they fill anything in rather than after they press send. */
+(function(){
+  var gate = document.getElementById('postgate');
+  var as   = document.getElementById('postas');
+  var form = document.getElementById('postform');
+  if (!gate || !form) return;
+
+  /* the four the account already knows */
+  var OWNED = ['name','company','email','phone'];
+
+  function ownedRows(){
+    var rows = [];
+    OWNED.forEach(function(n){
+      var el = form.elements[n];
+      var row = el && el.closest ? el.closest('.row') : null;
+      if (row && rows.indexOf(row) === -1) rows.push(row);
+    });
+    return rows;
+  }
+
+  function signedIn(me){
+    gate.hidden = true;
+    ownedRows().forEach(function(r){ r.hidden = true; });
+    OWNED.forEach(function(n){ if (form.elements[n]) form.elements[n].removeAttribute('required'); });
+    if (as){
+      as.hidden = false;
+      as.innerHTML = '';
+      var lead = document.createElement('span');
+      lead.textContent = t('f.postingAs') + ' ';
+      var who = document.createElement('b');
+      who.textContent = me.company || me.name || '';
+      var out = document.createElement('span');
+      out.innerHTML = ' &middot; <a href="/my">your posts</a>';
+      as.appendChild(lead); as.appendChild(who); as.appendChild(out);
+    }
+  }
+
+  function signedOut(){
+    gate.hidden = false;
+    if (as) as.hidden = true;
+    /* the form stays readable, but sending is not offered */
+    var send = form.querySelector('button[type=submit]');
+    if (send) send.disabled = true;
+  }
+
+  fetch('/me', {headers:{'Accept':'application/json'}})
+    .then(function(r){ return r.json(); })
+    .then(function(me){ (me && me.in && !me.admin) ? signedIn(me) : signedOut(); })
+    .catch(function(){ /* offline: leave the form as it is rather than blocking it */ });
 })();
 
 /* ============================================================

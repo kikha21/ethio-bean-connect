@@ -58,7 +58,42 @@ function pick(f, name) {
   return v === '__other__' ? clean(f[name + '_other'], CAP[name + '_other']) : v;
 }
 
-function validate(f) {
+function validate(f, member) {
+  /* signed in: their name, company and reach are the account's, and cannot
+     be spoofed by editing the form */
+  if (member) return validateLot(f, member);
+  return validateAll(f);
+}
+
+function validateLot(f, member) {
+  const mode = f.mode === 'need' ? 'need' : 'have';
+  const out = { mode, errors: {} };
+  out.name = member.name;
+  out.company = member.company;
+  out.email = member.email;
+  out.phone = member.phone;
+  out.region = member.region || '';
+  lotFields(f, out);
+  return out;
+}
+
+/* everything about the coffee, shared by both paths */
+function lotFields(f, out) {
+  const need = (k, v) => { if (!v) out.errors[k] = 'This is needed.'; return v; };
+  out.type   = need('type', pick(f, 'type'));
+  out.origin = need('origin', pick(f, 'origin'));
+  out.grade  = need('grade', pick(f, 'grade'));
+  out.supply = SUPPLY[f.supply] ? f.supply : '';
+  if (out.mode === 'have' && !out.supply) out.errors.supply = 'This is needed.';
+  if (out.mode !== 'have') out.supply = '';
+  out.quantity_val  = clean(f.quantity, CAP.quantity).replace(/[^\d.,]/g, '');
+  out.quantity_unit = QTY_UNIT_KEYS.indexOf(f.quantity_unit) === -1 ? 'bag85' : f.quantity_unit;
+  if (!out.quantity_val) out.errors.quantity = 'This is needed.';
+  out.notes = clean(f.notes, CAP.notes);
+  out.gradeKnown = GRADES.indexOf(out.grade) !== -1;
+}
+
+function validateAll(f) {
   const mode = f.mode === 'need' ? 'need' : 'have';
   const out = { mode, errors: {} };
   const need = (k, v, msg) => { if (!v) out.errors[k] = msg || 'This is needed.'; return v; };
@@ -70,6 +105,7 @@ function validate(f) {
   out.type    = need('type', pick(f, 'type'));
   out.origin  = need('origin', pick(f, 'origin'));
   out.grade   = need('grade', pick(f, 'grade'));
+  out.region  = '';
 
   if (!out.email) out.errors.email = 'This is needed.';
   else if (!EMAIL_RE.test(out.email)) out.errors.email = 'That does not look like an email address.';
@@ -116,7 +152,7 @@ function notifyUs(ref, kind, v) {
   });
 }
 
-function submit(f, ip) {
+function submit(f, ip, member) {
   /* a bot fills every field it finds, including the one nobody can see.
      Accept it so the bot learns nothing, and store nothing. */
   if (clean(f.website, 200)) {
@@ -126,22 +162,29 @@ function submit(f, ip) {
   const limited = rateCheck(ip || 'unknown');
   if (limited) return { ok: false, rateLimited: true, message: limited };
 
-  const v = validate(f);
+  const v = validate(f, member);
   if (Object.keys(v.errors).length) return { ok: false, errors: v.errors };
 
   const kind = v.mode === 'have' ? 'offer' : 'need';
   const ref = nextRef(kind);
   const market = guessMarket(v);
 
+  /* the lot inherits the standing of whoever posted it, so the board never
+     shows one person at two different standings */
+  const tier = member ? (member.tier || 'unverified') : 'unverified';
+  const rating = member ? (member.rating === undefined ? null : member.rating) : null;
+  const deals = member ? (member.deals || 0) : 0;
+
   db.prepare(
     'INSERT INTO listings (ref, kind, market, supply, origin, grade, process,' +
     ' quantity_val, quantity_unit, price, price_unit, currency, harvest, notes,' +
     ' poster_name, poster_org, poster_phone, poster_email, poster_region,' +
-    ' tier, rating, deals, status, published, is_example, sort, created_at)' +
-    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,'','unverified',NULL,0,'pending',0,0,0,?)"
+    ' tier, rating, deals, posted_by, status, published, is_example, sort, created_at)' +
+    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,?,?,?,?,?,'pending',0,0,0,?)"
   ).run(ref, kind, market, v.supply, v.origin, v.grade, v.type,
         v.quantity_val, v.quantity_unit, v.notes,
-        v.name, v.company, v.phone, v.email, nowIso());
+        v.name, v.company, v.phone, v.email, v.region || '',
+        tier, rating, deals, member ? member.id : null, nowIso());
 
   /* the log records that a post arrived and from where, never the body */
   log(null, 'post received', ref, kind === 'offer' ? 'offering coffee' : 'looking for coffee', ip);
