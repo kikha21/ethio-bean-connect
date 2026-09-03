@@ -943,6 +943,14 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 }
 #chatclose:hover{color:var(--text-primary);background:var(--canvas-2)}
 
+/* which lot this conversation is about, so neither side loses the thread
+   when several are open at once */
+.chat-about{
+  padding:.45rem .95rem;border-bottom:1px solid var(--panel-edge);background:var(--canvas-2);
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.05em;color:var(--text-secondary)
+}
+.chat-about[hidden]{display:none}
+.chat-about b{color:var(--text-primary);font-weight:600}
 .chat-log{
   flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.55rem;
   scroll-behavior:smooth
@@ -1732,6 +1740,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
         <em id="chatstate" data-i18n="chat.sub">We answer here, usually the same working day.</em></span>
         <button type="button" id="chatclose" aria-label="Close the chat">&times;</button>
       </div>
+      <div class="chat-about" id="chatabout" hidden></div>
 
       <div class="chat-log" id="chatlog" role="log" aria-live="polite"></div>
 
@@ -1931,6 +1940,7 @@ I18N.en['chat.notifyAsk'] = "Get our reply on this phone, even after you close t
 I18N.en['chat.notifyOn'] = "Turn it on";
 I18N.en['chat.notifyDone'] = "Done. We will notify you here.";
 I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
+I18N.en['chat.about'] = "About";
 I18N.en['chat.title'] = "Chat with us";
 I18N.en['chat.sub'] = "We answer here, usually the same working day.";
 I18N.en['chat.namePh'] = "Your name, if you like";
@@ -2648,10 +2658,14 @@ function qtyPhrase(){
     var a = e.target.closest ? e.target.closest('.lot-ask') : null;
     if (!a) return;
     e.preventDefault();
+    /* the click must not reach the document listener that closes the panel
+       when you click outside it, or the panel opens and shuts again in the
+       same event */
+    e.stopPropagation();
     var card = a.closest('.lot');
     var ref  = a.getAttribute('data-ref') || '';
     var what = card ? (card.querySelector('h3') || {}).textContent : '';
-    if (window.__ebcChatAbout) window.__ebcChatAbout(ref);
+    if (window.__ebcChatAbout) window.__ebcChatAbout(ref, what ? what.trim() : '');
     var kind = card ? card.getAttribute('data-kind') : '';
     if (window.__ebcChatSide) window.__ebcChatSide(kind === 'offer' ? 'buyer' : 'seller');
     var launcher = document.getElementById('launcher');
@@ -3325,6 +3339,7 @@ function renderFooterContact(){
         showCount(unseen + out.messages.filter(function(m){ return m.side === 'us'; }).length);
       }
       add(out.messages);
+      if (out.about && !chatAbout) showAbout(out.about, '');
       if (out.status === 'closed' && stateEl) stateEl.textContent = t('chat.done');
     }).catch(function(){ /* offline; the next tick tries again */ });
   }
@@ -3409,7 +3424,20 @@ function renderFooterContact(){
 
   /* the reference of a lot, when the chat was opened from a card */
   var chatAbout = '';
-  window.__ebcChatAbout = function(ref){ chatAbout = ref || ''; };
+  var aboutEl = document.getElementById('chatabout');
+  function showAbout(ref, what){
+    chatAbout = ref || '';
+    if (!aboutEl) return;
+    if (!chatAbout){ aboutEl.hidden = true; aboutEl.textContent = ''; return; }
+    aboutEl.hidden = false;
+    aboutEl.innerHTML = '';
+    var label = document.createElement('span');
+    label.textContent = t('chat.about') + ' ';
+    var b = document.createElement('b');
+    b.textContent = chatAbout + (what ? ' · ' + what : '');
+    aboutEl.appendChild(label); aboutEl.appendChild(b);
+  }
+  window.__ebcChatAbout = function(ref, what){ showAbout(ref, what); };
 
   window.__ebcChatOpen = function(){
     open = true;

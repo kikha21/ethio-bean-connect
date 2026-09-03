@@ -9,6 +9,7 @@
    ------------------------------------------------------------------ */
 const chat = require('./chat');
 const { layout, esc } = require('./ui');
+const { db } = require('./db');
 
 /* a message is plain text and stays plain text; the only markup it gets
    is the line breaks the person typed */
@@ -26,13 +27,15 @@ function when(iso) {
 function listItem(c, activeId) {
   const on = String(c.id) === String(activeId);
   const who = c.name || 'Someone on the site';
+  const sideTag = c.side === 'seller' ? '<span class="kind offer">Selling</span>'
+                : c.side === 'buyer'  ? '<span class="kind need">Buying</span>' : '';
   const preview = (c.last_side === 'us' ? 'You: ' : '') + String(c.last_body || '').slice(0, 60);
   return '<a class="convo' + (on ? ' on' : '') + (c.unread_us ? ' unread' : '') +
     '" href="/admin/chat?id=' + c.id + '">' +
     '<div class="convo-top"><b>' + esc(who) + '</b>' +
     (c.unread_us ? '<span class="dot">' + c.unread_us + '</span>' : '<span class="when">' + when(c.last_at) + '</span>') +
     '</div>' +
-    '<span class="mono">' + esc(c.ref) + (c.about ? ' · ' + esc(c.about) : '') + '</span>' +
+    '<span class="mono">' + esc(c.ref) + (c.about ? ' · ' + esc(c.about) : '') + '</span>' + sideTag +
     '<span class="preview">' + esc(preview) + '</span>' +
     (c.status === 'closed' ? '<span class="badge draft">Done</span>' : '') +
     '</a>';
@@ -59,7 +62,21 @@ function page(user, flash, id) {
       '<span class="stamp">' + when(m.created_at) + '</span></div>').join('');
 
     const who = active.name || 'Someone on the site';
-    const meta = [active.ref, active.contact, active.about].filter(Boolean).map(esc).join(' · ');
+    const meta = [active.ref, active.contact].filter(Boolean).map(esc).join(' · ');
+    /* the lot they are asking about, as a link, so you can read it while
+       you answer instead of hunting for the reference */
+    const lot = active.about
+      ? db.prepare('SELECT id, origin, grade, kind FROM listings WHERE ref = ?').get(active.about)
+      : null;
+    const aboutLine = active.about
+      ? '<div class="chat-about-admin">About ' +
+        (lot ? '<a href="/admin/marketplace/edit?id=' + lot.id + '">' + esc(active.about) + ' · ' +
+               esc(lot.origin) + ' ' + esc(lot.grade) + '</a>'
+             : esc(active.about) + ' <span class="dim">(no longer on the board)</span>') +
+        (active.side ? ' · they are <b>' + esc(active.side === 'seller' ? 'selling' : 'buying') + '</b>' : '') +
+        '</div>'
+      : (active.side ? '<div class="chat-about-admin">They are <b>' +
+                       esc(active.side === 'seller' ? 'selling' : 'buying') + '</b></div>' : '');
 
     panel =
       '<div class="chat-head"><div><b>' + esc(who) + '</b><span class="mono">' + meta + '</span></div>' +
@@ -69,6 +86,7 @@ function page(user, flash, id) {
         '<button class="btn btn-ghost btn-sm" type="submit" name="do" value="' +
           (active.status === 'closed' ? 'open">Reopen' : 'close">Mark done') + '</button>' +
       '</form></div>' +
+      aboutLine +
       '<div class="chat-thread" id="thread">' + bubbles + '</div>' +
       '<form method="post" action="/admin/chat" class="chat-reply">' +
         '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +

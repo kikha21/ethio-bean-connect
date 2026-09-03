@@ -129,7 +129,7 @@ function thread(token, since) {
   const rows = since
     ? db.prepare('SELECT id, side, body, created_at FROM messages WHERE convo_id=? AND id>? ORDER BY id').all(convo.id, Number(since) || 0)
     : db.prepare('SELECT id, side, body, created_at FROM messages WHERE convo_id=? ORDER BY id').all(convo.id);
-  return { ok: true, ref: convo.ref, status: convo.status, messages: rows };
+  return { ok: true, ref: convo.ref, status: convo.status, about: convo.about, messages: rows };
 }
 
 /* reading the thread is what marks our replies as seen */

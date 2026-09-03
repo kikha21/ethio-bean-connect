@@ -118,6 +118,10 @@ td input[type=text]{padding:.35rem .5rem;font-size:.92rem}
   padding:.9rem 1.1rem;border-bottom:1px solid var(--line)}
 .chat-head b{display:block}
 .chat-head .mono{font-family:var(--mono);font-size:.74rem;color:var(--ink-2)}
+.chat-about-admin{padding:.5rem 1.1rem;border-bottom:1px solid var(--line);background:var(--canvas-2);
+  font-size:.84rem;color:var(--ink-2)}
+.chat-about-admin a{font-family:var(--mono);font-size:.8rem}
+.convo .kind{font-size:.64rem;padding:.05rem .35rem;margin-top:.25rem;display:inline-block}
 .chat-thread{padding:1.1rem;display:flex;flex-direction:column;gap:.7rem;max-height:26rem;overflow-y:auto}
 .bubble{max-width:78%;padding:.6rem .85rem;border-radius:14px;font-size:.94rem;line-height:1.5}
 .bubble p{margin:0}
