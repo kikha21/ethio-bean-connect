@@ -95,11 +95,18 @@ const TIER_MARK = {
 /* Three stages, shown as the word rather than a row of shapes: a supplier
    reading their own card should be able to tell at a glance which one they
    are, and "four stars out of five" is a harder thing to read than "Silver". */
+const MEDAL_MARK =
+  '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+  '<path d="M8.5 2h7l-2.2 6.4h-2.6z" fill="currentColor" opacity=".45"/>' +
+  '<circle cx="12" cy="15" r="6.4" fill="none" stroke="currentColor" stroke-width="1.7"/>' +
+  '<circle cx="12" cy="15" r="2.5" fill="currentColor"/></svg>';
+
 function medal(rating) {
   const n = Number(rating);
   const m = RATINGS[n];
   if (!m) return '';
-  return `<span class="medal ${m.key}" data-i18n="rating.${m.key}">${escHtml(m.label)}</span>`;
+  return `<span class="medal ${m.key}">${MEDAL_MARK}` +
+         `<b data-i18n="rating.${m.key}">${escHtml(m.label)}</b></span>`;
 }
 
 function boardCards(en) {
@@ -126,7 +133,8 @@ function boardCards(en) {
     if (q.alt)      chips.push(`<span class="chip soft">${escHtml(q.alt)}</span>`);
     if (r.harvest)  chips.push(`<span class="chip">${escHtml(r.harvest)}</span>`);
     if (SUPPLY[r.supply])
-      chips.push(`<span class="chip where ${escHtml(r.supply)}" data-i18n="supply.${escHtml(r.supply)}">` +
+      chips.push(`<span class="chip where ${escHtml(r.supply)}" title="${escAttr(SUPPLY[r.supply].note)}" ` +
+                 `data-i18n="supply.${escHtml(r.supply)}">` +
                  `${escHtml(T('supply.' + r.supply, SUPPLY[r.supply].short))}</span>`);
 
     const priceBlock = p.main === null

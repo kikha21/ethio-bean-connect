@@ -412,11 +412,11 @@ EN:  Quantity
 AM:  መጠን
 
 [91] KEY: f.qtyHave
-EN:  e.g. 30
+EN:  e.g. 300
 AM:  ለምሳሌ 30 ቶን አለ
 
 [92] KEY: f.qtyNeed
-EN:  e.g. 20
+EN:  e.g. 200
 AM:  ለምሳሌ 20 ቶን ያስፈልጋል
 
 [93] KEY: f.reqnote
@@ -646,11 +646,11 @@ EN:  Silver
 AM:  
 
 [147] KEY: supply.horizontal   [NEW, NEEDS AMHARIC]
-EN:  In Addis
+EN:  Horizontal
 AM:  
 
 [148] KEY: supply.vertical   [NEW, NEEDS AMHARIC]
-EN:  At the farm
+EN:  Vertical
 AM:  
 
 [149] KEY: tier.trusted   [NEW, NEEDS AMHARIC]

@@ -83,7 +83,7 @@ function validate(f) {
   if (mode !== 'have') out.supply = '';
 
   out.quantity_val  = clean(f.quantity, CAP.quantity).replace(/[^\d.,]/g, '');
-  out.quantity_unit = QTY_UNIT_KEYS.indexOf(f.quantity_unit) === -1 ? 'mt' : f.quantity_unit;
+  out.quantity_unit = QTY_UNIT_KEYS.indexOf(f.quantity_unit) === -1 ? 'quintal' : f.quantity_unit;
   if (!out.quantity_val) out.quantity_unit = '';
   out.notes = clean(f.notes, CAP.notes);
 

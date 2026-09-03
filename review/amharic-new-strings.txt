@@ -246,11 +246,11 @@ EN:  Silver
 AM:  
 
 [61] KEY: supply.horizontal
-EN:  In Addis
+EN:  Horizontal
 AM:  
 
 [62] KEY: supply.vertical
-EN:  At the farm
+EN:  Vertical
 AM:  
 
 [63] KEY: tier.trusted

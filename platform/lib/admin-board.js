@@ -163,7 +163,7 @@ function editPage(user, flash, id) {
   const r = id ? db.prepare('SELECT * FROM listings WHERE id=?').get(id) : null;
   if (id && !r) return null;
   const v = r || {
-    kind: 'offer', market: 'export', supply: '', origin: '', grade: '', process: '', quantity_val: '', quantity_unit: 'mt',
+    kind: 'offer', market: 'export', supply: '', origin: '', grade: '', process: '', quantity_val: '', quantity_unit: 'quintal',
     price: '', price_unit: 'kg', currency: 'USD', harvest: '', notes: '',
     poster_name: '', poster_org: '', poster_phone: '', poster_email: '', poster_region: '',
     tier: 'unverified', rating: '', deals: 0, status: 'live', published: 0
@@ -234,7 +234,7 @@ function editPage(user, flash, id) {
             '<span class="hint">However the supplier described it. Tidy it if you want.</span></label>' +
           '<label><span class="lb">Quantity</span>' +
             '<div class="two"><input type="text" name="quantity_val" value="' + esc(v.quantity_val) +
-            '" placeholder="1000"><select name="quantity_unit">' + qtyUnitOpts(v.quantity_unit) + '</select></div>' +
+            '" placeholder="300"><select name="quantity_unit">' + qtyUnitOpts(v.quantity_unit) + '</select></div>' +
             '<span class="hint">Optional. The board shows the kg equivalent itself.</span></label>' +
         '</div>' +
         '<div class="row2">' +
@@ -337,7 +337,7 @@ function handlePost(f, user, ip) {
     v.supply = (v.kind === 'offer' && SUPPLY[v.supply]) ? v.supply : '';
     v.status = STATUSES[v.status] ? v.status : 'live';
     v.tier = TIERS[v.tier] ? v.tier : 'unverified';
-    if (QTY_UNIT_KEYS.indexOf(v.quantity_unit) === -1) v.quantity_unit = 'mt';
+    if (QTY_UNIT_KEYS.indexOf(v.quantity_unit) === -1) v.quantity_unit = 'quintal';
     if (PRICE_UNIT_KEYS.indexOf(v.price_unit) === -1) v.price_unit = 'kg';
     const price = v.price === '' ? null : v.price;
     const rating = (f.rating === '' || f.rating == null)

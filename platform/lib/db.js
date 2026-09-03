@@ -153,7 +153,7 @@ const UNITS = {
   container: { label: 'Container, 20ft', am: 'ኮንቴነር',   kg: null, short: 'containers' }
 };
 
-const QTY_UNIT_KEYS   = ['kg', 'quintal', 'bag60', 'mt', 'container'];
+const QTY_UNIT_KEYS   = ['quintal', 'kg', 'bag60', 'mt', 'container'];
 const PRICE_UNIT_KEYS = ['kg', 'faresula', 'quintal', 'bag60', 'mt'];
 
 const num = n => Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -260,10 +260,10 @@ const MARKETS = {
    before quoting, so the form makes it required. */
 const SUPPLY = {
   horizontal: { label: 'Horizontal, in Addis Ababa',
-                short: 'In Addis',
+                short: 'Horizontal',
                 note: 'Already in the Addis Ababa warehouse.' },
   vertical:   { label: 'Vertical, at the farm or supplier store',
-                short: 'At the farm',
+                short: 'Vertical',
                 note: 'Still at the farm or the supplier own warehouse.' }
 };
 
@@ -377,22 +377,22 @@ function seedExamples() {
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'live',1,0,?,?,?)`
   );
   const rows = [
-    ['offer','Yirgacheffe','G1','Washed','30','mt','6.40','kg','USD','2025/26',
+    ['offer','Yirgacheffe','G1','Washed','300','quintal','6.40','kg','USD','2025/26',
      'Screen 15+, cup score 86. Warehouse in Addis, ready to move.',
      'Abebe Tadesse','Kochere Farmers Union','+251 91 234 5678','Gedeo','trusted',3,11],
-    ['offer','Guji','G1','Natural','17','mt','8500','faresula','ETB','2025/26',
+    ['offer','Guji','G1','Natural','170','quintal','8500','faresula','ETB','2025/26',
      'Lot from Hambela. Cup score 87.5, jasmine and peach. Priced at farmgate.',
      'Meseret Bekele','Hambela Estate','+251 92 111 2233','Guji','verified',2,3],
-    ['offer','Sidamo','G2','Washed','45','mt',null,'kg','USD','2025/26',
+    ['offer','Sidamo','G2','Washed','450','quintal',null,'kg','USD','2025/26',
      'Bulk lot, price on application. Sample available on request.',
      'Tesfaye Alemu','Bensa Coffee Supply','+251 91 887 6655','Sidama','verified',2,2],
     ['need','Yirgacheffe','G1','Washed','2','container',null,'kg','USD','2025/26',
      'Buyer in Trieste. Washed G1 only, EU MRL compliant.',
      'Marco Fenaroli','Adriatica Caffe SRL','+39 040 555 1212','Italy','trusted',3,7],
-    ['need','Guji','G1','Natural','10','mt',null,'kg','USD','2025/26',
+    ['need','Guji','G1','Natural','100','quintal',null,'kg','USD','2025/26',
      'Roaster in Seoul looking for a single natural lot, cup 86+.',
      'Ji-woo Park','Seongsu Roasters','+82 10 5555 8888','South Korea','verified',2,1],
-    ['need','Limu','G2','Washed','25','mt',null,'kg','USD','2025/26',
+    ['need','Limu','G2','Washed','250','quintal',null,'kg','USD','2025/26',
      'Blender needs steady volume, repeat contract if the first lot lands well.',
      'Sarah Whitfield','Northbridge Trading','+44 7700 900123','United Kingdom','unverified',null,0]
   ];

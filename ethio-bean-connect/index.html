@@ -660,6 +660,13 @@ td.p.ask{color:var(--text-secondary)}
 .lot-note{color:var(--text-secondary);font-size:var(--t-xs);line-height:1.6}
 .chip.soft{border-style:dashed;opacity:.85}
 /* where the lot physically is: a logistics fact, not a cup one */
+.plate .medal{box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 1px 2px rgba(0,0,0,.3)}
+.plate .medal.bronze{color:#E0A87C;border-color:rgba(224,168,124,.5);
+  background:linear-gradient(160deg,rgba(224,168,124,.24),rgba(124,74,36,.24))}
+.plate .medal.silver{color:#C3CAD3;border-color:rgba(195,202,211,.5);
+  background:linear-gradient(160deg,rgba(195,202,211,.22),rgba(86,93,102,.26))}
+.plate .medal.gold{color:#E6CC85;border-color:rgba(230,204,133,.55);
+  background:linear-gradient(160deg,rgba(230,204,133,.26),rgba(160,128,44,.26))}
 .chip.where{border-color:var(--edge-ui);color:var(--text-primary)}
 .chip.where.horizontal{background:var(--green-muted);border-color:rgba(47,125,50,.42);color:var(--green-deep)}
 .chip.where.vertical{background:var(--accent-wash);border-color:rgba(200,164,74,.5);color:var(--accent-ink)}
@@ -677,12 +684,26 @@ td.p.ask{color:var(--text-secondary)}
    wash it sits on rather than against the panel, because a tinted pill is
    what the reader actually sees. */
 .medal{
-  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.06em;text-transform:uppercase;
-  border:1px solid;border-radius:999px;padding:.16rem .55rem;white-space:nowrap
+  display:inline-flex;align-items:center;gap:.34rem;
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.07em;text-transform:uppercase;
+  border:1px solid;border-radius:999px;padding:.2rem .62rem .2rem .42rem;white-space:nowrap;
+  /* a struck edge: one light line inside the top, one dark shadow under it */
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 1px 2px rgba(21,32,26,.08);
 }
-.medal.bronze{color:#8A5028;border-color:rgba(138,80,40,.45);background:rgba(138,80,40,.12)}
-.medal.silver{color:#5F6670;border-color:rgba(95,102,112,.45);background:rgba(95,102,112,.12)}
-.medal.gold{color:#7A5E1B;border-color:rgba(200,164,74,.6);background:rgba(200,164,74,.16)}
+.medal svg{width:14px;height:14px;flex:0 0 14px}
+.medal b{font-weight:600}
+.medal.bronze{
+  color:#7C4A24;border-color:rgba(124,74,36,.5);
+  background:linear-gradient(160deg,rgba(196,124,74,.26),rgba(124,74,36,.14))
+}
+.medal.silver{
+  color:#565D66;border-color:rgba(86,93,102,.5);
+  background:linear-gradient(160deg,rgba(158,166,176,.3),rgba(86,93,102,.14))
+}
+.medal.gold{
+  color:#6E5314;border-color:rgba(160,128,44,.62);
+  background:linear-gradient(160deg,rgba(226,196,110,.42),rgba(200,164,74,.2))
+}
 .lot-ask{
   font-family:var(--f-body);font-size:var(--t-xs);font-weight:600;
   border:1px solid var(--border-strong);border-radius:999px;
@@ -1659,12 +1680,12 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
                      data-i18n-ph="f.gradeOther" placeholder="Which grade?"></label>
             <label><span class="lb"><span data-i18n="f.qty">Quantity</span> <span class="opt" data-i18n="f.opt">optional</span></span>
               <div class="qty">
-                <input type="text" name="quantity" inputmode="decimal" placeholder="e.g. 1000">
+                <input type="text" name="quantity" inputmode="decimal" placeholder="e.g. 300">
                 <select name="quantity_unit" aria-label="Unit of weight">
+                  <option value="quintal" selected>Quintal, 100 kg</option>
                   <option value="kg">Kg</option>
-                  <option value="quintal">Quintal</option>
                   <option value="bag60">Bag, 60 kg</option>
-                  <option value="mt" selected>Metric ton</option>
+                  <option value="mt">Metric ton</option>
                   <option value="container">Container, 20ft</option>
                 </select>
               </div>
@@ -1993,8 +2014,8 @@ I18N.en['board.mExportNote'] = "Graded for export, G1 to G5.";
 I18N.en['board.mLocal']      = "Local and reject";
 I18N.en['board.mLocalNote']  = "Below export grade, or sold on the domestic market.";
 I18N.en['board.groupEmpty']  = "Nothing on this board right now.";
-I18N.en['supply.horizontal'] = "In Addis";
-I18N.en['supply.vertical']   = "At the farm";
+I18N.en['supply.horizontal'] = "Horizontal";
+I18N.en['supply.vertical']   = "Vertical";
 I18N.en['f.supply']          = "Where the coffee is";
 I18N.en['f.supplyH']         = "Horizontal, in Addis Ababa";
 I18N.en['f.supplyV']         = "Vertical, at the farm or supplier store";
@@ -2026,8 +2047,8 @@ I18N.en['tier.trusted']      = "Trusted";
 I18N.en['tier.verified']     = "Verified";
 I18N.en['tier.unverified']   = "Unverified";
 
-I18N.en['f.qtyHave']   = 'e.g. 30';
-I18N.en['f.qtyNeed']   = 'e.g. 20';
+I18N.en['f.qtyHave']   = 'e.g. 300';
+I18N.en['f.qtyNeed']   = 'e.g. 200';
 I18N.en['post.hNeed']  = 'Tell us what you need.';
 I18N.en['e.required']  = 'This one we do need.';
 I18N.en['e.other']     = 'Type it in here, and we will add it to the list.';
