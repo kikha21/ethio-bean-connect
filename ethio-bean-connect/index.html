@@ -2990,10 +2990,10 @@ function pick(n){ return val(n) === '__other__' ? val(n + '_other') : val(n); }
 function enquiryText(){
   var lines = [];
   lines.push(mode === 'have' ? 'I HAVE COFFEE' : 'I NEED COFFEE');
-  lines.push('Name: '        + val('name'));
-  lines.push('Company: '     + val('company'));
-  lines.push('Email: '       + val('email'));
-  lines.push('Phone: '       + val('phone'));
+  if (val('name'))    lines.push('Name: '    + val('name'));
+  if (val('company')) lines.push('Company: ' + val('company'));
+  if (val('email'))   lines.push('Email: '   + val('email'));
+  if (val('phone'))   lines.push('Phone: '   + val('phone'));
   lines.push('Coffee type: ' + pick('type'));
   lines.push('Origin: '      + pick('origin'));
   lines.push('Grade: '       + pick('grade'));
@@ -3007,8 +3007,15 @@ function enquiryText(){
 /* required: name, company, email, phone, coffee type, origin, grade.
    quantity and notes are deliberately optional. */
 var REQUIRED = ['name','company','email','phone','type','origin','grade','quantity'];
+/* What the account already knows is not asked for again. This is set once
+   the page has been told who is reading; until then nothing is skipped, so
+   a slow answer can never let a post through with less than it needs. */
+var ACCOUNT_KNOWS = [];
 /* supply is required, but only for someone posting coffee they have */
-function requiredNow(){ return mode === 'have' ? REQUIRED.concat('supply') : REQUIRED; }
+function requiredNow(){
+  var list = REQUIRED.filter(function(n){ return ACCOUNT_KNOWS.indexOf(n) === -1; });
+  return mode === 'have' ? list.concat('supply') : list;
+}
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 var errSummary = document.getElementById('errsummary');
 var sendFail   = document.getElementById('sendfail');
@@ -3499,6 +3506,8 @@ function renderFooterContact(){
     gate.hidden = true;
     ownedRows().forEach(function(r){ r.hidden = true; });
     OWNED.forEach(function(n){ if (form.elements[n]) form.elements[n].removeAttribute('required'); });
+    /* and tell the check, or it asks for four things nobody can see */
+    if (typeof ACCOUNT_KNOWS !== 'undefined') ACCOUNT_KNOWS = OWNED.slice();
     if (as){
       as.hidden = false;
       as.innerHTML = '';
