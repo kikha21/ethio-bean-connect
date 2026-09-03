@@ -113,13 +113,21 @@ function dashboard(user, flash) {
   const total  = db.prepare('SELECT COUNT(*) n FROM market_prices').get().n;
   const strings = db.prepare('SELECT COUNT(*) n FROM content').get().n;
   const untranslated = db.prepare("SELECT COUNT(*) n FROM content WHERE value_am = ''").get().n;
+  const pending = db.prepare("SELECT COUNT(*) n FROM listings WHERE status='pending'").get().n;
+  const live = db.prepare("SELECT COUNT(*) n FROM listings WHERE published=1 AND status='live'").get().n;
   const recent = db.prepare('SELECT * FROM activity_log ORDER BY created_at DESC LIMIT 8').all();
 
   return layout({ title: 'Overview', user, active: 'home', flash, body: `
   <div class="head"><h1>Overview</h1><span class="sub">Signed in as ${esc(user.email)}</span></div>
   <p class="lede">Everything here changes the live site the moment you save it.</p>
 
-  <div class="cards c3">
+  ${pending ? `<div class="flash ok"><b>${pending} post${pending === 1 ? '' : 's'} waiting for you.</b>
+    Someone filled in the form on the site. Nothing is on the public board until you publish it.
+    <a href="/admin/marketplace?show=pending">Open the queue</a></div>` : ''}
+
+  <div class="cards c4">
+    <div class="card stat"><b>On the board</b><span>${live}</span>
+      <small>${pending ? pending + ' more waiting to be checked' : live === 0 ? 'nothing published yet' : 'lots and requirements, live now'}</small></div>
     <div class="card stat"><b>Market prices</b><span>${priced} / ${total}</span>
       <small>${priced === 0 ? 'Every row still shows “On request”' : 'rows with a published price'}</small></div>
     <div class="card stat"><b>Site text</b><span>${strings}</span>

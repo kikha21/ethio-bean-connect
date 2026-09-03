@@ -212,8 +212,10 @@ function editPage(user, flash, id) {
             '</select><span class="hint">Ethiopian grades run 1 to 5.</span></label>' +
         '</div>' +
         '<div class="row2">' +
-          '<label><span class="lb">Process</span><select name="process">' +
-            opts(PROCESSES, v.process, 'Not stated') + '</select></label>' +
+          '<label><span class="lb">Process</span><input type="text" name="process" list="processes" value="' +
+            esc(v.process) + '" placeholder="Washed"><datalist id="processes">' +
+            PROCESSES.map(p => '<option value="' + esc(p) + '">').join('') + '</datalist>' +
+            '<span class="hint">However the supplier described it. Tidy it if you want.</span></label>' +
           '<label><span class="lb">Quantity</span>' +
             '<div class="two"><input type="text" name="quantity_val" value="' + esc(v.quantity_val) +
             '" placeholder="1000"><select name="quantity_unit">' + qtyUnitOpts(v.quantity_unit) + '</select></div>' +

@@ -45,7 +45,8 @@ main{padding:1.8rem 0 4rem}
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem}
 .cards{display:grid;gap:.7rem}
-@media(min-width:700px){.cards.c3{grid-template-columns:repeat(3,1fr)}.cards.c2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:700px){.cards.c3{grid-template-columns:repeat(3,1fr)}.cards.c2{grid-template-columns:repeat(2,1fr)}.cards.c4{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.cards.c4{grid-template-columns:repeat(4,1fr)}}
 .stat b{display:block;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase}
 .stat span{display:block;font-family:var(--display);font-size:1.9rem;line-height:1.1;margin-top:.3rem}
 .stat small{display:block;color:var(--ink-2);font-size:.86rem;margin-top:.2rem}
