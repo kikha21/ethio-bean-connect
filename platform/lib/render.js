@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const { db, quantityText, priceText, scrubNotes, TIERS, SUPPLY, KG_PER_FARESULA } = require('./db');
+const { db, quantityText, priceText, scrubNotes, TIERS, RATINGS, SUPPLY, KG_PER_FARESULA } = require('./db');
 
 const SITE_DIR = path.join(__dirname, '..', '..', 'ethio-bean-connect');
 const TEMPLATE = path.join(SITE_DIR, 'index.html');
@@ -92,13 +92,14 @@ const TIER_MARK = {
   unverified: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/></svg>'
 };
 
-function stars(rating) {
-  if (rating === null || rating === undefined || rating === '') return '';
-  const n = Math.max(0, Math.min(5, Number(rating)));
-  if (!n) return '';
-  let out = '';
-  for (let i = 1; i <= 5; i++) out += i <= n ? '★' : '<span class="off">★</span>';
-  return `<span class="stars" role="img" aria-label="Rated ${n} out of 5">${out}</span>`;
+/* Three stages, shown as the word rather than a row of shapes: a supplier
+   reading their own card should be able to tell at a glance which one they
+   are, and "four stars out of five" is a harder thing to read than "Silver". */
+function medal(rating) {
+  const n = Number(rating);
+  const m = RATINGS[n];
+  if (!m) return '';
+  return `<span class="medal ${m.key}" data-i18n="rating.${m.key}">${escHtml(m.label)}</span>`;
 }
 
 function boardCards(en) {
@@ -148,7 +149,7 @@ function boardCards(en) {
         ${r.notes ? `<p class="lot-note">${escHtml(scrubNotes(r.notes))}</p>` : ''}
         <div class="lot-foot">
           <span class="tier ${tier}">${TIER_MARK[tier]}<span data-i18n="tier.${tier}">${escHtml(T('tier.' + tier, TIERS[tier].short))}</span>${deals}</span>
-          ${stars(r.rating)}
+          ${medal(r.rating)}
           <a class="lot-ask" href="#contact" data-ref="${escAttr(r.ref)}" data-i18n="board.ask">${escHtml(T('board.ask', 'Ask about this'))}</a>
         </div>
       </article>`;

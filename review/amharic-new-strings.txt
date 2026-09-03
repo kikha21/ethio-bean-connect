@@ -1,163 +1,267 @@
 ETHIO BEAN CONNECT - NEW STRINGS ONLY
 =====================================
 
-These 39 strings are new since the last sheet.
+These 65 strings are new since the last sheet.
 Everything else you already have is unchanged.
 Fill in the AM: lines and send this file back.
 
-[1] KEY: f.offline
+[1] KEY: chat.about
+EN:  About
+AM:  
+
+[2] KEY: chat.altOpen
+EN:  Rather use WhatsApp or email?
+AM:  
+
+[3] KEY: chat.buying
+EN:  buying coffee
+AM:  
+
+[4] KEY: chat.call
+EN:  Call us
+AM:  
+
+[5] KEY: chat.done
+EN:  This conversation is marked done. Write again to reopen it.
+AM:  
+
+[6] KEY: chat.email
+EN:  Email
+AM:  
+
+[7] KEY: chat.failed
+EN:  That did not send. Try again.
+AM:  
+
+[8] KEY: chat.msgLabel
+EN:  Your message
+AM:  
+
+[9] KEY: chat.msgPh
+EN:  Type your message
+AM:  
+
+[10] KEY: chat.nameLabel
+EN:  Your name
+AM:  
+
+[11] KEY: chat.namePh
+EN:  Your name, if you like
+AM:  
+
+[12] KEY: chat.notifyAsk
+EN:  Get our reply on this phone, even after you close the site?
+AM:  
+
+[13] KEY: chat.notifyDone
+EN:  Done. We will notify you here.
+AM:  
+
+[14] KEY: chat.notifyFailed
+EN:  Your browser would not allow that.
+AM:  
+
+[15] KEY: chat.notifyOn
+EN:  Turn it on
+AM:  
+
+[16] KEY: chat.offline
 EN:  That did not reach us. You may be offline.
 AM:  
 
-[2] KEY: nav.board
+[17] KEY: chat.selling
+EN:  selling coffee
+AM:  
+
+[18] KEY: chat.sub
+EN:  We answer here, usually the same working day.
+AM:  
+
+[19] KEY: chat.title
+EN:  Chat with us
+AM:  
+
+[20] KEY: chat.wa
+EN:  WhatsApp
+AM:  
+
+[21] KEY: chat.whichSide
+EN:  I am
+AM:  
+
+[22] KEY: f.offline
+EN:  That did not reach us. You may be offline.
+AM:  
+
+[23] KEY: nav.board
 EN:  Marketplace
 AM:  
 
-[3] KEY: f.okref
+[24] KEY: f.okchat
+EN:  Chat with us about this
+AM:  
+
+[25] KEY: f.okchatMsg
+EN:  This is about my post
+AM:  
+
+[26] KEY: f.okref
 EN:  Your reference is
 AM:  
 
-[4] KEY: f.sending
+[27] KEY: f.sending
 EN:  Posting…
 AM:  
 
-[5] KEY: f.supply
+[28] KEY: f.supply
 EN:  Where the coffee is
 AM:  
 
-[6] KEY: f.supplyH
+[29] KEY: f.supplyH
 EN:  Horizontal, in Addis Ababa
 AM:  
 
-[7] KEY: f.supplyHint
+[30] KEY: f.supplyHint
 EN:  Horizontal means it is already in an Addis Ababa warehouse and can move now. Vertical means it is still at the farm or your own store.
 AM:  
 
-[8] KEY: f.supplyV
+[31] KEY: f.supplyV
 EN:  Vertical, at the farm or supplier store
 AM:  
 
-[9] KEY: market.thUnit
+[32] KEY: market.thUnit
 EN:  Faresula / kg
 AM:  
 
-[10] KEY: board.all
+[33] KEY: board.all
 EN:  Everything
 AM:  
 
-[11] KEY: board.anon
+[34] KEY: board.anon
 EN:  No names appear on the board. Every post carries a reference only, and enquiries come through us, so neither side can be approached behind the other’s back.
 AM:  
 
-[12] KEY: board.ask
+[35] KEY: board.ask
 EN:  Ask about this
 AM:  
 
-[13] KEY: board.askMsg
+[36] KEY: board.askMsg
 EN:  Hello, I am asking about
 AM:  
 
-[14] KEY: board.clearAll
+[37] KEY: board.clearAll
 EN:  Clear the search
 AM:  
 
-[15] KEY: board.dealsWithUs
+[38] KEY: board.dealsWithUs
 EN:  closed with us
 AM:  
 
-[16] KEY: board.emptyH
+[39] KEY: board.emptyH
 EN:  The board is open.
 AM:  
 
-[17] KEY: board.emptyP
+[40] KEY: board.emptyP
 EN:  Checked lots appear here as they clear. If you have coffee to sell, or you are looking for a lot, post it and we will place it.
 AM:  
 
-[18] KEY: board.forSale
+[41] KEY: board.forSale
 EN:  For sale
 AM:  
 
-[19] KEY: board.groupEmpty
+[42] KEY: board.groupEmpty
 EN:  Nothing on this board right now.
 AM:  
 
-[20] KEY: board.h
+[43] KEY: board.h
 EN:  What is on the board right now.
 AM:  
 
-[21] KEY: board.lede
+[44] KEY: board.lede
 EN:  Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.
 AM:  
 
-[22] KEY: board.mExport
+[45] KEY: board.mExport
 EN:  Export standard
 AM:  
 
-[23] KEY: board.mExportNote
+[46] KEY: board.mExportNote
 EN:  Graded for export, G1 to G5.
 AM:  
 
-[24] KEY: board.mLocal
+[47] KEY: board.mLocal
 EN:  Local and reject
 AM:  
 
-[25] KEY: board.mLocalNote
+[48] KEY: board.mLocalNote
 EN:  Below export grade, or sold on the domestic market.
 AM:  
 
-[26] KEY: board.needs
+[49] KEY: board.needs
 EN:  Coffee wanted
 AM:  
 
-[27] KEY: board.noMatch
+[50] KEY: board.noMatch
 EN:  Nothing on the board matches that.
 AM:  
 
-[28] KEY: board.offers
+[51] KEY: board.offers
 EN:  Coffee for sale
 AM:  
 
-[29] KEY: board.onRequest
+[52] KEY: board.onRequest
 EN:  On request
 AM:  
 
-[30] KEY: board.open
+[53] KEY: board.open
 EN:  open
 AM:  
 
-[31] KEY: board.per
+[54] KEY: board.per
 EN:  per
 AM:  
 
-[32] KEY: board.searchLabel
+[55] KEY: board.searchLabel
 EN:  Search the board
 AM:  
 
-[33] KEY: board.searchPh
+[56] KEY: board.searchPh
 EN:  Origin, grade, reference
 AM:  
 
-[34] KEY: board.wanted
+[57] KEY: board.wanted
 EN:  Wanted
 AM:  
 
-[35] KEY: supply.horizontal
+[58] KEY: rating.bronze
+EN:  Bronze
+AM:  
+
+[59] KEY: rating.gold
+EN:  Gold
+AM:  
+
+[60] KEY: rating.silver
+EN:  Silver
+AM:  
+
+[61] KEY: supply.horizontal
 EN:  In Addis
 AM:  
 
-[36] KEY: supply.vertical
+[62] KEY: supply.vertical
 EN:  At the farm
 AM:  
 
-[37] KEY: tier.trusted
+[63] KEY: tier.trusted
 EN:  Trusted
 AM:  
 
-[38] KEY: tier.unverified
+[64] KEY: tier.unverified
 EN:  Unverified
 AM:  
 
-[39] KEY: tier.verified
+[65] KEY: tier.verified
 EN:  Verified
 AM:  
 

@@ -673,8 +673,16 @@ td.p.ask{color:var(--text-secondary)}
 .tier svg{width:15px;height:15px;flex:0 0 15px}
 .tier.trusted{color:var(--accent-ink)}
 .tier.verified{color:var(--green-deep)}
-.stars{font-size:var(--t-xs);color:var(--accent-ink);letter-spacing:.12em;white-space:nowrap}
-.stars .off{color:var(--panel-edge)}
+/* three stages, each in its own metal. Every ink is measured against the
+   wash it sits on rather than against the panel, because a tinted pill is
+   what the reader actually sees. */
+.medal{
+  font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid;border-radius:999px;padding:.16rem .55rem;white-space:nowrap
+}
+.medal.bronze{color:#8A5028;border-color:rgba(138,80,40,.45);background:rgba(138,80,40,.12)}
+.medal.silver{color:#5F6670;border-color:rgba(95,102,112,.45);background:rgba(95,102,112,.12)}
+.medal.gold{color:#7A5E1B;border-color:rgba(200,164,74,.6);background:rgba(200,164,74,.16)}
 .lot-ask{
   font-family:var(--f-body);font-size:var(--t-xs);font-weight:600;
   border:1px solid var(--border-strong);border-radius:999px;
@@ -2011,6 +2019,9 @@ I18N.en['board.onRequest']   = "On request";
 I18N.en['board.ask']         = "Ask about this";
 I18N.en['board.per']         = "per";
 I18N.en['board.dealsWithUs'] = "closed with us";
+I18N.en['rating.bronze'] = "Bronze";
+I18N.en['rating.silver'] = "Silver";
+I18N.en['rating.gold'] = "Gold";
 I18N.en['tier.trusted']      = "Trusted";
 I18N.en['tier.verified']     = "Verified";
 I18N.en['tier.unverified']   = "Unverified";

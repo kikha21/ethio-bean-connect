@@ -7,7 +7,7 @@
    they are the whole point, because matching the two sides of a deal
    is the business.
    ------------------------------------------------------------------ */
-const { db, nowIso, log, GRADES, PROCESSES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEYS, TIERS, MARKETS, SUPPLY,
+const { db, nowIso, log, GRADES, PROCESSES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEYS, TIERS, RATINGS, MARKETS, SUPPLY,
         quantityText, priceText, contactHints, nextRef } = require('./db');
 const { layout, esc } = require('./ui');
 
@@ -92,7 +92,7 @@ function boardPage(user, flash, filter) {
       '<td>' + priceCell + '</td>' +
       '<td><span class="tierdot ' + esc(r.tier) + '"></span>' +
         esc(TIERS[r.tier] ? TIERS[r.tier].short : r.tier) +
-        (r.rating ? ' <span class="dim">' + r.rating + '/5</span>' : '') + '</td>' +
+        (RATINGS[r.rating] ? ' <span class="dim">' + esc(RATINGS[r.rating].label) + '</span>' : '') + '</td>' +
       '<td class="private">' + esc(who) +
         (r.poster_phone ? '<br><span class="dim">' + esc(r.poster_phone) + '</span>' : '') + '</td>' +
       '<td>' +
@@ -265,9 +265,10 @@ function editPage(user, flash, id) {
       '<div class="sec"><h2>Standing <span class="n">the badge on the post</span></h2><div class="card">' +
         '<div class="row2">' +
           '<label><span class="lb">Verification</span><select name="tier">' + tierOpts(v.tier) + '</select></label>' +
-          '<label><span class="lb">Rating</span><select name="rating">' +
-            opts([['', 'Not rated yet'], ['1', '1'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5']],
-                 v.rating == null ? '' : String(v.rating)) + '</select></label>' +
+          '<label><span class="lb">Standing with us</span><select name="rating">' +
+            opts([['', 'Not rated yet']].concat(Object.keys(RATINGS).map(k => [k, RATINGS[k].label])),
+                 v.rating == null ? '' : String(v.rating)) +
+            '</select><span class="hint">Bronze, then Silver, then Gold as they trade with us.</span></label>' +
         '</div><div class="row2">' +
           '<label><span class="lb">Deals closed with us</span><input type="text" name="deals" value="' +
             esc(String(v.deals || 0)) + '"></label>' +
@@ -340,7 +341,7 @@ function handlePost(f, user, ip) {
     if (PRICE_UNIT_KEYS.indexOf(v.price_unit) === -1) v.price_unit = 'kg';
     const price = v.price === '' ? null : v.price;
     const rating = (f.rating === '' || f.rating == null)
-      ? null : Math.max(1, Math.min(5, Number(f.rating) || 1));
+      ? null : (RATINGS[Number(f.rating)] ? Number(f.rating) : null);
     const deals = Math.max(0, Number(String(f.deals || '0').replace(/\D/g, '')) || 0);
     const published = f.published ? 1 : 0;
     const state = published ? ' and it is on the board' : ' as a draft';

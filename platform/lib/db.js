@@ -267,6 +267,16 @@ const SUPPLY = {
                 note: 'Still at the farm or the supplier own warehouse.' }
 };
 
+/* How well someone has traded with us, in three stages. Kept as 1, 2, 3
+   rather than words so the order is the database's and not a guess about
+   what a string means: bronze is the lowest and gold the highest, the way
+   the metals rank everywhere else. */
+const RATINGS = {
+  1: { key: 'bronze', label: 'Bronze' },
+  2: { key: 'silver', label: 'Silver' },
+  3: { key: 'gold',   label: 'Gold' }
+};
+
 const TIERS = {
   unverified: { label: 'Not yet verified', short: 'Unverified' },
   verified:   { label: 'ID and licence checked', short: 'Verified' },
@@ -369,19 +379,19 @@ function seedExamples() {
   const rows = [
     ['offer','Yirgacheffe','G1','Washed','30','mt','6.40','kg','USD','2025/26',
      'Screen 15+, cup score 86. Warehouse in Addis, ready to move.',
-     'Abebe Tadesse','Kochere Farmers Union','+251 91 234 5678','Gedeo','trusted',5,11],
+     'Abebe Tadesse','Kochere Farmers Union','+251 91 234 5678','Gedeo','trusted',3,11],
     ['offer','Guji','G1','Natural','17','mt','8500','faresula','ETB','2025/26',
      'Lot from Hambela. Cup score 87.5, jasmine and peach. Priced at farmgate.',
-     'Meseret Bekele','Hambela Estate','+251 92 111 2233','Guji','verified',4,3],
+     'Meseret Bekele','Hambela Estate','+251 92 111 2233','Guji','verified',2,3],
     ['offer','Sidamo','G2','Washed','45','mt',null,'kg','USD','2025/26',
      'Bulk lot, price on application. Sample available on request.',
-     'Tesfaye Alemu','Bensa Coffee Supply','+251 91 887 6655','Sidama','verified',4,2],
+     'Tesfaye Alemu','Bensa Coffee Supply','+251 91 887 6655','Sidama','verified',2,2],
     ['need','Yirgacheffe','G1','Washed','2','container',null,'kg','USD','2025/26',
      'Buyer in Trieste. Washed G1 only, EU MRL compliant.',
-     'Marco Fenaroli','Adriatica Caffe SRL','+39 040 555 1212','Italy','trusted',5,7],
+     'Marco Fenaroli','Adriatica Caffe SRL','+39 040 555 1212','Italy','trusted',3,7],
     ['need','Guji','G1','Natural','10','mt',null,'kg','USD','2025/26',
      'Roaster in Seoul looking for a single natural lot, cup 86+.',
-     'Ji-woo Park','Seongsu Roasters','+82 10 5555 8888','South Korea','verified',4,1],
+     'Ji-woo Park','Seongsu Roasters','+82 10 5555 8888','South Korea','verified',2,1],
     ['need','Limu','G2','Washed','25','mt',null,'kg','USD','2025/26',
      'Blender needs steady volume, repeat contract if the first lot lands well.',
      'Sarah Whitfield','Northbridge Trading','+44 7700 900123','United Kingdom','unverified',null,0]
@@ -403,4 +413,4 @@ function hasAdmin() {
   return db.prepare("SELECT COUNT(*) AS n FROM users WHERE role='super_admin'").get().n > 0;
 }
 
-module.exports = { db, seed, log, nowIso, hasAdmin, sectionFor, seedExamples, GRADES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEYS, KG_PER_FARESULA, quantityText, priceText, scrubNotes, contactHints, PROCESSES, TIERS, MARKETS, SUPPLY, nextRef };
+module.exports = { db, seed, log, nowIso, hasAdmin, sectionFor, seedExamples, GRADES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEYS, KG_PER_FARESULA, quantityText, priceText, scrubNotes, contactHints, PROCESSES, TIERS, RATINGS, MARKETS, SUPPLY, nextRef };
