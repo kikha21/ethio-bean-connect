@@ -255,7 +255,24 @@ function settingsPage(user, flash) {
         <input type="text" name="set_${esc(r.key)}" value="${esc(r.value)}"></label>`).join('')}
       <div class="sticky-save"><button class="btn btn-primary" type="submit">Save contact details</button></div>
     </div>
-  </form>` });
+  </form>
+
+  <div class="sec"><h2>Your password <span class="n">the one you sign in with</span></h2>
+    <form method="post" action="/password" class="card">
+      <input type="hidden" name="csrf" value="${esc(user.csrf)}">
+      <div class="row2">
+        <label><span class="lb">Your password now</span>
+          <input type="password" name="current" required autocomplete="current-password"></label>
+        <label><span class="lb">New password</span>
+          <input type="password" name="password" required autocomplete="new-password">
+          <span class="hint">At least 10 characters, with a letter and a number.</span></label>
+      </div>
+      <label><span class="lb">New password again</span>
+        <input type="password" name="password2" required autocomplete="new-password"></label>
+      <div class="sticky-save"><button class="btn btn-primary" type="submit">Change it</button>
+        <span class="hint">Anywhere else you are signed in will be signed out.</span></div>
+    </form>
+  </div>` });
 }
 
 function activityPage(user, flash) {
@@ -632,6 +649,23 @@ const server = http.createServer(async (req, res) => {
       const sess = auth.startSession(out.user, ipOf(req));
       return redirect(res, members.isAdmin(out.user) ? '/admin' : '/my',
         { 'Set-Cookie': sessionCookie(sess.id, auth.SESSION_DAYS) });
+    }
+
+    if (p === '/password' && req.method === 'POST') {
+      const jar = cookies(req);
+      const who = auth.userForSession(jar.ebc_session);
+      if (!who) return redirect(res, '/signin');
+      const f = await body(req);
+      const out = reset.change(who, f.current, f.password, f.password2, jar.ebc_session, ipOf(req));
+      if (!out.ok) {
+        return members.isAdmin(who)
+          ? redirect(res, '/admin/settings', { 'Set-Cookie': flashCookie('bad',
+              out.errors.current || out.errors.password || out.errors.password2) })
+          : html(res, 400, memberPages.myPage(who, null, out.errors));
+      }
+      return members.isAdmin(who)
+        ? redirect(res, '/admin/settings', { 'Set-Cookie': flashCookie('ok', 'Password changed. Anywhere else you were signed in has been signed out.') })
+        : redirect(res, '/my', { 'Set-Cookie': flashCookie('ok', 'Password changed. Anywhere else you were signed in has been signed out.') });
     }
 
     if (p === '/signout' && req.method === 'POST') {

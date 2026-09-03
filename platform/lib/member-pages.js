@@ -153,7 +153,7 @@ function signinPage(err, email) {
 }
 
 /* ---------------- their own area ---------------- */
-function myPage(user, flash) {
+function myPage(user, flash, errors) {
   const st = members.standing(user);
   const posts = members.postsOf(user.id);
 
@@ -191,6 +191,17 @@ function myPage(user, flash) {
         ? 'We verify accounts as we get to know them. It shows on everything you post.'
         : 'This shows on every lot you put up.') + '</span>' +
     '</div>' +
+    '<div class="card" style="margin-bottom:1.4rem"><b>Change your password</b>' +
+      '<form method="post" action="/password" style="margin-top:.8rem" id="password">' +
+        (errors && errors.current ? '<div class="flash bad">' + esc(errors.current) + '</div>' : '') +
+        field('current', 'Your password now', '', errors, 'password', '', ' required autocomplete="current-password"') +
+        '<div class="two">' +
+          field('password', 'New password', '', errors, 'password', 'At least 10 characters, with a letter and a number.', ' required autocomplete="new-password"') +
+          field('password2', 'Again', '', errors, 'password', '', ' required autocomplete="new-password"') +
+        '</div>' +
+        '<button class="btn btn-ghost" type="submit">Change it</button>' +
+        '<span class="hint">Signing in anywhere else will be ended.</span>' +
+      '</form></div>' +
     '<h2 style="font-size:1.15rem;margin-bottom:.7rem">Your posts</h2>' + list +
     '<p class="foot"><a class="btn btn-primary" href="/#post">Post another lot</a></p>'
   });

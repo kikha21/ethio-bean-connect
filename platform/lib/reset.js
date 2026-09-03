@@ -118,6 +118,29 @@ function complete(token, password, password2, ip) {
   return { ok: true, user: db.prepare('SELECT * FROM users WHERE id = ?').get(row.user_id) };
 }
 
+/* Changing it while signed in. The current one is asked for because a
+   signed-in screen is not proof of who is sitting at it: a borrowed phone
+   or a forgotten sign-out should not be enough to take an account.
+
+   Every other session is ended, so if somebody else was already in, this
+   is what puts them out. The one doing the changing keeps theirs. */
+function change(user, current, next, again, keepSessionId, ip) {
+  if (!auth.verifyPassword(String(current || ''), user.password_hash, user.password_salt)) {
+    return { ok: false, errors: { current: 'That is not your current password.' } };
+  }
+  const problem = auth.passwordProblem(next);
+  if (problem) return { ok: false, errors: { password: problem } };
+  if (next !== again) return { ok: false, errors: { password2: 'The two passwords do not match.' } };
+  if (next === current) return { ok: false, errors: { password: 'That is the password you already have.' } };
+
+  const { hash: h, salt } = auth.hashPassword(next);
+  db.prepare('UPDATE users SET password_hash=?, password_salt=? WHERE id=?').run(h, salt, user.id);
+  db.prepare('DELETE FROM sessions WHERE user_id = ? AND id <> ?').run(user.id, keepSessionId || '');
+  db.prepare('UPDATE resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL').run(nowIso(), user.id);
+  log(user, 'password changed', user.email, '', ip);
+  return { ok: true };
+}
+
 /* what the admin can hand over while email is not set up */
 function outstanding() {
   return db.prepare(
@@ -127,4 +150,4 @@ function outstanding() {
   ).all(nowIso());
 }
 
-module.exports = { request, check, complete, outstanding, LIFE_MS };
+module.exports = { request, check, complete, change, outstanding, LIFE_MS };
