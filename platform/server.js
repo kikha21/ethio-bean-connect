@@ -9,6 +9,7 @@ const { render, invalidate, marketJson, SITE_DIR } = require('./lib/render');
 const { layout, esc } = require('./lib/ui');
 const board = require('./lib/admin-board');
 const adminChat = require('./lib/admin-chat');
+const adminMembers = require('./lib/admin-members');
 const publicPost = require('./lib/public-post');
 const chat = require('./lib/chat');
 const members = require('./lib/members');
@@ -446,6 +447,14 @@ const server = http.createServer(async (req, res) => {
           invalidate();
           return redirect(res, '/admin/settings', { 'Set-Cookie': flashCookie('ok', 'Saved. The footer, chat button and form all updated.') });
         }
+        if (p === '/admin/members') {
+          const out = members.setStanding(f.id, f, user, ipOf(req));
+          invalidate();
+          return redirect(res, '/admin/members' + (f.show ? '?show=' + encodeURIComponent(f.show) : ''),
+            { 'Set-Cookie': flashCookie(out.ok ? 'ok' : 'bad',
+              out.ok ? 'Saved, and written onto everything they have posted.' : 'That member no longer exists.') });
+        }
+
         if (p === '/admin/chat') {
           const id = f.id;
           let msg = 'Sent.';
@@ -502,6 +511,8 @@ const server = http.createServer(async (req, res) => {
         }
         return send(res, 200, 'application/json; charset=utf-8', JSON.stringify(out));
       }
+      if (p === '/admin/members')
+        return html(res, 200, adminMembers.page(user, flash, url.searchParams.get('show') || ''));
       if (p === '/admin/chat')
         return html(res, 200, adminChat.page(user, flash, url.searchParams.get('id'),
                     url.searchParams.get('show') || '', url.searchParams.get('q') || ''));

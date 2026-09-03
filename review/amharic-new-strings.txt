@@ -1,7 +1,7 @@
 ETHIO BEAN CONNECT - NEW STRINGS ONLY
 =====================================
 
-These 66 strings are new since the last sheet.
+These 71 strings are new since the last sheet.
 Everything else you already have is unchanged.
 Fill in the AM: lines and send this file back.
 
@@ -101,171 +101,191 @@ AM:
 EN:  Marketplace
 AM:  
 
-[25] KEY: f.okchat
+[25] KEY: f.gateH
+EN:  You need an account to post
+AM:  
+
+[26] KEY: f.gateIn
+EN:  Sign in
+AM:  
+
+[27] KEY: f.gateJoin
+EN:  Create an account
+AM:  
+
+[28] KEY: f.gateP
+EN:  It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.
+AM:  
+
+[29] KEY: f.okchat
 EN:  Chat with us about this
 AM:  
 
-[26] KEY: f.okchatMsg
+[30] KEY: f.okchatMsg
 EN:  This is about my post
 AM:  
 
-[27] KEY: f.okref
+[31] KEY: f.okref
 EN:  Your reference is
 AM:  
 
-[28] KEY: f.sending
+[32] KEY: f.postingAs
+EN:  Posting as
+AM:  
+
+[33] KEY: f.sending
 EN:  Posting…
 AM:  
 
-[29] KEY: f.supply
+[34] KEY: f.supply
 EN:  Where the coffee is
 AM:  
 
-[30] KEY: f.supplyH
+[35] KEY: f.supplyH
 EN:  Horizontal, in Addis Ababa
 AM:  
 
-[31] KEY: f.supplyHint
+[36] KEY: f.supplyHint
 EN:  Horizontal means it is already in an Addis Ababa warehouse and can move now, packed in 85 kg or 60 kg bags. Vertical means it is still at the farm or your own store, in 85 kg bags.
 AM:  
 
-[32] KEY: f.supplyV
+[37] KEY: f.supplyV
 EN:  Vertical, at the farm or supplier store
 AM:  
 
-[33] KEY: market.thUnit
+[38] KEY: market.thUnit
 EN:  Faresula / kg
 AM:  
 
-[34] KEY: board.all
+[39] KEY: board.all
 EN:  Everything
 AM:  
 
-[35] KEY: board.anon
+[40] KEY: board.anon
 EN:  No names appear on the board. Every post carries a reference only, and enquiries come through us, so neither side can be approached behind the other’s back.
 AM:  
 
-[36] KEY: board.ask
+[41] KEY: board.ask
 EN:  Ask about this
 AM:  
 
-[37] KEY: board.askMsg
+[42] KEY: board.askMsg
 EN:  Hello, I am asking about
 AM:  
 
-[38] KEY: board.clearAll
+[43] KEY: board.clearAll
 EN:  Clear the search
 AM:  
 
-[39] KEY: board.dealsWithUs
+[44] KEY: board.dealsWithUs
 EN:  closed with us
 AM:  
 
-[40] KEY: board.emptyH
+[45] KEY: board.emptyH
 EN:  The board is open.
 AM:  
 
-[41] KEY: board.emptyP
+[46] KEY: board.emptyP
 EN:  Checked lots appear here as they clear. If you have coffee to sell, or you are looking for a lot, post it and we will place it.
 AM:  
 
-[42] KEY: board.forSale
+[47] KEY: board.forSale
 EN:  For sale
 AM:  
 
-[43] KEY: board.groupEmpty
+[48] KEY: board.groupEmpty
 EN:  Nothing on this board right now.
 AM:  
 
-[44] KEY: board.h
-EN:  What is on the board right now.
+[49] KEY: board.h
+EN:  Marketplace
 AM:  
 
-[45] KEY: board.lede
+[50] KEY: board.lede
 EN:  Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.
 AM:  
 
-[46] KEY: board.mExport
+[51] KEY: board.mExport
 EN:  Export standard
 AM:  
 
-[47] KEY: board.mExportNote
+[52] KEY: board.mExportNote
 EN:  Graded for export, G1 to G5.
 AM:  
 
-[48] KEY: board.mLocal
+[53] KEY: board.mLocal
 EN:  Local and reject
 AM:  
 
-[49] KEY: board.mLocalNote
+[54] KEY: board.mLocalNote
 EN:  Below export grade, or sold on the domestic market.
 AM:  
 
-[50] KEY: board.needs
+[55] KEY: board.needs
 EN:  Coffee wanted
 AM:  
 
-[51] KEY: board.noMatch
+[56] KEY: board.noMatch
 EN:  Nothing on the board matches that.
 AM:  
 
-[52] KEY: board.offers
+[57] KEY: board.offers
 EN:  Coffee for sale
 AM:  
 
-[53] KEY: board.onRequest
+[58] KEY: board.onRequest
 EN:  On request
 AM:  
 
-[54] KEY: board.open
+[59] KEY: board.open
 EN:  open
 AM:  
 
-[55] KEY: board.per
+[60] KEY: board.per
 EN:  per
 AM:  
 
-[56] KEY: board.searchLabel
+[61] KEY: board.searchLabel
 EN:  Search the board
 AM:  
 
-[57] KEY: board.searchPh
+[62] KEY: board.searchPh
 EN:  Origin, grade, reference
 AM:  
 
-[58] KEY: board.wanted
+[63] KEY: board.wanted
 EN:  Wanted
 AM:  
 
-[59] KEY: rating.bronze
+[64] KEY: rating.bronze
 EN:  Bronze
 AM:  
 
-[60] KEY: rating.gold
+[65] KEY: rating.gold
 EN:  Gold
 AM:  
 
-[61] KEY: rating.silver
+[66] KEY: rating.silver
 EN:  Silver
 AM:  
 
-[62] KEY: supply.horizontal
+[67] KEY: supply.horizontal
 EN:  Horizontal
 AM:  
 
-[63] KEY: supply.vertical
+[68] KEY: supply.vertical
 EN:  Vertical
 AM:  
 
-[64] KEY: tier.trusted
+[69] KEY: tier.trusted
 EN:  Trusted
 AM:  
 
-[65] KEY: tier.unverified
+[70] KEY: tier.unverified
 EN:  Unverified
 AM:  
 
-[66] KEY: tier.verified
+[71] KEY: tier.verified
 EN:  Verified
 AM:  
 

@@ -103,6 +103,8 @@ td input[type=text]{padding:.35rem .5rem;font-size:.92rem}
 
 
 /* the inbox: conversations on the left, the open one on the right */
+.standing-form{display:flex;gap:.3rem;align-items:center;flex-wrap:nowrap}
+.standing-form select,.standing-form input{width:auto;padding:.3rem .45rem;font-size:.84rem}
 .convo-search{display:flex;gap:.35rem;align-items:center;margin-left:auto}
 .convo-search input[type=search]{width:min(16rem,42vw);padding:.32rem .6rem;font-size:.86rem;border-radius:999px}
 @media(max-width:760px){.convo-search{margin-left:0;width:100%}.convo-search input[type=search]{width:100%}}
@@ -203,6 +205,7 @@ ${user ? `<header class="top"><div class="shell">
     ${tab('/admin', 'Overview', 'home')}
     ${tab('/admin/chat', 'Chat', 'chat')}${waiting ? `<span class="navdot">${waiting}</span>` : ''}
     ${tab('/admin/marketplace', 'Marketplace', 'board')}
+    ${tab('/admin/members', 'Members', 'members')}
     ${tab('/admin/prices', 'Market prices', 'prices')}
     ${tab('/admin/content', 'Site text', 'content')}
     ${tab('/admin/settings', 'Contact details', 'settings')}

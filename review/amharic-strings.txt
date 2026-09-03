@@ -8,7 +8,7 @@ HOW TO USE THIS FILE
     different Amharic sentence works better, that is the right answer.
   - Send the file back and it goes straight into the site.
 
-  186 strings, 66 of them with no Amharic yet.
+  191 strings, 71 of them with no Amharic yet.
   The new ones are all in THE MARKETPLACE BOARD, at the end.
 
 
@@ -245,7 +245,7 @@ EN:  How it works
 AM:  እንዴት እንደሚሰራ
 
 [53] KEY: nav.market
-EN:  Prices
+EN:  Market price
 AM:  ገበያ
 
 [54] KEY: nav.origins
@@ -316,7 +316,7 @@ AM:  ኢትዮ ቢን ኮኔክት ስንት ያስከፍላል?
 
 
 -----------------------------------------------------------
-  THE FORM   (43)
+  THE FORM   (48)
 -----------------------------------------------------------
 
 [68] KEY: f.choose
@@ -351,143 +351,163 @@ AM:  መልእክትዎ ከታች ተጽፏል፣ ምንም አልጠፋም። �
 EN:  Try WhatsApp again
 AM:  ዋትስአፕን እንደገና ይሞክሩ
 
-[76] KEY: f.grade
+[76] KEY: f.gateH   [NEW, NEEDS AMHARIC]
+EN:  You need an account to post
+AM:  
+
+[77] KEY: f.gateIn   [NEW, NEEDS AMHARIC]
+EN:  Sign in
+AM:  
+
+[78] KEY: f.gateJoin   [NEW, NEEDS AMHARIC]
+EN:  Create an account
+AM:  
+
+[79] KEY: f.gateP   [NEW, NEEDS AMHARIC]
+EN:  It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.
+AM:  
+
+[80] KEY: f.grade
 EN:  Grade
 AM:  ደረጃ
 
-[77] KEY: f.gradeOther
+[81] KEY: f.gradeOther
 EN:  Which grade?
 AM:  የትኛው ደረጃ?
 
-[78] KEY: f.name
+[82] KEY: f.name
 EN:  Your name
 AM:  ስምዎ
 
-[79] KEY: f.note
+[83] KEY: f.note
 EN:  This goes straight onto our board. We check it first, and your name is never shown on it.
 AM:  ይህ ዋትስአፕን ዝርዝርዎ ተሞልቶ፣ ወደ እኛ ለመላክ ዝግጁ ሆኖ ይከፍታል።
 
-[80] KEY: f.notes
+[84] KEY: f.notes
 EN:  Anything else we should know
 AM:  ሌላ ልናውቀው የሚገባ
 
-[81] KEY: f.okchat   [NEW, NEEDS AMHARIC]
+[85] KEY: f.okchat   [NEW, NEEDS AMHARIC]
 EN:  Chat with us about this
 AM:  
 
-[82] KEY: f.okchatMsg   [NEW, NEEDS AMHARIC]
+[86] KEY: f.okchatMsg   [NEW, NEEDS AMHARIC]
 EN:  This is about my post
 AM:  
 
-[83] KEY: f.okh
+[87] KEY: f.okh
 EN:  Posted.
 AM:  ወደ ዋትስአፕዎ ተልኳል።
 
-[84] KEY: f.okp
+[88] KEY: f.okp
 EN:  We check every post before it goes on the board, and we come back to you within a working day. Your name is never shown.
 AM:  በዋትስአፕ ላይ ላክ የሚለውን ይጫኑ፣ በአንድ የስራ ቀን ውስጥ እንመልስልዎታለን።
 
-[85] KEY: f.okref   [NEW, NEEDS AMHARIC]
+[89] KEY: f.okref   [NEW, NEEDS AMHARIC]
 EN:  Your reference is
 AM:  
 
-[86] KEY: f.opt
+[90] KEY: f.opt
 EN:  optional
 AM:  አማራጭ
 
-[87] KEY: f.origin
+[91] KEY: f.origin
 EN:  Origin
 AM:  መገኛ
 
-[88] KEY: f.originOther
+[92] KEY: f.originOther
 EN:  Which origin?
 AM:  የትኛው መገኛ?
 
-[89] KEY: f.other
+[93] KEY: f.other
 EN:  Other, let me type it
 AM:  ሌላ፣ ራሴ እጽፈዋለሁ
 
-[90] KEY: f.phone
+[94] KEY: f.phone
 EN:  Phone or WhatsApp
 AM:  ስልክ ወይም ዋትስአፕ
 
-[91] KEY: f.qty
+[95] KEY: f.postingAs   [NEW, NEEDS AMHARIC]
+EN:  Posting as
+AM:  
+
+[96] KEY: f.qty
 EN:  How much
 AM:  መጠን
 
-[92] KEY: f.qtyHave
+[97] KEY: f.qtyHave
 EN:  e.g. 300
 AM:  ለምሳሌ 30 ቶን አለ
 
-[93] KEY: f.qtyNeed
+[98] KEY: f.qtyNeed
 EN:  e.g. 200
 AM:  ለምሳሌ 20 ቶን ያስፈልጋል
 
-[94] KEY: f.reqnote
+[99] KEY: f.reqnote
 EN:  Every field is required unless it says optional.
 AM:  አማራጭ ካልተባለ በስተቀር እያንዳንዱ መስክ ያስፈልጋል።
 
-[95] KEY: f.send
+[100] KEY: f.send
 EN:  Post it
 AM:  ላኩልን
 
-[96] KEY: f.sending   [NEW, NEEDS AMHARIC]
+[101] KEY: f.sending   [NEW, NEEDS AMHARIC]
 EN:  Posting…
 AM:  
 
-[97] KEY: f.supply   [NEW, NEEDS AMHARIC]
+[102] KEY: f.supply   [NEW, NEEDS AMHARIC]
 EN:  Where the coffee is
 AM:  
 
-[98] KEY: f.supplyH   [NEW, NEEDS AMHARIC]
+[103] KEY: f.supplyH   [NEW, NEEDS AMHARIC]
 EN:  Horizontal, in Addis Ababa
 AM:  
 
-[99] KEY: f.supplyHint   [NEW, NEEDS AMHARIC]
+[104] KEY: f.supplyHint   [NEW, NEEDS AMHARIC]
 EN:  Horizontal means it is already in an Addis Ababa warehouse and can move now, packed in 85 kg or 60 kg bags. Vertical means it is still at the farm or your own store, in 85 kg bags.
 AM:  
 
-[100] KEY: f.supplyV   [NEW, NEEDS AMHARIC]
+[105] KEY: f.supplyV   [NEW, NEEDS AMHARIC]
 EN:  Vertical, at the farm or supplier store
 AM:  
 
-[101] KEY: f.type
+[106] KEY: f.type
 EN:  Coffee type
 AM:  የቡና ዓይነት
 
-[102] KEY: f.typeOther
+[107] KEY: f.typeOther
 EN:  Which coffee type?
 AM:  የትኛው የቡና ዓይነት?
 
-[103] KEY: post.f1
+[108] KEY: post.f1
 EN:  If your type, origin or grade is not on the list, choose Other and type it in.
 AM:  ዓይነትዎ፣ መገኛዎ ወይም ደረጃዎ ዝርዝሩ ውስጥ ከሌለ፣ ሌላ የሚለውን መርጠው ይጻፉት።
 
-[104] KEY: post.f2
+[109] KEY: post.f2
 EN:  Nothing is published until we have checked it with you.
 AM:  ከእርስዎ ጋር እስክናረጋግጥ ድረስ ምንም አይታተምም።
 
-[105] KEY: post.f3
+[110] KEY: post.f3
 EN:  Costs nothing to post, and nothing to look.
 AM:  ማስመዝገብም ሆነ መመልከት ነጻ ነው።
 
-[106] KEY: post.h
+[111] KEY: post.h
 EN:  Post your coffee.
 AM:  ቡናዎን ያስመዝግቡ።
 
-[107] KEY: post.hNeed
+[112] KEY: post.hNeed
 EN:  Tell us what you need.
 AM:  የሚያስፈልግዎትን ይንገሩን።
 
-[108] KEY: post.have
+[113] KEY: post.have
 EN:  I have coffee
 AM:  ቡና አለኝ
 
-[109] KEY: post.lede
+[114] KEY: post.lede
 EN:  Tell us what you have or what you are missing. We read every one and come back within a working day.
 AM:  ያለዎትን ወይም የጎደለዎትን ይንገሩን። እያንዳንዱን እናነባለን፣ በአንድ የስራ ቀን ውስጥ እንመልሳለን።
 
-[110] KEY: post.need
+[115] KEY: post.need
 EN:  I need coffee
 AM:  ቡና እፈልጋለሁ
 
@@ -496,39 +516,39 @@ AM:  ቡና እፈልጋለሁ
   THE MARKET TABLE   (9)
 -----------------------------------------------------------
 
-[111] KEY: market.ask
+[116] KEY: market.ask
 EN:  
 AM:  ይጠይቁን
 
-[112] KEY: market.h
+[117] KEY: market.h
 EN:  What lots are moving at.
 AM:  ጭነቶች የሚንቀሳቀሱበት ዋጋ።
 
-[113] KEY: market.note
+[118] KEY: market.note
 EN:  These are indicative levels, not a quote. Every lot is priced on its own cup, grade and moisture. Ask us and we will confirm the same day.
 AM:  እነዚህ አመላካች ደረጃዎች እንጂ ዋጋ አይደሉም። እያንዳንዱ ጭነት በራሱ ጣዕም፣ ደረጃ እና እርጥበት ይተመናል። ይጠይቁን፣ በዚያኑ ቀን እናረጋግጣለን።
 
-[114] KEY: market.th1
+[119] KEY: market.th1
 EN:  Origin
 AM:  መገኛ
 
-[115] KEY: market.th2
+[120] KEY: market.th2
 EN:  Grade
 AM:  ደረጃ
 
-[116] KEY: market.th3
+[121] KEY: market.th3
 EN:  Process
 AM:  ዝግጅት
 
-[117] KEY: market.th4
+[122] KEY: market.th4
 EN:  Level
 AM:  ዋጋ
 
-[118] KEY: market.thUnit   [NEW, NEEDS AMHARIC]
+[123] KEY: market.thUnit   [NEW, NEEDS AMHARIC]
 EN:  Faresula / kg
 AM:  
 
-[119] KEY: market.updated
+[124] KEY: market.updated
 EN:  Last updated
 AM:  የተሻሻለው
 
@@ -537,135 +557,135 @@ AM:  የተሻሻለው
   THE MARKETPLACE BOARD   (33)
 -----------------------------------------------------------
 
-[120] KEY: board.all   [NEW, NEEDS AMHARIC]
+[125] KEY: board.all   [NEW, NEEDS AMHARIC]
 EN:  Everything
 AM:  
 
-[121] KEY: board.anon   [NEW, NEEDS AMHARIC]
+[126] KEY: board.anon   [NEW, NEEDS AMHARIC]
 EN:  No names appear on the board. Every post carries a reference only, and enquiries come through us, so neither side can be approached behind the other’s back.
 AM:  
 
-[122] KEY: board.ask   [NEW, NEEDS AMHARIC]
+[127] KEY: board.ask   [NEW, NEEDS AMHARIC]
 EN:  Ask about this
 AM:  
 
-[123] KEY: board.askMsg   [NEW, NEEDS AMHARIC]
+[128] KEY: board.askMsg   [NEW, NEEDS AMHARIC]
 EN:  Hello, I am asking about
 AM:  
 
-[124] KEY: board.clearAll   [NEW, NEEDS AMHARIC]
+[129] KEY: board.clearAll   [NEW, NEEDS AMHARIC]
 EN:  Clear the search
 AM:  
 
-[125] KEY: board.dealsWithUs   [NEW, NEEDS AMHARIC]
+[130] KEY: board.dealsWithUs   [NEW, NEEDS AMHARIC]
 EN:  closed with us
 AM:  
 
-[126] KEY: board.emptyH   [NEW, NEEDS AMHARIC]
+[131] KEY: board.emptyH   [NEW, NEEDS AMHARIC]
 EN:  The board is open.
 AM:  
 
-[127] KEY: board.emptyP   [NEW, NEEDS AMHARIC]
+[132] KEY: board.emptyP   [NEW, NEEDS AMHARIC]
 EN:  Checked lots appear here as they clear. If you have coffee to sell, or you are looking for a lot, post it and we will place it.
 AM:  
 
-[128] KEY: board.forSale   [NEW, NEEDS AMHARIC]
+[133] KEY: board.forSale   [NEW, NEEDS AMHARIC]
 EN:  For sale
 AM:  
 
-[129] KEY: board.groupEmpty   [NEW, NEEDS AMHARIC]
+[134] KEY: board.groupEmpty   [NEW, NEEDS AMHARIC]
 EN:  Nothing on this board right now.
 AM:  
 
-[130] KEY: board.h   [NEW, NEEDS AMHARIC]
-EN:  What is on the board right now.
+[135] KEY: board.h   [NEW, NEEDS AMHARIC]
+EN:  Marketplace
 AM:  
 
-[131] KEY: board.lede   [NEW, NEEDS AMHARIC]
+[136] KEY: board.lede   [NEW, NEEDS AMHARIC]
 EN:  Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.
 AM:  
 
-[132] KEY: board.mExport   [NEW, NEEDS AMHARIC]
+[137] KEY: board.mExport   [NEW, NEEDS AMHARIC]
 EN:  Export standard
 AM:  
 
-[133] KEY: board.mExportNote   [NEW, NEEDS AMHARIC]
+[138] KEY: board.mExportNote   [NEW, NEEDS AMHARIC]
 EN:  Graded for export, G1 to G5.
 AM:  
 
-[134] KEY: board.mLocal   [NEW, NEEDS AMHARIC]
+[139] KEY: board.mLocal   [NEW, NEEDS AMHARIC]
 EN:  Local and reject
 AM:  
 
-[135] KEY: board.mLocalNote   [NEW, NEEDS AMHARIC]
+[140] KEY: board.mLocalNote   [NEW, NEEDS AMHARIC]
 EN:  Below export grade, or sold on the domestic market.
 AM:  
 
-[136] KEY: board.needs   [NEW, NEEDS AMHARIC]
+[141] KEY: board.needs   [NEW, NEEDS AMHARIC]
 EN:  Coffee wanted
 AM:  
 
-[137] KEY: board.noMatch   [NEW, NEEDS AMHARIC]
+[142] KEY: board.noMatch   [NEW, NEEDS AMHARIC]
 EN:  Nothing on the board matches that.
 AM:  
 
-[138] KEY: board.offers   [NEW, NEEDS AMHARIC]
+[143] KEY: board.offers   [NEW, NEEDS AMHARIC]
 EN:  Coffee for sale
 AM:  
 
-[139] KEY: board.onRequest   [NEW, NEEDS AMHARIC]
+[144] KEY: board.onRequest   [NEW, NEEDS AMHARIC]
 EN:  On request
 AM:  
 
-[140] KEY: board.open   [NEW, NEEDS AMHARIC]
+[145] KEY: board.open   [NEW, NEEDS AMHARIC]
 EN:  open
 AM:  
 
-[141] KEY: board.per   [NEW, NEEDS AMHARIC]
+[146] KEY: board.per   [NEW, NEEDS AMHARIC]
 EN:  per
 AM:  
 
-[142] KEY: board.searchLabel   [NEW, NEEDS AMHARIC]
+[147] KEY: board.searchLabel   [NEW, NEEDS AMHARIC]
 EN:  Search the board
 AM:  
 
-[143] KEY: board.searchPh   [NEW, NEEDS AMHARIC]
+[148] KEY: board.searchPh   [NEW, NEEDS AMHARIC]
 EN:  Origin, grade, reference
 AM:  
 
-[144] KEY: board.wanted   [NEW, NEEDS AMHARIC]
+[149] KEY: board.wanted   [NEW, NEEDS AMHARIC]
 EN:  Wanted
 AM:  
 
-[145] KEY: rating.bronze   [NEW, NEEDS AMHARIC]
+[150] KEY: rating.bronze   [NEW, NEEDS AMHARIC]
 EN:  Bronze
 AM:  
 
-[146] KEY: rating.gold   [NEW, NEEDS AMHARIC]
+[151] KEY: rating.gold   [NEW, NEEDS AMHARIC]
 EN:  Gold
 AM:  
 
-[147] KEY: rating.silver   [NEW, NEEDS AMHARIC]
+[152] KEY: rating.silver   [NEW, NEEDS AMHARIC]
 EN:  Silver
 AM:  
 
-[148] KEY: supply.horizontal   [NEW, NEEDS AMHARIC]
+[153] KEY: supply.horizontal   [NEW, NEEDS AMHARIC]
 EN:  Horizontal
 AM:  
 
-[149] KEY: supply.vertical   [NEW, NEEDS AMHARIC]
+[154] KEY: supply.vertical   [NEW, NEEDS AMHARIC]
 EN:  Vertical
 AM:  
 
-[150] KEY: tier.trusted   [NEW, NEEDS AMHARIC]
+[155] KEY: tier.trusted   [NEW, NEEDS AMHARIC]
 EN:  Trusted
 AM:  
 
-[151] KEY: tier.unverified   [NEW, NEEDS AMHARIC]
+[156] KEY: tier.unverified   [NEW, NEEDS AMHARIC]
 EN:  Unverified
 AM:  
 
-[152] KEY: tier.verified   [NEW, NEEDS AMHARIC]
+[157] KEY: tier.verified   [NEW, NEEDS AMHARIC]
 EN:  Verified
 AM:  
 
@@ -674,27 +694,27 @@ AM:
   THE OPENING SCREEN   (6)
 -----------------------------------------------------------
 
-[153] KEY: hero.b1
+[158] KEY: hero.b1
 EN:  Ethiopia grows the coffee the world is asking for.
 AM:  ኢትዮጵያ ዓለም የሚፈልገውን ቡና ታመርታለች።
 
-[154] KEY: hero.b2
+[159] KEY: hero.b2
 EN:  Finding the right buyer is the hard part.
 AM:  ትክክለኛውን ገዢ ማግኘት ነው ከባዱ።
 
-[155] KEY: hero.b3
+[160] KEY: hero.b3
 EN:  Every lot has a buyer.
 AM:  እያንዳንዱ ጭነት ገዢ አለው።
 
-[156] KEY: hero.b3sub
+[161] KEY: hero.b3sub
 EN:  We find them. You keep trading.
 AM:  እኛ እንፈልጋቸዋለን። እርስዎ ንግድዎን ይቀጥሉ።
 
-[157] KEY: hero.scroll
+[162] KEY: hero.scroll
 EN:  Scroll
 AM:  ወደ ታች
 
-[158] KEY: static.sub
+[163] KEY: static.sub
 EN:  Ethio Bean Connect puts Ethiopian coffee suppliers in front of the exporters who need their lots.
 AM:  ኢትዮ ቢን ኮኔክት የኢትዮጵያ ቡና አቅራቢዎችን ጭነታቸውን ከሚፈልጉ ላኪዎች ጋር ያገናኛል።
 
@@ -703,51 +723,51 @@ AM:  ኢትዮ ቢን ኮኔክት የኢትዮጵያ ቡና አቅራቢዎች�
   THE SEALED LOT   (12)
 -----------------------------------------------------------
 
-[159] KEY: seal.done
+[164] KEY: seal.done
 EN:  Sealed. Press again to seal another.
 AM:  ታሽጓል። ሌላ ለማተም እንደገና ይጫኑ።
 
-[160] KEY: seal.f1
+[165] KEY: seal.f1
 EN:  Origin
 AM:  መገኛ
 
-[161] KEY: seal.f2
+[166] KEY: seal.f2
 EN:  Grade
 AM:  ደረጃ
 
-[162] KEY: seal.f3
+[167] KEY: seal.f3
 EN:  Quantity
 AM:  መጠን
 
-[163] KEY: seal.f4
+[168] KEY: seal.f4
 EN:  Moisture
 AM:  እርጥበት
 
-[164] KEY: seal.f5
+[169] KEY: seal.f5
 EN:  Origin record
 AM:  የመገኛ መዝገብ
 
-[165] KEY: seal.f5v
+[170] KEY: seal.f5v
 EN:  Washing station level
 AM:  የማጠቢያ ጣቢያ ደረጃ
 
-[166] KEY: seal.h
+[171] KEY: seal.h
 EN:  This is what a sealed lot looks like.
 AM:  የታሸገ ጭነት ይህን ይመስላል።
 
-[167] KEY: seal.hint
+[172] KEY: seal.hint
 EN:  Press and hold the seal
 AM:  ማህተሙን ተጭነው ይያዙ
 
-[168] KEY: seal.lede
+[173] KEY: seal.lede
 EN:  Nothing reaches an exporter until it has been checked and sealed. Press and hold the seal to do it yourself.
 AM:  ተመርምሮ እስኪታሸግ ድረስ ምንም ነገር ወደ ላኪ አይደርስም። ማህተሙን ተጭነው በመያዝ እርስዎ ያድርጉት።
 
-[169] KEY: seal.lot
+[174] KEY: seal.lot
 EN:  Lot number
 AM:  የጭነት ቁጥር
 
-[170] KEY: seal.slip
+[175] KEY: seal.slip
 EN:  Lot record
 AM:  የጭነት መዝገብ
 
@@ -756,31 +776,31 @@ AM:  የጭነት መዝገብ
   THE THREE PROBLEMS   (7)
 -----------------------------------------------------------
 
-[171] KEY: walls.1h
+[176] KEY: walls.1h
 EN:  Quality swings between harvests.
 AM:  ጥራት ከምርት ወደ ምርት ይለያያል።
 
-[172] KEY: walls.1p
+[177] KEY: walls.1p
 EN:  A roaster wants the same coffee twice. Two harvests rarely give it to them, and one bad delivery ends the relationship.
 AM:  ገዢው ተመሳሳይ ቡና ሁለት ጊዜ ይፈልጋል። ሁለት ምርቶች ያንን አይሰጡም፣ አንድ መጥፎ ጭነት ደግሞ ግንኙነቱን ያቋርጣል።
 
-[173] KEY: walls.2h
+[178] KEY: walls.2h
 EN:  Paperwork loses contracts.
 AM:  ሰነድ ውል ያስቀራል።
 
-[174] KEY: walls.2p
+[179] KEY: walls.2p
 EN:  Europe now wants to know the exact ground a lot grew on. Lots with thin origin records get turned away at the door.
 AM:  አውሮፓ ቡናው የበቀለበትን ትክክለኛ ቦታ ማወቅ ትፈልጋለች። በቂ የመገኛ መዝገብ የሌላቸው ጭነቶች ይመለሳሉ።
 
-[175] KEY: walls.3h
+[180] KEY: walls.3h
 EN:  Suppliers wait to get paid.
 AM:  አቅራቢዎች ክፍያ ይጠብቃሉ።
 
-[176] KEY: walls.3p
+[181] KEY: walls.3p
 EN:  Coffee goes out, money comes back late or partly. Washing stations carry that risk alone.
 AM:  ቡናው ይወጣል፣ ገንዘቡ ግን ዘግይቶ ወይም በከፊል ይመጣል። ማጠቢያ ጣቢያዎች ያንን ስጋት ብቻቸውን ይሸከማሉ።
 
-[177] KEY: walls.h
+[182] KEY: walls.h
 EN:  Three walls, and every lot hits at least one.
 AM:  ሦስት እንቅፋቶች፣ እያንዳንዱ ጭነት ቢያንስ አንዱን ያገኛል።
 
@@ -789,39 +809,39 @@ AM:  ሦስት እንቅፋቶች፣ እያንዳንዱ ጭነት ቢያንስ �
   WHAT WE CHECK   (9)
 -----------------------------------------------------------
 
-[178] KEY: checks.1h
+[183] KEY: checks.1h
 EN:  Grade and screen size
 AM:  ደረጃ እና የወንፊት መጠን
 
-[179] KEY: checks.1p
+[184] KEY: checks.1p
 EN:  Read against the grading certificate, not against a promise on the phone.
 AM:  በስልክ በሚሰጥ ቃል ሳይሆን በደረጃ ማረጋገጫ ሰነድ ይነበባል።
 
-[180] KEY: checks.2h
+[185] KEY: checks.2h
 EN:  Moisture
 AM:  እርጥበት
 
-[181] KEY: checks.2p
+[186] KEY: checks.2p
 EN:  Measured before the lot is offered, so nobody finds out at the port.
 AM:  ጭነቱ ከመቅረቡ በፊት ይለካል፣ ማንም ወደብ ላይ እንዳያውቀው።
 
-[182] KEY: checks.3h
+[187] KEY: checks.3h
 EN:  Origin record
 AM:  የመገኛ መዝገብ
 
-[183] KEY: checks.3p
+[188] KEY: checks.3p
 EN:  Down to the washing station, for European buyers who have to prove it.
 AM:  እስከ ማጠቢያ ጣቢያ ድረስ፣ ማረጋገጥ ላለባቸው የአውሮፓ ገዢዎች።
 
-[184] KEY: checks.4h
+[189] KEY: checks.4h
 EN:  A sample in your hands
 AM:  ናሙና በእጅዎ
 
-[185] KEY: checks.4p
+[190] KEY: checks.4p
 EN:  You cup it before you commit to a container. Always, without exception.
 AM:  ኮንቴይነር ከመውሰድዎ በፊት ይቀምሱታል። ሁልጊዜ፣ ያለ ልዩነት።
 
-[186] KEY: checks.h
+[191] KEY: checks.h
 EN:  Nothing leaves here unchecked.
 AM:  ሳይመረመር ከዚህ የሚወጣ የለም።
 
