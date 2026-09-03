@@ -19,15 +19,21 @@ const MAX = { name: 120, company: 160, email: 160, phone: 40, region: 80 };
 const clean = (v, max) => String(v == null ? '' : v).replace(/\s+/g, ' ').trim().slice(0, max || 160);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-/* one new account an hour from an address, so the join page cannot be
-   used to fill the table */
+/* One address is not one person here. Ethiopian mobile carriers put very
+   large numbers of people behind a single address, so a whole town of
+   suppliers can arrive looking like one caller. A tight per-address limit
+   turns real customers away and stops almost no abuse, because the real
+   guard is elsewhere: nothing a stranger posts reaches the board until it
+   has been checked, an email may only be used once, and an account can be
+   suspended. These numbers exist to stop a runaway script, nothing more. */
+const JOINS_PER_HOUR = 40;
 const joins = new Map();
 function joinAllowed(ip) {
   const now = Date.now();
-  if (joins.size > 3000) for (const [k, v] of joins) if (now > v.resetAt) joins.delete(k);
+  if (joins.size > 5000) for (const [k, v] of joins) if (now > v.resetAt) joins.delete(k);
   const row = joins.get(ip);
   if (!row || now > row.resetAt) { joins.set(ip, { n: 1, resetAt: now + 3600e3 }); return true; }
-  if (row.n >= 3) return false;
+  if (row.n >= JOINS_PER_HOUR) return false;
   row.n++;
   return true;
 }
@@ -65,7 +71,7 @@ function emailTaken(email, exceptId) {
 
 function join(f, ip) {
   if (!joinAllowed(ip || 'unknown')) {
-    return { ok: false, message: 'That is several accounts from here already. Try again later.' };
+    return { ok: false, message: 'A lot of accounts have been made from this connection in the last hour. Wait a few minutes and try again, or message us on the chat and we will make it for you.' };
   }
   const { values, errors } = validate(f, false);
   if (emailTaken(values.email)) errors.email = 'There is already an account with that address.';

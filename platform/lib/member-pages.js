@@ -147,7 +147,8 @@ function signinPage(err, email) {
       field('password', 'Password', '', null, 'password', '', ' required autocomplete="current-password"') +
       '<button class="btn btn-primary" type="submit">Sign in</button>' +
     '</div></form>' +
-    '<p class="foot">No account yet? <a href="/join">Create one</a>.</p>'
+    '<p class="foot"><a href="/forgot">Forgotten your password?</a> &nbsp;·&nbsp; ' +
+    'No account yet? <a href="/join">Create one</a>.</p>'
   });
 }
 
@@ -195,4 +196,47 @@ function myPage(user, flash) {
   });
 }
 
-module.exports = { joinPage, signinPage, myPage, page, esc };
+/* ---------------- forgotten password ---------------- */
+function forgotPage(done, email) {
+  if (done) {
+    return page({ title: 'Check your email', body:
+      '<h1>Check your email</h1>' +
+      '<p class="lede">If there is an account for that address, a link to set a new password is on its way. ' +
+      'It works once and stops working in an hour.</p>' +
+      '<div class="card"><p style="margin:0;color:var(--ink-2);font-size:.93rem">' +
+      'Nothing arrived? Look in spam, or ask us on the chat and we will sort it out.</p></div>' +
+      '<p class="foot"><a href="/signin">Back to sign in</a></p>'
+    });
+  }
+  return page({ title: 'Forgotten password', body:
+    '<h1>Forgotten your password?</h1>' +
+    '<p class="lede">Put in the address you signed up with and we will send a link to set a new one.</p>' +
+    '<form method="post" action="/forgot"><div class="card">' +
+      field('email', 'Email', email, null, 'email', '', ' required autocomplete="username"') +
+      '<button class="btn btn-primary" type="submit">Send the link</button>' +
+    '</div></form>' +
+    '<p class="foot">Remembered it? <a href="/signin">Sign in</a>.</p>'
+  });
+}
+
+function resetPage(token, errors, dead) {
+  if (dead) {
+    return page({ title: 'Link expired', body:
+      '<h1>That link has expired</h1>' +
+      '<p class="lede">A reset link works once, and only for an hour. Ask for another and we will send a fresh one.</p>' +
+      '<p><a class="btn btn-primary" href="/forgot">Send me another</a></p>'
+    });
+  }
+  return page({ title: 'Set a new password', body:
+    '<h1>Set a new password</h1>' +
+    '<p class="lede">Choose something you will remember. Signing in anywhere else will be ended.</p>' +
+    '<form method="post" action="/reset"><div class="card">' +
+      '<input type="hidden" name="t" value="' + esc(token) + '">' +
+      field('password', 'New password', '', errors, 'password', 'At least 10 characters, with a letter and a number.', ' required autocomplete="new-password"') +
+      field('password2', 'Again', '', errors, 'password', '', ' required autocomplete="new-password"') +
+      '<button class="btn btn-primary" type="submit">Set it</button>' +
+    '</div></form>'
+  });
+}
+
+module.exports = { joinPage, signinPage, myPage, forgotPage, resetPage, page, esc };

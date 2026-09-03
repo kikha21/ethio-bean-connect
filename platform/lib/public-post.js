@@ -17,7 +17,7 @@ const { db, nowIso, log, GRADES, QTY_UNIT_KEYS, SUPPLY, MARKETS, nextRef } = req
 /* what one address may do in an hour, and what the whole site may take.
    Held in memory: a restart forgives everyone, which is the right
    trade for a board this size. */
-const PER_IP_PER_HOUR = 5;
+const PER_IP_PER_HOUR = 60;
 const GLOBAL_PER_HOUR = 200;
 const HOUR = 3600e3;
 
@@ -37,7 +37,7 @@ function rateCheck(ip) {
   if (globalN >= GLOBAL_PER_HOUR) return 'The board is taking a lot of posts right now. Try again shortly.';
   const row = seen.get(ip);
   if (!row || now > row.resetAt) { seen.set(ip, { n: 1, resetAt: now + HOUR }); globalN++; return null; }
-  if (row.n >= PER_IP_PER_HOUR) return 'That is several posts from here in the last hour. Try again later, or send them to us on WhatsApp.';
+  if (row.n >= PER_IP_PER_HOUR) return 'A lot of posts have come from this connection in the last hour. Wait a few minutes and try again, or tell us on the chat.';
   row.n++; globalN++;
   return null;
 }

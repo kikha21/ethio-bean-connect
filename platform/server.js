@@ -13,6 +13,8 @@ const adminMembers = require('./lib/admin-members');
 const publicPost = require('./lib/public-post');
 const chat = require('./lib/chat');
 const members = require('./lib/members');
+const reset = require('./lib/reset');
+const mail = require('./lib/mail');
 const memberPages = require('./lib/member-pages');
 const push = require('./lib/push');
 
@@ -242,7 +244,7 @@ function contentPage(user, flash, q) {
 }
 
 function settingsPage(user, flash) {
-  const rows = db.prepare('SELECT * FROM settings WHERE key LIKE ? OR key = ? ORDER BY sort').all('contact_%','site_url');
+  const rows = db.prepare('SELECT * FROM settings WHERE key LIKE ? OR key = ? OR key LIKE ? ORDER BY sort').all('contact_%','site_url','smtp_%');
   return layout({ title: 'Contact details', user, active: 'settings', flash, body: `
   <div class="head"><h1>Contact details</h1></div>
   <p class="lede">These drive five places at once: the chat button, both routes out of the enquiry form, the footer, and the data search engines read. Change one here and it changes everywhere.</p>
@@ -436,7 +438,7 @@ const server = http.createServer(async (req, res) => {
         }
 
         if (p === '/admin/settings') {
-          const rows = db.prepare('SELECT key, value FROM settings WHERE key LIKE ? OR key = ?').all('contact_%','site_url');
+          const rows = db.prepare('SELECT key, value FROM settings WHERE key LIKE ? OR key = ? OR key LIKE ?').all('contact_%','site_url','smtp_%');
           const upd = db.prepare('UPDATE settings SET value=?, updated_at=?, updated_by=? WHERE key=?');
           let changed = 0;
           rows.forEach(r => {
@@ -601,6 +603,34 @@ const server = http.createServer(async (req, res) => {
       log(u, 'signed in', u.email, u.role, ipOf(req));
       const sess = auth.startSession(u, ipOf(req));
       return redirect(res, members.isAdmin(u) ? '/admin' : '/my',
+        { 'Set-Cookie': sessionCookie(sess.id, auth.SESSION_DAYS) });
+    }
+
+    if (p === '/forgot') {
+      if (req.method === 'GET') return html(res, 200, memberPages.forgotPage(false, ''));
+      const f = await body(req);
+      const site = (db.prepare("SELECT value FROM settings WHERE key='site_url'").get() || {}).value ||
+                   ('http://localhost:' + PORT);
+      const out = await reset.request(f.email, ipOf(req), site);
+      /* the same page either way: whether an address has an account here is
+         not something a form should be willing to tell a stranger */
+      if (out.adminLink) invalidate();
+      return html(res, 200, memberPages.forgotPage(true, ''));
+    }
+
+    if (p === '/reset') {
+      const token = req.method === 'GET' ? (url.searchParams.get('t') || '') : null;
+      if (req.method === 'GET') {
+        return html(res, 200, reset.check(token)
+          ? memberPages.resetPage(token, null, false)
+          : memberPages.resetPage('', null, true));
+      }
+      const f = await body(req);
+      const out = reset.complete(f.t, f.password, f.password2, ipOf(req));
+      if (!out.ok && out.errors) return html(res, 400, memberPages.resetPage(f.t, out.errors, false));
+      if (!out.ok) return html(res, 400, memberPages.resetPage('', null, true));
+      const sess = auth.startSession(out.user, ipOf(req));
+      return redirect(res, members.isAdmin(out.user) ? '/admin' : '/my',
         { 'Set-Cookie': sessionCookie(sess.id, auth.SESSION_DAYS) });
     }
 

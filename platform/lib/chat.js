@@ -43,7 +43,7 @@ CREATE INDEX IF NOT EXISTS idx_convo_last ON conversations(status, last_at DESC)
 const MAX_BODY = 2000;
 const MAX_NAME = 80;
 const PER_MIN = 12;               /* messages a minute from one conversation */
-const NEW_PER_HOUR_PER_IP = 5;    /* new conversations an hour from one address */
+const NEW_PER_HOUR_PER_IP = 40;   /* see members.js: one address is not one person here */
 
 const sends = new Map();          /* token -> { n, resetAt } */
 const starts = new Map();         /* ip -> { n, resetAt } */
@@ -81,7 +81,7 @@ function notifyUs(convo, body) {
 
 function start(f, ip) {
   if (!bump(starts, ip || 'unknown', NEW_PER_HOUR_PER_IP, 3600e3)) {
-    return { ok: false, message: 'That is several conversations from here already. Try again later.' };
+    return { ok: false, message: 'A lot of conversations have started from this connection. Wait a few minutes and try again.' };
   }
   const body = clean(f.body, MAX_BODY);
   if (!body) return { ok: false, message: 'Type a message first.' };
