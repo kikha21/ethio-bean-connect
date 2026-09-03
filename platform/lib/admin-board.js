@@ -13,7 +13,9 @@ const { layout, esc } = require('./ui');
 
 const ORIGINS = ['Yirgacheffe', 'Guji', 'Sidamo', 'Limu', 'Jimma', 'Nekemte', 'Harar',
                  'Kaffa', 'Bench Maji', 'Illubabor', 'Gimbi', 'Lekempti', 'Tepi', 'Gomma'];
-const CURRENCIES = ['USD', 'ETB', 'EUR', 'GBP'];
+/* birr first: it is what the local trade quotes and what the price table
+   shows. USD stays on the list for an export deal priced FOB. */
+const CURRENCIES = ['ETB', 'USD', 'EUR', 'GBP'];
 const STATUSES = {
   pending: 'Waiting for you to check it',
   live: 'On the board',

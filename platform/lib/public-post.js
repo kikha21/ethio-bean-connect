@@ -123,7 +123,7 @@ function submit(f, ip) {
     ' quantity_val, quantity_unit, price, price_unit, currency, harvest, notes,' +
     ' poster_name, poster_org, poster_phone, poster_email, poster_region,' +
     ' tier, rating, deals, status, published, is_example, sort, created_at)' +
-    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','USD','',?,?,?,?,?,'','unverified',NULL,0,'pending',0,0,0,?)"
+    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,'','unverified',NULL,0,'pending',0,0,0,?)"
   ).run(ref, kind, market, v.supply, v.origin, v.grade, v.type,
         v.quantity_val, v.quantity_unit, v.notes,
         v.name, v.company, v.phone, v.email, nowIso());
