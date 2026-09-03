@@ -464,11 +464,13 @@ section[id],#main,#top{scroll-margin-top:96px}
   }
 }
 
+.js .plate--board.lit{background-image:url('assets/sec-post.jpg')}
 .js .plate--how.lit{background-image:url('assets/sec-how.jpg')}
 .js .plate--origins.lit{background-image:url('assets/sec-origins.jpg')}
 .js .plate--checks.lit{background-image:url('assets/sec-checks.jpg')}
 .js .plate--post.lit{background-image:url('assets/sec-post.jpg')}
 /* scripting off: no observer will ever run, so load them outright */
+html:not(.js) .plate--board{background-image:url('assets/sec-post.jpg')}
 html:not(.js) .plate--how{background-image:url('assets/sec-how.jpg')}
 html:not(.js) .plate--origins{background-image:url('assets/sec-origins.jpg')}
 html:not(.js) .plate--checks{background-image:url('assets/sec-checks.jpg')}
@@ -640,6 +642,21 @@ td.p.ask{color:var(--text-secondary)}
   display:flex;flex-direction:column;gap:.8rem;
   background:var(--panel);border:1px solid var(--panel-edge);border-radius:16px;
   padding:1.3rem 1.35rem;
+}
+/* on the photograph the card is glass: the fill has to carry the text on
+   its own, because what is behind it changes from card to card */
+.plate .lot{background:rgba(12,17,11,.74);backdrop-filter:blur(3px)}
+.plate .board-empty{background:rgba(12,17,11,.62)}
+.plate .board-markets button{background:rgba(12,17,11,.62)}
+.plate .board-search input[type=search]{background:rgba(12,17,11,.62)}
+.plate .board-filters button{background:rgba(12,17,11,.42)}
+/* The three rules above weigh the same as the selected-state rules further
+   up and come after them, so they were quietly winning and painting the
+   chosen tab the same as the unchosen ones. The chosen one is stated again
+   here, after them, and inverted: light pill, dark letters. */
+.plate .board-markets button[aria-selected="true"],
+.plate .board-filters button[aria-pressed="true"]{
+  background:var(--on-media);border-color:var(--on-media);color:var(--media-ground)
 }
 .lot[hidden]{display:none}
 .lot-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
@@ -1273,7 +1290,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
   </a>
   <div class="nav-links" id="navlinks">
     <a href="#board" data-i18n="nav.board">Marketplace</a>
-    <a href="#market" data-i18n="nav.market">Prices</a>
+    <a href="#market" data-i18n="nav.market">Market price</a>
     <a href="#origins" data-i18n="nav.origins">Origins</a>
     <a href="#how" data-i18n="nav.how">How it works</a>
     <a href="#checks" data-i18n="nav.checks">What we check</a>
@@ -1351,11 +1368,11 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 
 <!-- ================= THE THREE WALLS ================= -->
 <!-- ================= THE BOARD ================= -->
-<section id="board">
+<section id="board" class="plate plate--board">
   <div class="shell">
     <div class="board-head rise">
       <div>
-        <h2 class="h2" data-i18n="board.h">What is on the board right now.</h2>
+        <h2 class="h2" data-i18n="board.h">Marketplace</h2>
         <p class="lede" data-i18n="board.lede">Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.</p>
       </div>
       <div class="board-count"><b id="board-count">0</b> <span data-i18n="board.open">open</span></div>
@@ -1791,7 +1808,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
       <div>
         <h3 data-i18n="foot.site">The site</h3>
         <ul class="foot-list">
-          <li><a href="#market" data-i18n="nav.market">Market</a></li>
+          <li><a href="#market" data-i18n="nav.market">Market price</a></li>
           <li><a href="#origins" data-i18n="nav.origins">Origins</a></li>
           <li><a href="#how" data-i18n="nav.how">How it works</a></li>
           <li><a href="#checks" data-i18n="nav.checks">What we check</a></li>
@@ -2068,8 +2085,9 @@ I18N.en['board.searchLabel'] = "Search the board";
 I18N.en['board.searchPh']    = "Origin, grade, reference";
 I18N.en['board.noMatch']     = "Nothing on the board matches that.";
 I18N.en['board.clearAll']    = "Clear the search";
+I18N.en['nav.market']       = "Market price";
 I18N.en['nav.board']         = "Marketplace";
-I18N.en['board.h']           = "What is on the board right now.";
+I18N.en['board.h']           = "Marketplace";
 I18N.en['board.lede']        = "Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.";
 I18N.en['board.open']        = "open";
 I18N.en['board.all']         = "Everything";
