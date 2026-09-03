@@ -11,6 +11,13 @@ const { db, nowIso, log, GRADES, PROCESSES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEY
         quantityText, priceText, contactHints, nextRef } = require('./db');
 const { layout, esc } = require('./ui');
 
+/* threads a poster or an enquirer opened about this reference, so the
+   listing screen can say whether anyone is actually talking about it */
+function conversationsAbout(ref) {
+  if (!ref) return [];
+  return db.prepare('SELECT id, ref AS cref, name, side, unread_us FROM conversations WHERE about = ? ORDER BY last_at DESC').all(ref);
+}
+
 const ORIGINS = ['Yirgacheffe', 'Guji', 'Sidamo', 'Limu', 'Jimma', 'Nekemte', 'Harar',
                  'Kaffa', 'Bench Maji', 'Illubabor', 'Gimbi', 'Lekempti', 'Tepi', 'Gomma'];
 /* birr first: it is what the local trade quotes and what the price table
@@ -162,6 +169,14 @@ function editPage(user, flash, id) {
     tier: 'unverified', rating: '', deals: 0, status: 'live', published: 0
   };
   const hints = r ? contactHints(r.notes) : [];
+  const threads = r ? conversationsAbout(r.ref) : [];
+  const threadLine = threads.length
+    ? '<div class="flash ok" style="margin:.7rem 0 0"><b>' + threads.length + ' conversation' +
+      (threads.length === 1 ? '' : 's') + ' about this lot.</b> ' +
+      threads.map(t => '<a href="/admin/chat?id=' + t.id + '">' + esc(t.cref) + ' · ' +
+        esc(t.name || 'someone') + (t.side ? ' (' + esc(t.side) + ')' : '') +
+        (t.unread_us ? ' — waiting' : '') + '</a>').join(' &nbsp; ') + '</div>'
+    : '';
 
   const noteWarning = hints.length
     ? '<div class="flash bad" style="margin:.7rem 0 0"><b>Contact details in the notes.</b> ' +
@@ -185,6 +200,7 @@ function editPage(user, flash, id) {
         (r ? (r.published ? 'Live on the board' : 'A draft, not on the site')
            : 'It stays a draft until you publish it') + '</span></div>' +
 
+      threadLine +
       '<form method="post" action="/admin/marketplace">' +
       '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
       '<input type="hidden" name="do" value="save">' +
