@@ -2,7 +2,8 @@
 const http = require('node:http');
 const fs   = require('node:fs');
 const path = require('node:path');
-const { db, seed, log, nowIso, hasAdmin, seedExamples, PRICE_UNIT_KEYS, UNITS } = require('./lib/db');
+const { db, seed, log, nowIso, hasAdmin, seedExamples, PRICE_UNIT_KEYS, UNITS, GRADES, PROCESSES } = require('./lib/db');
+const { ORIGINS } = require('./lib/admin-board');
 const auth = require('./lib/auth');
 const { render, invalidate, marketJson, SITE_DIR } = require('./lib/render');
 const { layout, esc } = require('./lib/ui');
@@ -161,22 +162,46 @@ function pricesPage(user, flash) {
     <input type="hidden" name="csrf" value="${esc(user.csrf)}">
     <div class="card">
       <div class="row2">
-        <label><span class="lb">Prices last updated</span><input type="text" name="market_updated" value="${esc(s ? s.value : '')}" placeholder="2026-09-02"></label>
+        <label><span class="lb">Prices last updated</span><input type="text" name="market_updated" value="${esc(s ? s.value : '')}" readonly>
+          <span class="hint">Set for you whenever a price changes.</span></label>
         <label><span class="lb">Currency</span><input type="text" name="market_currency" value="${esc(cur ? cur.value : '')}"></label>
         <label><span class="lb">Prices are quoted per</span><select name="market_price_unit">${PRICE_UNIT_KEYS.map(k => `<option value="${k}"${puNow === k ? ' selected' : ''}>${esc(UNITS[k].label)}</option>`).join('')}</select>
           <span class="hint">1 Faresula = 17 kg. Whatever you pick is stated above the table.</span></label>
       </div>
       <table>
-        <tr><th>Origin</th><th>Grade</th><th>Process</th><th>Price</th><th>Show</th></tr>
+        <tr><th>Origin</th><th>Grade</th><th>Process</th><th>Price</th><th>Show</th><th>Changed</th><th></th></tr>
         ${rows.map(r => `<tr>
           <td>${esc(r.origin)}</td><td>${esc(r.grade)}</td><td>${esc(r.process)}</td>
           <td><input type="text" name="price_${r.id}" value="${esc(r.price || '')}" placeholder="On request" inputmode="decimal"></td>
           <td><input type="checkbox" name="pub_${r.id}" ${r.published ? 'checked' : ''}></td>
+          <td class="dim mono">${r.updated_at ? esc(r.updated_at.replace('T', ' ').slice(0, 16)) : '—'}</td>
+          <td class="right"><button class="btn btn-ghost btn-sm" type="submit" name="drop" value="${r.id}"
+            onclick="return confirm('Remove ${esc(r.origin)} ${esc(r.grade)} ${esc(r.process)} from the table?')">Remove</button></td>
         </tr>`).join('')}
       </table>
       <div class="sticky-save"><button class="btn btn-primary" type="submit">Save prices</button></div>
     </div>
-  </form>` });
+  </form>
+
+  <div class="sec"><h2>Add a coffee <span class="n">a new line in the table</span></h2>
+    <form method="post" action="/admin/prices" class="card">
+      <input type="hidden" name="csrf" value="${esc(user.csrf)}">
+      <input type="hidden" name="add" value="1">
+      <div class="row2">
+        <label><span class="lb">Origin</span><input type="text" name="new_origin" list="priceorigins" required placeholder="Yirgacheffe">
+          <datalist id="priceorigins">${ORIGINS.map(o => `<option value="${esc(o)}">`).join('')}</datalist></label>
+        <label><span class="lb">Grade</span><select name="new_grade">${
+          GRADES.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('')}</select></label>
+      </div>
+      <div class="row2">
+        <label><span class="lb">Process</span><input type="text" name="new_process" list="priceprocs" placeholder="Washed">
+          <datalist id="priceprocs">${PROCESSES.map(p => `<option value="${esc(p)}">`).join('')}</datalist></label>
+        <label><span class="lb">Price <span class="hint" style="display:inline">optional</span></span>
+          <input type="text" name="new_price" inputmode="decimal" placeholder="Leave empty for On request"></label>
+      </div>
+      <div class="sticky-save"><button class="btn btn-primary" type="submit">Add it</button></div>
+    </form>
+  </div>` });
 }
 
 function contentPage(user, flash, q) {
@@ -334,6 +359,37 @@ const server = http.createServer(async (req, res) => {
         if (!auth.csrfOk(jar.ebc_session, f.csrf)) return send(res, 403, 'text/plain', 'bad token');
 
         if (p === '/admin/prices') {
+          /* a new line in the table */
+          if (f.add) {
+            const origin = String(f.new_origin || '').trim();
+            if (!origin) return redirect(res, '/admin/prices',
+              { 'Set-Cookie': flashCookie('bad', 'An origin is needed.') });
+            const grade = GRADES.indexOf(f.new_grade) === -1 ? '' : f.new_grade;
+            const priceRaw = String(f.new_price || '').trim();
+            const sortMax = db.prepare('SELECT COALESCE(MAX(sort), -1) m FROM market_prices').get().m;
+            db.prepare('INSERT INTO market_prices (origin, grade, process, price, published, sort, updated_at, updated_by)' +
+                       ' VALUES (?,?,?,?,1,?,?,?)')
+              .run(origin, grade, String(f.new_process || '').trim(), priceRaw === '' ? null : priceRaw,
+                   sortMax + 1, nowIso(), user.id);
+            /* a new priced line is a price change like any other */
+            if (priceRaw !== '') db.prepare("UPDATE settings SET value=?, updated_at=?, updated_by=? WHERE key='market_updated'")
+              .run(nowIso().slice(0, 10), nowIso(), user.id);
+            log(user, 'price row added', origin + ' ' + grade, '', ipOf(req));
+            invalidate();
+            return redirect(res, '/admin/prices',
+              { 'Set-Cookie': flashCookie('ok', origin + ' ' + grade + ' added to the table.') });
+          }
+          /* removing one */
+          if (f.drop) {
+            const r = db.prepare('SELECT origin, grade FROM market_prices WHERE id=?').get(f.drop);
+            if (r) {
+              db.prepare('DELETE FROM market_prices WHERE id=?').run(f.drop);
+              log(user, 'price row removed', r.origin + ' ' + r.grade, '', ipOf(req));
+              invalidate();
+              return redirect(res, '/admin/prices',
+                { 'Set-Cookie': flashCookie('ok', r.origin + ' ' + r.grade + ' removed.') });
+            }
+          }
           const rows = db.prepare('SELECT id, price, published FROM market_prices').all();
           let changed = 0;
           const upd = db.prepare('UPDATE market_prices SET price=?, published=?, updated_at=?, updated_by=? WHERE id=?');
@@ -343,7 +399,14 @@ const server = http.createServer(async (req, res) => {
             const pub = f['pub_' + r.id] ? 1 : 0;
             if (val !== r.price || pub !== r.published) { upd.run(val, pub, nowIso(), user.id, r.id); changed++; }
           });
-          ['market_updated', 'market_currency', 'market_price_unit'].forEach(k => {
+          if (changed) {
+            /* the date beside the table is what tells a visitor these numbers
+               are current, so it is stamped by the change rather than left to
+               be remembered */
+            db.prepare("UPDATE settings SET value=?, updated_at=?, updated_by=? WHERE key='market_updated'")
+              .run(nowIso().slice(0, 10), nowIso(), user.id);
+          }
+          ['market_currency', 'market_price_unit'].forEach(k => {
             if (typeof f[k] === 'string')
               db.prepare('UPDATE settings SET value=?, updated_at=?, updated_by=? WHERE key=?').run(f[k].trim(), nowIso(), user.id, k);
           });
