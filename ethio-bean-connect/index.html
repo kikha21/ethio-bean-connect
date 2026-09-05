@@ -803,6 +803,16 @@ td.p.ask{color:var(--text-secondary)}
   .lot-shot:hover img{transform:none}
 }
 
+/* WHEN A PRICE WAS LAST TOUCHED */
+/* Quiet by default: the number is what a buyer came for, and the date is
+   there to be checked rather than read. It only raises its voice once the
+   price is old enough that acting on it would be a mistake. */
+td.when{font-family:var(--f-mono);font-size:var(--t-xs);
+  color:var(--text-secondary);white-space:nowrap;text-align:right}
+td.when.stale{color:var(--text-primary)}
+td.when.stale::after{content:"";display:inline-block;width:6px;height:6px;
+  margin-left:.45rem;border-radius:50%;background:var(--accent);vertical-align:middle}
+
 /* CHECKS */
 .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:3rem}
 .check{display:flex;gap:1.1rem;align-items:flex-start;padding:1.6rem 1.5rem;border:1px solid var(--panel-edge);border-radius:14px;background:var(--panel);transition:border-color .4s var(--ease)}
@@ -1513,20 +1523,21 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
             <th data-i18n="market.th2">Grade</th>
             <th data-i18n="market.th3">Process</th>
             <th><span data-i18n="market.th4">Level</span> <span class="th-unit" data-i18n="market.thUnit">Faresula / kg</span></th>
+            <th data-i18n="market.th5">Updated</th>
           </tr>
         </thead>
         <!-- real rows, so the table is readable without scripting. JS replaces
              this wholesale on load and on a language change. -->
         <tbody id="mkt-body">
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td></tr>
-          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td></tr>
+          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
         </tbody>
       </table>
     </div>
@@ -2018,6 +2029,7 @@ I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
 I18N.en['f.gateH'] = "You need an account to post";
 I18N.en['f.gateP'] = "It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.";
 I18N.en['f.gateJoin'] = "Create an account";
+I18N.en['market.th5'] = "Updated";
 I18N.en['f.photo'] = "A picture of your sample";
 I18N.en['f.photoHint'] = "Local coffee has no grading certificate, so a buyer in Addis judges it by eye. One clear photograph of the beans in daylight does more than any description. It is made smaller on your phone before sending, so it will not eat your data.";
 I18N.en['f.photoRemove'] = "Remove";
@@ -2489,15 +2501,15 @@ function unpinFinalStates(){
 var marketData = {
   updated:"2026-08-31", currency:"USD", unit:"kg",
   rows:[
-    {origin:"Yirgacheffe", grade:"G1", process:"Washed",  price:null},
-    {origin:"Yirgacheffe", grade:"G1", process:"Natural", price:null},
-    {origin:"Guji",        grade:"G1", process:"Washed",  price:null},
-    {origin:"Guji",        grade:"G1", process:"Natural", price:null},
-    {origin:"Sidamo",      grade:"G2", process:"Washed",  price:null},
-    {origin:"Limu",        grade:"G2", process:"Washed",  price:null},
-    {origin:"Jimma",       grade:"G4", process:"Natural", price:null},
-    {origin:"Nekemte",     grade:"G4", process:"Natural", price:null},
-    {origin:"Harar",       grade:"G4", process:"Natural", price:null}
+    {origin:"Yirgacheffe", grade:"G1", process:"Washed",  price:null, updated:""},
+    {origin:"Yirgacheffe", grade:"G1", process:"Natural", price:null, updated:""},
+    {origin:"Guji",        grade:"G1", process:"Washed",  price:null, updated:""},
+    {origin:"Guji",        grade:"G1", process:"Natural", price:null, updated:""},
+    {origin:"Sidamo",      grade:"G2", process:"Washed",  price:null, updated:""},
+    {origin:"Limu",        grade:"G2", process:"Washed",  price:null, updated:""},
+    {origin:"Jimma",       grade:"G4", process:"Natural", price:null, updated:""},
+    {origin:"Nekemte",     grade:"G4", process:"Natural", price:null, updated:""},
+    {origin:"Harar",       grade:"G4", process:"Natural", price:null, updated:""}
   ]
 };
 /* A price is quoted per Faresula in the local trade and per kg by the
@@ -2515,6 +2527,21 @@ function marketPair(price, unit){
   return marketMoney(perFar) + '<span class="sep">/</span><span class="kg">' + marketMoney(perKg) + '</span>';
 }
 
+/* Kept identical to agedRow() in render.js, so the shipped table and the
+   redrawn one mark the same rows as stale. A date a reader has to work
+   out for themselves does nothing; an old one that looks old does. */
+var STALE_DAYS = 14;
+function marketAge(iso){
+  if (!iso) return {text:"—", stale:false};
+  var d = new Date(iso + "T00:00:00");
+  if (isNaN(d)) return {text:iso, stale:false};
+  var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  return {
+    text: d.toLocaleDateString(lang === "am" ? "am-ET" : "en-GB", {day:"numeric", month:"short"}),
+    stale: days >= STALE_DAYS
+  };
+}
+
 function renderMarket(){
   var body = document.getElementById('mkt-body');
   if (!body || !marketData) return;
@@ -2525,9 +2552,12 @@ function renderMarket(){
     var price = (r.price === null || r.price === undefined)
       ? '<td class="p ask">' + ask + '</td>'
       : '<td class="p">' + marketData.currency + ' ' + marketPair(r.price, marketData.unit) + '</td>';
+    var a = (r.price === null || r.price === undefined)
+          ? {text:"—", stale:false} : marketAge(r.updated);
+    var when = '<td class="when' + (a.stale ? ' stale' : '') + '">' + a.text + '</td>';
     html += '<tr><td class="o">' + r.origin + '</td>'
           + '<td><span class="chip' + g1 + '">' + r.grade + '</span></td>'
-          + '<td>' + r.process + '</td>' + price + '</tr>';
+          + '<td>' + r.process + '</td>' + price + when + '</tr>';
   });
   body.innerHTML = html;
   var d = document.getElementById('mkt-date');

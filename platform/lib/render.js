@@ -32,7 +32,7 @@ function settingsMap() {
 function marketJson() {
   const s = settingsMap();
   const rows = db.prepare(
-    'SELECT origin, grade, process, price FROM market_prices WHERE published = 1 ORDER BY sort, id'
+    'SELECT origin, grade, process, price, updated_at FROM market_prices WHERE published = 1 ORDER BY sort, id'
   ).all();
   return {
     updated: s.market_updated || '',
@@ -40,7 +40,10 @@ function marketJson() {
     unit: s.market_price_unit || 'kg',
     rows: rows.map(r => ({
       origin: r.origin, grade: r.grade, process: r.process,
-      price: (r.price === null || r.price === '') ? null : r.price
+      price: (r.price === null || r.price === '') ? null : r.price,
+      /* the day only: a coffee price is a daily number, and a time
+         to the minute would claim a precision that is not there */
+      updated: r.updated_at ? String(r.updated_at).slice(0, 10) : ''
     }))
   };
 }
@@ -65,15 +68,34 @@ function marketPair(price, unit) {
 
 /* the seeded market rows are also written into the markup, so the table is
    readable with scripting switched off */
+/* A date earns its place by making an old number look old. One a reader
+   has to date-arithmetic for themselves is decoration. A price nobody has
+   touched for a fortnight is marked instead, so a buyer sees at a glance
+   which of these to trust and which to ask about. */
+const STALE_DAYS = 14;
+function agedRow(iso) {
+  if (!iso) return { text: '—', stale: false };
+  const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return { text: escHtml(iso), stale: false };
+  const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+  return {
+    text: d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+    stale: days >= STALE_DAYS
+  };
+}
+
 function marketTableRows(data) {
   return data.rows.map(r => {
     const g1 = /^G1$/i.test(r.grade) ? ' g1' : '';
     const price = (r.price === null)
       ? '<td class="p ask">On request</td>'
       : `<td class="p">${escHtml(data.currency)} ${marketPair(r.price, data.unit)}</td>`;
+    /* an unpriced row has nothing to be stale about */
+    const a = r.price === null ? { text: '—', stale: false } : agedRow(r.updated);
+    const when = `<td class="when${a.stale ? ' stale' : ''}">${a.text}</td>`;
     return `          <tr><td class="o">${escHtml(r.origin)}</td>` +
            `<td><span class="chip${g1}">${escHtml(r.grade)}</span></td>` +
-           `<td>${escHtml(r.process)}</td>${price}</tr>`;
+           `<td>${escHtml(r.process)}</td>${price}${when}</tr>`;
   }).join('\n');
 }
 
