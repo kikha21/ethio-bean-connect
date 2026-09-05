@@ -769,6 +769,40 @@ td.p.ask{color:var(--text-secondary)}
 .season{margin-top:2.4rem;padding:1.5rem 1.7rem;border:1px solid var(--panel-edge);
   background:var(--bean-muted);border-radius:14px;color:var(--text-secondary);max-width:64ch}
 
+/* THE SAMPLE PHOTOGRAPH (local board only) */
+/* A fixed ratio, so one supplier's portrait snap and another's landscape
+   do not make the board jump about as it loads. width/height on the img
+   reserves the space before the picture arrives, which matters most on
+   the slow connections these are uploaded from. */
+.lot-shot{display:block;margin:0 0 1rem;border-radius:10px;overflow:hidden;
+  border:1px solid var(--panel-edge);background:var(--bean-muted);
+  aspect-ratio:3/2;line-height:0}
+.lot-shot img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s var(--ease)}
+.lot-shot:hover img{transform:scale(1.03)}
+.lot-shot:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.shot-row input[type=file]{width:100%;padding:.7rem;border:1px dashed var(--border-strong);
+  border-radius:10px;background:var(--field);color:var(--text-primary);
+  font-family:var(--f-body);font-size:var(--t-body);cursor:pointer}
+.shot-row input[type=file]::file-selector-button{
+  margin-right:.8rem;padding:.45rem .9rem;border:0;border-radius:7px;
+  background:var(--accent);color:var(--accent-ink);font-family:var(--f-body);
+  font-weight:600;cursor:pointer}
+.shot-err{display:block;margin-top:.5rem;color:var(--danger,#C4443A);font-size:var(--t-xs)}
+.shot-preview{margin-top:.8rem;position:relative;max-width:280px}
+.shot-preview img{width:100%;border-radius:10px;display:block;
+  border:1px solid var(--panel-edge)}
+.shot-drop{margin-top:.5rem;padding:.35rem .8rem;border:1px solid var(--border-strong);
+  border-radius:7px;background:transparent;color:var(--text-secondary);
+  font-family:var(--f-body);font-size:var(--t-xs);cursor:pointer}
+.shot-drop:hover{color:var(--text-primary);border-color:var(--text-secondary)}
+
+@media (prefers-reduced-motion:reduce){
+  .lot-shot img{transition:none}
+  .lot-shot:hover img{transform:none}
+}
+
 /* CHECKS */
 .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:3rem}
 .check{display:flex;gap:1.1rem;align-items:flex-start;padding:1.6rem 1.5rem;border:1px solid var(--panel-edge);border-radius:14px;background:var(--panel);transition:border-color .4s var(--ease)}
@@ -1679,6 +1713,17 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
               </select>
               <span class="fhint" data-i18n="f.supplyHint">Horizontal means it is already in an Addis Ababa warehouse and can move now, packed in 85 kg or 60 kg bags. Vertical means it is still at the farm or your own store, in 85 kg bags.</span></label>
           </div>
+          <div class="row shot-row" id="shotrow" hidden>
+            <label><span class="lb"><span data-i18n="f.photo">A picture of your sample</span> <span class="opt" data-i18n="f.opt">optional</span></span>
+              <input type="file" name="photofile" id="photofile" accept="image/jpeg,image/png,image/webp">
+              <span class="fhint" data-i18n="f.photoHint">Local coffee has no grading certificate, so a buyer in Addis judges it by eye. One clear photograph of the beans in daylight does more than any description. It is made smaller on your phone before sending, so it will not eat your data.</span>
+              <span class="shot-err" id="shoterr" hidden></span>
+              <div class="shot-preview" id="shotpreview" hidden>
+                <img id="shotimg" alt="">
+                <button type="button" class="shot-drop" id="shotdrop" data-i18n="f.photoRemove">Remove</button>
+              </div>
+            </label>
+          </div>
           <label><span class="lb"><span id="lbl-notes" data-i18n="f.notes">Anything else we should know</span> <span class="opt" data-i18n="f.opt">optional</span></span>
             <textarea name="notes"></textarea></label>
 
@@ -1973,6 +2018,12 @@ I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
 I18N.en['f.gateH'] = "You need an account to post";
 I18N.en['f.gateP'] = "It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.";
 I18N.en['f.gateJoin'] = "Create an account";
+I18N.en['f.photo'] = "A picture of your sample";
+I18N.en['f.photoHint'] = "Local coffee has no grading certificate, so a buyer in Addis judges it by eye. One clear photograph of the beans in daylight does more than any description. It is made smaller on your phone before sending, so it will not eat your data.";
+I18N.en['f.photoRemove'] = "Remove";
+I18N.en['f.photoBad'] = "That file is not a picture.";
+I18N.en['f.photoBig'] = "That picture is too large, even after shrinking. Try another.";
+I18N.en['board.sampleAlt'] = "Sample of this coffee";
 I18N.en['nav.in'] = "Sign in";
 I18N.en['nav.me'] = "Profile";
 I18N.en['f.gateIn'] = "Sign in";
@@ -2987,6 +3038,12 @@ form.addEventListener('submit', function(e){
 
   var data = new FormData(form);
   data.set('mode', mode);
+  /* the file input itself is never sent: it would carry the original
+     four-megabyte photograph. What goes instead is the small one the
+     browser redrew, and only when this lot is bound for the local board. */
+  data.delete('photofile');
+  var shot = (typeof window.EBC_PHOTO === 'function') ? window.EBC_PHOTO() : null;
+  if (shot) data.set('photo', shot);
   var body = [];
   data.forEach(function(v, k){ body.push(encodeURIComponent(k) + '=' + encodeURIComponent(v)); });
 
@@ -3372,6 +3429,119 @@ function renderFooterContact(){
     .then(function(r){ return r.json(); })
     .then(function(me){ (me && me.in && !me.admin) ? signedIn(me) : signedOut(); })
     .catch(function(){ /* offline: leave the form as it is rather than blocking it */ });
+})();
+
+/* ============================================================
+   10b3. A PICTURE OF THE SAMPLE
+   ============================================================ */
+/* Only for the local board. Export coffee is sold against a grading
+   certificate, so a photograph beside it proves nothing; local and reject
+   coffee has no certificate, and a buyer in Addis is judging it by eye.
+   The field appears on exactly the condition the server uses to decide
+   which board a lot lands on, so nobody is invited to attach a picture
+   that would then be thrown away.
+
+   The picture is redrawn small here, in the browser, before it is sent.
+   That is mostly for the supplier: a phone camera makes four megabytes,
+   most of them are on mobile data, and a slow upload is where people give
+   up halfway through posting. It has a second effect worth keeping -
+   drawing a photograph onto a canvas and re-encoding it leaves the EXIF
+   block behind, and with it the GPS position a phone writes into every
+   picture. Somebody should be able to show their coffee without also
+   publishing where their farm is. */
+(function(){
+  var row   = document.getElementById('shotrow');
+  var input = document.getElementById('photofile');
+  var prev  = document.getElementById('shotpreview');
+  var img   = document.getElementById('shotimg');
+  var drop  = document.getElementById('shotdrop');
+  var errEl = document.getElementById('shoterr');
+  var form  = document.getElementById('postform');
+  if (!row || !input || !form) return;
+
+  var MAX_EDGE = 1400;
+  var MAX_BYTES = 900 * 1024;
+  var carried = null;          /* the shrunken picture, as a data url */
+
+  function fail(msg){
+    errEl.textContent = msg;
+    errEl.hidden = false;
+    input.value = '';
+    carried = null;
+    prev.hidden = true;
+  }
+  function clearErr(){ errEl.hidden = true; errEl.textContent = ''; }
+
+  /* the same rule the server uses in guessMarket */
+  function isLocal(){
+    var type  = (form.elements.type  && form.elements.type.value)  || '';
+    var grade = (form.elements.grade && form.elements.grade.value) || '';
+    var other = (form.elements.type_other && form.elements.type_other.value) || '';
+    return /local market grade/i.test(type) || /local market grade/i.test(other) ||
+           /^ungraded$/i.test(grade);
+  }
+
+  function sync(){
+    var on = isLocal();
+    row.hidden = !on;
+    /* a picture chosen and then switched away from must not travel with an
+       export lot, or it is stored where nobody will ever look at it */
+    if (!on && carried){ carried = null; input.value = ''; prev.hidden = true; clearErr(); }
+  }
+
+  ['type','grade','type_other'].forEach(function(n){
+    var el = form.elements[n];
+    if (el){ el.addEventListener('change', sync); el.addEventListener('input', sync); }
+  });
+  sync();
+
+  function shrink(file){
+    return new Promise(function(resolve, reject){
+      var url = URL.createObjectURL(file);
+      var im = new Image();
+      im.onload = function(){
+        URL.revokeObjectURL(url);
+        var w = im.naturalWidth, h = im.naturalHeight;
+        if (!w || !h) return reject(new Error('empty'));
+        var scale = Math.min(1, MAX_EDGE / Math.max(w, h));
+        var cv = document.createElement('canvas');
+        cv.width  = Math.max(1, Math.round(w * scale));
+        cv.height = Math.max(1, Math.round(h * scale));
+        var ctx = cv.getContext('2d');
+        ctx.drawImage(im, 0, 0, cv.width, cv.height);
+        /* step the quality down rather than refusing a big photograph */
+        var q = 0.82, out = cv.toDataURL('image/jpeg', q);
+        while (out.length * 0.75 > MAX_BYTES && q > 0.4){
+          q -= 0.12;
+          out = cv.toDataURL('image/jpeg', q);
+        }
+        resolve(out);
+      };
+      im.onerror = function(){ URL.revokeObjectURL(url); reject(new Error('not an image')); };
+      im.src = url;
+    });
+  }
+
+  input.addEventListener('change', function(){
+    clearErr();
+    var file = input.files && input.files[0];
+    if (!file){ carried = null; prev.hidden = true; return; }
+    if (!/^image//.test(file.type)) return fail(t('f.photoBad'));
+
+    shrink(file).then(function(dataUrl){
+      if (dataUrl.length * 0.75 > MAX_BYTES) return fail(t('f.photoBig'));
+      carried = dataUrl;
+      img.src = dataUrl;
+      prev.hidden = false;
+    }).catch(function(){ fail(t('f.photoBad')); });
+  });
+
+  if (drop) drop.addEventListener('click', function(){
+    carried = null; input.value = ''; prev.hidden = true; clearErr();
+  });
+
+  /* the form sends urlencoded fields, so the picture rides along as one */
+  window.EBC_PHOTO = function(){ return isLocal() ? carried : null; };
 })();
 
 /* ============================================================

@@ -113,7 +113,7 @@ function boardCards(en) {
   const T = (k, d) => (en && en[k]) || d;
   const rows = db.prepare(
     `SELECT ref, kind, market, supply, origin, grade, process, quantity_val, quantity_unit,
-            price, price_unit, currency, harvest, notes, tier, rating, deals
+            price, price_unit, currency, harvest, notes, tier, rating, deals, photo
        FROM listings
       WHERE published = 1 AND status = 'live'
       ORDER BY sort, id DESC`
@@ -151,6 +151,9 @@ function boardCards(en) {
           <span class="lot-ref">${escHtml(r.ref)}</span>
           <span class="lot-kind ${isOffer ? 'offer' : 'need'}" data-i18n="${isOffer ? 'board.forSale' : 'board.wanted'}">${escHtml(isOffer ? T('board.forSale', 'For sale') : T('board.wanted', 'Wanted'))}</span>
         </div>
+        ${r.photo ? `<a class="lot-shot" href="/uploads/${escAttr(r.photo)}" target="_blank" rel="noopener">
+          <img src="/uploads/${escAttr(r.photo)}" alt="${escAttr(T('board.sampleAlt', 'Sample of this coffee'))}" loading="lazy" decoding="async">
+        </a>` : ''}
         <h3>${escHtml(r.origin)}${r.grade ? ' ' + escHtml(r.grade) : ''}</h3>
         <div class="lot-spec">${chips.join('')}</div>
         ${priceBlock}

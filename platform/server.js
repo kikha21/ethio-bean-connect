@@ -14,6 +14,7 @@ const publicPost = require('./lib/public-post');
 const chat = require('./lib/chat');
 const members = require('./lib/members');
 const reset = require('./lib/reset');
+const photo = require('./lib/photo');
 const mail = require('./lib/mail');
 const memberPages = require('./lib/member-pages');
 const push = require('./lib/push');
@@ -767,7 +768,25 @@ const server = http.createServer(async (req, res) => {
             message: 'Sign in to post. It takes a minute to create an account.' }));
         return redirect(res, '/signin');
       }
-      const f = await body(req, 32e3);
+      /* 32 kB was right when a post was words. A local-market lot can now
+         carry a photograph, and a picture the browser has already shrunk to
+         900 kB becomes about 1.4 MB once it is base64 and then percent
+         encoded. This is raised only here: every other route keeps the small
+         limit, because nothing else has a reason to send more.
+      
+         Too large is answered plainly rather than as a server error. Somebody
+         whose photograph was slightly over should be told to try a smaller
+         one, not shown a page saying something went wrong. */
+      let f;
+      try {
+        f = await body(req, 2e6);
+      } catch (e) {
+        const wantsJson = String(req.headers.accept || '').indexOf('application/json') !== -1;
+        const msg = 'That was too big to send. If you attached a picture, try a smaller one.';
+        return wantsJson
+          ? send(res, 413, 'application/json; charset=utf-8', JSON.stringify({ ok: false, message: msg }))
+          : send(res, 413, 'text/plain; charset=utf-8', msg);
+      }
       const out = publicPost.submit(f, ipOf(req), who);
       const wantsJson = String(req.headers.accept || '').indexOf('application/json') !== -1;
       if (out.ok) invalidate();
@@ -785,6 +804,27 @@ const server = http.createServer(async (req, res) => {
        whether a new deploy may replace the old one. It has to be cheap and
        it has to touch the database, because a process that is running but
        cannot read its own data is not actually up. */
+    /* Sample photographs. Served out of the data folder, never from
+       anywhere the site itself is served from, so an uploaded file cannot
+       end up sitting beside the code and be reached as though it were
+       part of it.
+
+       The content type is decided by reading the bytes, not by trusting
+       the name, and nosniff is already on every response. Between them, a
+       file that somehow talked its way past the checks still cannot be
+       run as a script by a browser, and the sandbox header makes sure of
+       it a third time. Cached hard, because the name is random and the
+       bytes behind a given name never change. */
+    if (p.indexOf('/uploads/') === 0) {
+      const got = photo.read(p.slice(9));
+      if (!got) return send(res, 404, 'text/plain; charset=utf-8', 'Not found');
+      return send(res, 200, got.type, got.buf, {
+        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Content-Disposition': 'inline',
+        'Content-Security-Policy': "default-src 'none'; sandbox"
+      });
+    }
+
     if (p === '/healthz') {
       const T = 'application/json; charset=utf-8';
       try {

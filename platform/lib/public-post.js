@@ -13,6 +13,7 @@
    just because the browser sent it.
    ------------------------------------------------------------------ */
 const { db, nowIso, log, GRADES, QTY_UNIT_KEYS, SUPPLY, MARKETS, nextRef } = require('./db');
+const photo = require('./photo');
 
 /* what one address may do in an hour, and what the whole site may take.
    Held in memory: a restart forgives everyone, which is the right
@@ -169,6 +170,22 @@ function submit(f, ip, member) {
   const ref = nextRef(kind);
   const market = guessMarket(v);
 
+  /* A sample photograph, and only where it means something. Export lots
+     are judged on a grading certificate; a picture beside one adds nothing
+     a buyer would act on, and inviting it would only teach people to send
+     pictures we then have to look at and ignore.
+
+     The file is written only after the board is known, so a photo attached
+     to an export lot is never stored rather than being stored and dropped -
+     otherwise anybody could fill the disk by posting export lots with
+     pictures nobody will ever see. */
+  let photoName = null;
+  if (market === 'local' && f && f.photo) {
+    const kept = photo.accept(f.photo);
+    if (!kept.ok) return { ok: false, errors: { photo: kept.reason } };
+    photoName = kept.photo;
+  }
+
   /* the lot inherits the standing of whoever posted it, so the board never
      shows one person at two different standings */
   const tier = member ? (member.tier || 'unverified') : 'unverified';
@@ -179,12 +196,12 @@ function submit(f, ip, member) {
     'INSERT INTO listings (ref, kind, market, supply, origin, grade, process,' +
     ' quantity_val, quantity_unit, price, price_unit, currency, harvest, notes,' +
     ' poster_name, poster_org, poster_phone, poster_email, poster_region,' +
-    ' tier, rating, deals, posted_by, status, published, is_example, sort, created_at)' +
-    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,?,?,?,?,?,'pending',0,0,0,?)"
+    ' tier, rating, deals, posted_by, photo, status, published, is_example, sort, created_at)' +
+    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,?,?,?,?,?,?,'pending',0,0,0,?)"
   ).run(ref, kind, market, v.supply, v.origin, v.grade, v.type,
         v.quantity_val, v.quantity_unit, v.notes,
         v.name, v.company, v.phone, v.email, v.region || '',
-        tier, rating, deals, member ? member.id : null, nowIso());
+        tier, rating, deals, member ? member.id : null, photoName, nowIso());
 
   /* the log records that a post arrived and from where, never the body */
   log(null, 'post received', ref, kind === 'offer' ? 'offering coffee' : 'looking for coffee', ip);

@@ -86,7 +86,9 @@ function boardPage(user, flash, filter) {
       '<td><span class="kind ' + (r.kind === 'need' ? 'need' : 'offer') + '">' +
         (r.kind === 'need' ? 'Wanted' : 'For sale') + '</span>' +
         '<br><span class="dim">' + esc(MARKETS[r.market] ? MARKETS[r.market].label : r.market) + '</span></td>' +
-      '<td><b>' + esc(r.origin) + ' ' + esc(r.grade) + '</b><br><span class="dim">' +
+      '<td>' + (r.photo ? '<a class="shot" href="/uploads/' + esc(r.photo) + '" target="_blank" rel="noopener" ' +
+          'title="The sample they sent"><img src="/uploads/' + esc(r.photo) + '" alt="" loading="lazy"></a>' : '') +
+        '<b>' + esc(r.origin) + ' ' + esc(r.grade) + '</b><br><span class="dim">' +
         esc(r.process || '—') + (SUPPLY[r.supply] ? ' · ' + esc(SUPPLY[r.supply].short) : '') + '</span></td>' +
       '<td>' + esc(q.main || '—') + (q.alt ? '<br><span class="dim">' + esc(q.alt) + '</span>' : '') + '</td>' +
       '<td>' + priceCell + '</td>' +

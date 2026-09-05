@@ -177,6 +177,9 @@ th.private{color:var(--warn)}
 .badge.ex{color:var(--gold-ink);border-color:var(--gold)}
 .badge.warnb{color:var(--warn);border-color:var(--warn);background:var(--warn-bg);white-space:normal}
 .tierdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.4rem;vertical-align:middle}
+.shot{float:left;margin:0 .6rem .3rem 0;line-height:0}
+.shot img{width:56px;height:40px;object-fit:cover;border-radius:5px;border:1px solid var(--line)}
+.shot:hover img{border-color:var(--accent)}
 .tierdot.trusted{background:var(--gold)}
 .tierdot.verified{background:var(--green)}
 .tierdot.unverified{background:transparent;border:1px solid var(--line)}

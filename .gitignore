@@ -11,3 +11,7 @@ _impeccable/
 # instead (push.sh --first-time). If you ever move to a host that needs it
 # committed, make certain the repository is private first.
 deploy/seed/*.db
+
+# Sample photographs suppliers upload. They belong on the server's disk,
+# beside the database, not in the repository.
+platform/data/uploads/

@@ -424,6 +424,30 @@ function seedExamples() {
 }
 
 
+/* ------------------------------------------------------------------
+   A picture of the sample, on local-market lots only.
+
+   Export lots are sold against a grading certificate and a cupping
+   score: a photograph adds nothing a buyer would act on. Local and
+   reject coffee has no certificate, so the only way to judge it from
+   Addis is to look at it, and a supplier holding a handful of beans to
+   a phone camera is exactly how that trade already works.
+
+   The file itself never goes in the database. Rows here are read on
+   every board render, and a column holding a few hundred kilobytes of
+   image would be dragged through memory each time. The row keeps a
+   name; the bytes sit in the data folder, which on a server is the one
+   place a deploy does not touch.
+   ------------------------------------------------------------------ */
+const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+/* older databases predate this column */
+const listingCols = db.prepare('PRAGMA table_info(listings)').all().map(c => c.name);
+if (listingCols.indexOf('photo') === -1) {
+  db.exec('ALTER TABLE listings ADD COLUMN photo TEXT');
+}
+
 function log(actor, action, subject, detail, ip) {
   db.prepare(
     'INSERT INTO activity_log (actor_id, actor_name, action, subject, detail, ip, created_at) VALUES (?,?,?,?,?,?,?)'
@@ -435,4 +459,4 @@ function hasAdmin() {
   return db.prepare("SELECT COUNT(*) AS n FROM users WHERE role='super_admin'").get().n > 0;
 }
 
-module.exports = { db, seed, log, nowIso, hasAdmin, sectionFor, seedExamples, GRADES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEYS, KG_PER_FARESULA, quantityText, priceText, scrubNotes, contactHints, PROCESSES, TIERS, RATINGS, MARKETS, SUPPLY, nextRef };
+module.exports = { db, seed, log, UPLOAD_DIR, nowIso, hasAdmin, sectionFor, seedExamples, GRADES, UNITS, QTY_UNIT_KEYS, PRICE_UNIT_KEYS, KG_PER_FARESULA, quantityText, priceText, scrubNotes, contactHints, PROCESSES, TIERS, RATINGS, MARKETS, SUPPLY, nextRef };
