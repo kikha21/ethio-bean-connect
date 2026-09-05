@@ -3,10 +3,27 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
 const fs = require('node:fs');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+/* On this machine the database sits beside the code. On a server it must
+   not: a deploy replaces the code folder, and anything inside it goes with
+   it. EBC_DATA_DIR points somewhere the deploy never touches, so pushing a
+   change can never take the accounts and lots with it. */
+const DATA_DIR = process.env.EBC_DATA_DIR || path.join(__dirname, '..', 'data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
-const db = new DatabaseSync(path.join(DATA_DIR, 'ethiobean.db'));
+/* A hosted disk arrives empty the first time it is mounted. Opening a new
+   database there would quietly stand the site up with no accounts, no lots
+   and no admin, which looks like the data was lost rather than never
+   copied. If a seed was shipped alongside the code, it is laid down once,
+   and only when there is nothing there already: this must never be able to
+   overwrite a database that customers have been writing to. */
+const DB_FILE = path.join(DATA_DIR, 'ethiobean.db');
+const SEED_FILE = path.join(__dirname, '..', '..', 'deploy', 'seed', 'ethiobean.db');
+if (!fs.existsSync(DB_FILE) && fs.existsSync(SEED_FILE)) {
+  fs.copyFileSync(SEED_FILE, DB_FILE);
+  console.log('  first run on this disk: seeded the database from deploy/seed');
+}
+
+const db = new DatabaseSync(DB_FILE);
 const nowIso = () => new Date().toISOString();
 
 db.exec(`PRAGMA journal_mode = WAL;`);
@@ -306,7 +323,6 @@ function sectionFor(key) {
   if (/^how\./.test(key)) return 'How it works';
   if (/^market\./.test(key)) return 'The market table';
   if (/^origins\./.test(key)) return 'Origins';
-  if (/^seal\./.test(key)) return 'The sealed lot';
   if (/^checks\./.test(key)) return 'What we check';
   if (/^faq\./.test(key)) return 'Questions and answers';
   if (/^(post|f)\./.test(key)) return 'The form';

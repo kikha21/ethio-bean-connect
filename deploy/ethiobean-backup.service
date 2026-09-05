@@ -1,0 +1,7 @@
+[Unit]
+Description=Back up the Ethio Bean Connect database
+
+[Service]
+Type=oneshot
+Environment=EBC_DATA_DIR=/var/lib/ethiobean
+ExecStart=/srv/ethiobean/deploy/backup.sh

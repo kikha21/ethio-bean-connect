@@ -68,7 +68,26 @@ function body(req, limit = 1e6) {
     req.on('error', reject);
   });
 }
-const ipOf = req => (req.socket.remoteAddress || '').replace('::ffff:', '');
+/* Who is actually calling.
+
+   Straight to node, the socket is the caller and that is the end of it.
+   Behind a proxy it is not: every request arrives from localhost, so all
+   the limits in here would count the whole country as one visitor and shut
+   the door on everybody at once.
+
+   The forwarded header fixes that, but only if it cannot be forged. A
+   visitor who can set their own address walks past every limit, so the
+   header is read only when the connection really did come from the proxy
+   on this machine, and only when we have been told a proxy is there. */
+const TRUST_PROXY = process.env.EBC_TRUST_PROXY === '1';
+const ipOf = req => {
+  const direct = (req.socket.remoteAddress || '').replace('::ffff:', '');
+  if (TRUST_PROXY && (direct === '127.0.0.1' || direct === '::1')) {
+    const fwd = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+    if (fwd) return fwd.replace('::ffff:', '');
+  }
+  return direct;
+};
 
 /* flash messages, carried in a short-lived cookie */
 const flashCookie = (kind, text) =>
@@ -319,6 +338,8 @@ ${ok
 </div></body></html>`;
 }
 
+let lastResetLink = null;
+
 const server = http.createServer(async (req, res) => {
   let url;
   try { url = new URL(req.url, 'http://localhost'); } catch { return send(res, 400, 'text/plain', 'bad request'); }
@@ -467,6 +488,16 @@ const server = http.createServer(async (req, res) => {
           return redirect(res, '/admin/settings', { 'Set-Cookie': flashCookie('ok', 'Saved. The footer, chat button and form all updated.') });
         }
         if (p === '/admin/members') {
+          if (f.do === 'reset') {
+            const site = (db.prepare("SELECT value FROM settings WHERE key='site_url'").get() || {}).value ||
+                         ('http://localhost:' + PORT);
+            const made = reset.issue(f.id, user, ipOf(req), site);
+            if (!made.ok) return redirect(res, '/admin/members',
+              { 'Set-Cookie': flashCookie('bad', 'That member no longer exists.') });
+            /* the link is long, so it goes in the page rather than a cookie */
+            lastResetLink = { who: made.user.company || made.user.name, link: made.link, at: Date.now() };
+            return redirect(res, '/admin/members');
+          }
           const out = members.setStanding(f.id, f, user, ipOf(req));
           invalidate();
           return redirect(res, '/admin/members' + (f.show ? '?show=' + encodeURIComponent(f.show) : ''),
@@ -530,8 +561,12 @@ const server = http.createServer(async (req, res) => {
         }
         return send(res, 200, 'application/json; charset=utf-8', JSON.stringify(out));
       }
-      if (p === '/admin/members')
-        return html(res, 200, adminMembers.page(user, flash, url.searchParams.get('show') || ''));
+      if (p === '/admin/members') {
+        /* shown once, to whoever asked for it, and only for a few minutes */
+        const link = (lastResetLink && Date.now() - lastResetLink.at < 300e3) ? lastResetLink : null;
+        lastResetLink = null;
+        return html(res, 200, adminMembers.page(user, flash, url.searchParams.get('show') || '', link));
+      }
       if (p === '/admin/chat')
         return html(res, 200, adminChat.page(user, flash, url.searchParams.get('id'),
                     url.searchParams.get('show') || '', url.searchParams.get('q') || ''));
@@ -651,6 +686,22 @@ const server = http.createServer(async (req, res) => {
         { 'Set-Cookie': sessionCookie(sess.id, auth.SESSION_DAYS) });
     }
 
+    /* A member editing their own details. The account is the one source
+       for who they are, so this is also what keeps the phone number on an
+       old lot from going stale. */
+    if (p === '/profile' && req.method === 'POST') {
+      const who = auth.userForSession(cookies(req).ebc_session);
+      if (!who) return redirect(res, '/signin');
+      if (members.isAdmin(who)) return redirect(res, '/admin');
+      const f = await body(req);
+      const out = members.update(who.id, f, ipOf(req));
+      if (!out.ok) {
+        return html(res, 400, memberPages.myPage(who, null, null,
+                                                 { errors: out.errors, values: out.values }));
+      }
+      return redirect(res, '/my', { 'Set-Cookie': flashCookie('ok', 'Your details are saved.') });
+    }
+
     if (p === '/password' && req.method === 'POST') {
       const jar = cookies(req);
       const who = auth.userForSession(jar.ebc_session);
@@ -730,6 +781,20 @@ const server = http.createServer(async (req, res) => {
     if (p === '/post' && req.method === 'GET') return redirect(res, '/#post');
 
     /* ---- the public site ---- */
+    /* The host polls this to decide whether the instance is healthy and
+       whether a new deploy may replace the old one. It has to be cheap and
+       it has to touch the database, because a process that is running but
+       cannot read its own data is not actually up. */
+    if (p === '/healthz') {
+      const T = 'application/json; charset=utf-8';
+      try {
+        require('./lib/db').db.prepare('SELECT 1').get();
+        return send(res, 200, T, JSON.stringify({ ok: true }));
+      } catch (e) {
+        return send(res, 503, T, JSON.stringify({ ok: false }));
+      }
+    }
+
     if (p === '/' || p === '/index.html') {
       return send(res, 200, 'text/html; charset=utf-8', render(), { 'Cache-Control': 'no-cache' });
     }

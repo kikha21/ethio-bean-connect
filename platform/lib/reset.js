@@ -96,7 +96,7 @@ async function request(email, ip, siteUrl) {
 
 function check(token) {
   const row = db.prepare(
-    'SELECT r.*, u.email, u.name FROM resets r JOIN users u ON u.id = r.user_id' +
+    'SELECT r.*, u.email, u.name, u.role FROM resets r JOIN users u ON u.id = r.user_id' +
     ' WHERE r.token_hash = ? AND r.used_at IS NULL AND r.expires_at > ?'
   ).get(hash(token || ''), nowIso());
   return row || null;
@@ -105,7 +105,7 @@ function check(token) {
 function complete(token, password, password2, ip) {
   const row = check(token);
   if (!row) return { ok: false, message: 'That link has been used already, or it has expired. Ask for another.' };
-  const problem = auth.passwordProblem(password);
+  const problem = auth.passwordProblem(password, row.role);
   if (problem) return { ok: false, errors: { password: problem } };
   if (password !== password2) return { ok: false, errors: { password2: 'The two passwords do not match.' } };
 
@@ -128,7 +128,7 @@ function change(user, current, next, again, keepSessionId, ip) {
   if (!auth.verifyPassword(String(current || ''), user.password_hash, user.password_salt)) {
     return { ok: false, errors: { current: 'That is not your current password.' } };
   }
-  const problem = auth.passwordProblem(next);
+  const problem = auth.passwordProblem(next, user.role);
   if (problem) return { ok: false, errors: { password: problem } };
   if (next !== again) return { ok: false, errors: { password2: 'The two passwords do not match.' } };
   if (next === current) return { ok: false, errors: { password: 'That is the password you already have.' } };
@@ -141,6 +141,21 @@ function change(user, current, next, again, keepSessionId, ip) {
   return { ok: true };
 }
 
+/* Made by the admin for somebody who cannot get in. It skips the address
+   check because the admin already knows who they are talking to, and it
+   returns the link so it can be passed on by whatever they already use.
+   The same one-shot, one-hour rules apply. */
+function issue(userId, actor, ip, siteUrl) {
+  const user = db.prepare("SELECT * FROM users WHERE id = ? AND role = 'member'").get(userId);
+  if (!user) return { ok: false };
+  db.prepare('UPDATE resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL').run(nowIso(), user.id);
+  const token = crypto.randomBytes(32).toString('hex');
+  db.prepare('INSERT INTO resets (user_id, token_hash, created_at, expires_at, ip) VALUES (?,?,?,?,?)')
+    .run(user.id, hash(token), nowIso(), new Date(Date.now() + LIFE_MS).toISOString(), ip || '');
+  log(actor, 'reset link made', user.email, 'by hand', ip);
+  return { ok: true, link: String(siteUrl || '').replace(/\/+$/, '') + '/reset?t=' + token, user };
+}
+
 /* what the admin can hand over while email is not set up */
 function outstanding() {
   return db.prepare(
@@ -150,4 +165,4 @@ function outstanding() {
   ).all(nowIso());
 }
 
-module.exports = { request, check, complete, change, outstanding, LIFE_MS };
+module.exports = { request, check, complete, change, issue, outstanding, LIFE_MS };

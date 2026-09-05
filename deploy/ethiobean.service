@@ -1,0 +1,32 @@
+# The platform, as a service the machine looks after.
+#
+# Restart=always is the whole point of moving off the laptop: if node dies
+# at three in the morning, systemd starts it again without anybody waking
+# up. WantedBy=multi-user.target means it also comes back by itself after
+# a reboot, which is the other way sites quietly disappear.
+
+[Unit]
+Description=Ethio Bean Connect
+After=network.target
+
+[Service]
+Type=simple
+User=ebc
+WorkingDirectory=/srv/ethiobean
+ExecStart=/usr/bin/node platform/server.js
+Environment=NODE_ENV=production
+Environment=PORT=4400
+# the database lives outside the code folder, so a deploy cannot overwrite it
+Environment=EBC_DATA_DIR=/var/lib/ethiobean
+# Caddy is in front, so read the real visitor address from its header
+Environment=EBC_TRUST_PROXY=1
+Restart=always
+RestartSec=3
+# it never needs to write outside its own two folders
+ProtectSystem=strict
+ReadWritePaths=/var/lib/ethiobean
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

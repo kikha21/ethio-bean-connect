@@ -57,7 +57,7 @@ function validate(f, forUpdate) {
   if (!out.side) e.side = 'Say which you are.';
 
   if (!forUpdate) {
-    const problem = auth.passwordProblem(f.password);
+    const problem = auth.passwordProblem(f.password, 'member');
     if (problem) e.password = problem;
     else if (f.password !== f.password2) e.password2 = 'The two passwords do not match.';
   }
@@ -95,6 +95,15 @@ function update(id, f, ip) {
   if (Object.keys(errors).length) return { ok: false, errors, values };
   db.prepare('UPDATE users SET name=?, company=?, email=?, phone=?, region=?, side=? WHERE id=?')
     .run(values.name, values.company, values.email, values.phone, values.region, values.side, id);
+  /* Every lot keeps its own copy of who posted it, taken at the time. That
+     copy is what we ring when a buyer asks about it, so leaving it behind
+     means a changed number is changed everywhere except the one place it
+     matters. Standing already works this way; contact details have to as
+     well, or the board and the account slowly tell different stories. */
+  db.prepare('UPDATE listings SET poster_name=?, poster_org=?, poster_email=?,' +
+             ' poster_phone=?, poster_region=? WHERE posted_by=?')
+    .run(values.name, values.company, values.email, values.phone, values.region, id);
+  log(null, 'member edited their details', values.company || values.name, '', ip);
   return { ok: true };
 }
 

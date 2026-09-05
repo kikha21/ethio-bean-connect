@@ -1,0 +1,45 @@
+# Render blueprint for Ethio Bean Connect.
+#
+# The disk below is the whole point of this file. Render's filesystem is
+# wiped on every deploy and every restart, so without a mounted disk the
+# accounts, the lots and the conversations would be destroyed each time
+# you publish a change - and it would look like the data was lost rather
+# than never kept. The disk survives both.
+#
+# A disk requires a paid instance. There is no free plan that keeps a
+# SQLite file, so `plan: starter` here is not an upsell, it is the
+# cheapest configuration in which this application does not lose data.
+
+services:
+  - type: web
+    name: ethio-bean-connect
+    runtime: node
+    plan: starter
+    region: frankfurt          # closest Render region to Ethiopia
+    branch: main
+
+    # nothing to build: the app has no runtime dependencies at all.
+    # --omit=dev keeps the four review-only packages off the server.
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+
+    healthCheckPath: /healthz
+
+    disk:
+      name: ethiobean-data
+      mountPath: /var/data
+      sizeGB: 1
+
+    envVars:
+      - key: NODE_VERSION
+        value: 22.11.0
+      # the database lives on the disk, not beside the code
+      - key: EBC_DATA_DIR
+        value: /var/data
+      # Render terminates TLS in front, so the real visitor address
+      # arrives in a header. Without this every visitor looks like one
+      # person and the rate limits shut out everybody at once.
+      - key: EBC_TRUST_PROXY
+        value: "1"
+      - key: NODE_ENV
+        value: production

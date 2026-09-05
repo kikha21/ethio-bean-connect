@@ -21,7 +21,7 @@ function when(iso) {
   return isNaN(d) ? esc(iso) : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-function page(user, flash, filter) {
+function page(user, flash, filter, resetLink) {
   const rows = members.all(filter);
   const n = f => members.all(f).length;
 
@@ -55,6 +55,13 @@ function page(user, flash, filter) {
         '<select name="status">' + opts([['active', 'Active'], ['suspended', 'Suspended']], m.status) + '</select>' +
         '<button class="btn btn-primary btn-sm" type="submit">Save</button>' +
         '</form>' +
+        '<form method="post" action="/admin/members" style="display:inline">' +
+          '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
+          '<input type="hidden" name="id" value="' + m.id + '">' +
+          '<input type="hidden" name="do" value="reset">' +
+          '<button class="btn btn-ghost btn-sm" type="submit" ' +
+            'title="Make a link so they can set a new password">Password link</button>' +
+        '</form>' +
       '</td></tr>';
   }).join('');
 
@@ -74,6 +81,9 @@ function page(user, flash, filter) {
       '<div class="head"><h1>Members</h1><span class="sub">' + n('') + ' signed up</span></div>' +
       '<p class="lede">The suppliers and exporters who post. Standing set here is written onto everything ' +
       'they have already put up, so one person never shows two different standings on the board.</p>' +
+      (resetLink ? '<div class="flash ok"><b>A link for ' + esc(resetLink.who) + '.</b> ' +
+        'Send it to them however you already talk. It works once and stops working in an hour.' +
+        '<br><code class="resetlink">' + esc(resetLink.link) + '</code></div>' : '') +
       '<div class="pills">' + tab('', 'Everyone', n('')) + tab('seller', 'Sellers', n('seller')) +
         tab('buyer', 'Buyers', n('buyer')) + tab('unverified', 'Not yet verified', n('unverified')) +
       '</div>' + table

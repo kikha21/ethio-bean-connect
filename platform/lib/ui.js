@@ -103,6 +103,9 @@ td input[type=text]{padding:.35rem .5rem;font-size:.92rem}
 
 
 /* the inbox: conversations on the left, the open one on the right */
+.resetlink{display:block;margin-top:.5rem;padding:.5rem .65rem;background:var(--canvas);
+  border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:.78rem;
+  word-break:break-all;user-select:all}
 .standing-form{display:flex;gap:.3rem;align-items:center;flex-wrap:nowrap}
 .standing-form select,.standing-form input{width:auto;padding:.3rem .45rem;font-size:.84rem}
 .convo-search{display:flex;gap:.35rem;align-items:center;margin-left:auto}

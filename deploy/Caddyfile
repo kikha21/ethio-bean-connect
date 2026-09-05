@@ -1,0 +1,17 @@
+# Caddy sits in front and does one job we would otherwise do badly:
+# it gets a real HTTPS certificate from Let's Encrypt and renews it
+# forever without being asked. No certificate expiry at 2am.
+
+ethiobeanconnect.com, www.ethiobeanconnect.com {
+	reverse_proxy localhost:4400
+
+	# the real visitor address, so the rate limits and the activity log
+	# do not think every customer in Ethiopia is the proxy
+	header_up X-Forwarded-For {remote_host}
+
+	encode gzip
+	log {
+		output file /var/log/caddy/ethiobean.log
+		format console
+	}
+}

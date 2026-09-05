@@ -20,8 +20,15 @@ function verifyPassword(password, storedHashHex, saltHex) {
   return crypto.timingSafeEqual(a, b);   /* constant time, so timing cannot leak the hash */
 }
 
-function passwordProblem(pw) {
-  if (typeof pw !== 'string' || pw.length < 10) return 'Use at least 10 characters.';
+/* What a password has to be depends on what it protects. The admin account
+   holds every member's details and can put anything on the board, so it
+   keeps the longer rule. A member account can post a lot that waits for
+   review and hold a conversation, and the real cost of a strict rule there
+   is somebody on a phone giving up before they have joined. */
+function passwordProblem(pw, forRole) {
+  const min = forRole === 'member' ? 6 : 10;
+  if (typeof pw !== 'string' || pw.length < min) return 'Use at least ' + min + ' characters.';
+  if (forRole === 'member') return null;
   if (!/[a-z]/i.test(pw)) return 'Include at least one letter.';
   if (!/[0-9]/.test(pw)) return 'Include at least one number.';
   return null;

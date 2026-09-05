@@ -5,7 +5,9 @@
   "description": "Ethio Bean Connect: the cinematic site and the platform that serves it.",
   "main": "platform/server.js",
   "scripts": {
-    "start": "node platform/server.js"
+    "start": "node platform/server.js",
+    "build": "node deploy/check.js",
+    "check": "node deploy/check.js"
   },
   "engines": {
     "node": ">=22.5.0"

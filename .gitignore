@@ -4,3 +4,10 @@ platform/data/*.db-wal
 platform/data/*.db-shm
 review/platform.log
 _impeccable/
+
+# The seed database. It is a real snapshot: names, phone numbers and email
+# addresses of actual customers. Git history is forever and repositories
+# get shared, so this stays out of it. The VPS deploy sends it over ssh
+# instead (push.sh --first-time). If you ever move to a host that needs it
+# committed, make certain the repository is private first.
+deploy/seed/*.db

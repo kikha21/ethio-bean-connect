@@ -1,0 +1,14 @@
+# Every night, and again on boot if the machine was off when it was due.
+# Persistent=true is what stops a weekend outage from silently skipping
+# three days of backups.
+
+[Unit]
+Description=Nightly Ethio Bean Connect backup
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=15m
+
+[Install]
+WantedBy=timers.target

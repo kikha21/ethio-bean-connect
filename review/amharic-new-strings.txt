@@ -289,3 +289,5 @@ AM:
 EN:  Verified
 AM:  
 
+nav.in   = "Sign in"
+nav.me   = "Profile"

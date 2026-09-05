@@ -128,7 +128,7 @@ function joinPage(f, errors, flash) {
                             field('phone', 'Phone', f.phone, errors, 'tel') + '</div>' +
       field('region', 'Where you are', f.region, errors, 'text', 'Gedeo, Addis Ababa, Trieste. Optional.') +
       '<div class="two">' +
-        field('password', 'Password', '', errors, 'password', 'At least 10 characters, with a letter and a number.') +
+        field('password', 'Password', '', errors, 'password', 'At least 6 characters.') +
         field('password2', 'Password again', '', errors, 'password') + '</div>' +
       '<button class="btn btn-primary" type="submit">Create it</button>' +
     '</div></form>' +
@@ -153,7 +153,10 @@ function signinPage(err, email) {
 }
 
 /* ---------------- their own area ---------------- */
-function myPage(user, flash, errors) {
+function myPage(user, flash, errors, profile) {
+  profile = profile || {};
+  const pv = profile.values || user;
+  const pe = profile.errors || null;
   const st = members.standing(user);
   const posts = members.postsOf(user.id);
 
@@ -191,12 +194,29 @@ function myPage(user, flash, errors) {
         ? 'We verify accounts as we get to know them. It shows on everything you post.'
         : 'This shows on every lot you put up.') + '</span>' +
     '</div>' +
+    '<div class="card" style="margin-bottom:1.4rem" id="details"><b>Your details</b>' +
+      '<span class="hint">This is what we use to reach you about a lot, and it is what buyers ' +
+      'see once we put the two of you together. Changing it here changes it on everything you have posted.</span>' +
+      '<form method="post" action="/profile" style="margin-top:.9rem">' +
+        '<label><span class="lb">Which are you</span><select name="side">' +
+          ['seller', 'buyer', 'both'].map(v => '<option value="' + v + '"' +
+            (pv.side === v ? ' selected' : '') + '>' +
+            (v === 'seller' ? 'I sell coffee' : v === 'buyer' ? 'I buy coffee' : 'Both') +
+            '</option>').join('') +
+        '</select>' + (pe && pe.side ? '<span class="err">' + esc(pe.side) + '</span>' : '') + '</label>' +
+        '<div class="two">' + field('name', 'Your name', pv.name, pe) +
+                              field('company', 'Company or union', pv.company, pe) + '</div>' +
+        '<div class="two">' + field('email', 'Email', pv.email, pe, 'email', 'You sign in with this.') +
+                              field('phone', 'Phone', pv.phone, pe, 'tel') + '</div>' +
+        field('region', 'Where you are', pv.region, pe, 'text', 'Gedeo, Addis Ababa, Trieste. Optional.') +
+        '<button class="btn btn-primary" type="submit">Save changes</button>' +
+      '</form></div>' +
     '<div class="card" style="margin-bottom:1.4rem"><b>Change your password</b>' +
       '<form method="post" action="/password" style="margin-top:.8rem" id="password">' +
         (errors && errors.current ? '<div class="flash bad">' + esc(errors.current) + '</div>' : '') +
         field('current', 'Your password now', '', errors, 'password', '', ' required autocomplete="current-password"') +
         '<div class="two">' +
-          field('password', 'New password', '', errors, 'password', 'At least 10 characters, with a letter and a number.', ' required autocomplete="new-password"') +
+          field('password', 'New password', '', errors, 'password', 'At least 6 characters.', ' required autocomplete="new-password"') +
           field('password2', 'Again', '', errors, 'password', '', ' required autocomplete="new-password"') +
         '</div>' +
         '<button class="btn btn-ghost" type="submit">Change it</button>' +
@@ -243,7 +263,7 @@ function resetPage(token, errors, dead) {
     '<p class="lede">Choose something you will remember. Signing in anywhere else will be ended.</p>' +
     '<form method="post" action="/reset"><div class="card">' +
       '<input type="hidden" name="t" value="' + esc(token) + '">' +
-      field('password', 'New password', '', errors, 'password', 'At least 10 characters, with a letter and a number.', ' required autocomplete="new-password"') +
+      field('password', 'New password', '', errors, 'password', 'At least 6 characters.', ' required autocomplete="new-password"') +
       field('password2', 'Again', '', errors, 'password', '', ' required autocomplete="new-password"') +
       '<button class="btn btn-primary" type="submit">Set it</button>' +
     '</div></form>'

@@ -1,0 +1,228 @@
+The sealed-lot section, removed on request.
+A press-and-hold showpiece on the homepage. It was never wired to anything:
+the lot number was random and nothing was saved. Kept here so it can go back.
+
+======== the section markup ========
+
+<section id="seal">
+  <div class="motes" id="motes" aria-hidden="true"></div>
+  <div class="shell">
+    <div class="rise">
+      <h2 class="h2" data-i18n="seal.h">This is what a sealed lot looks like.</h2>
+      <p class="lede" data-i18n="seal.lede">Nothing reaches an exporter until it has been checked and sealed. Press and hold the seal to do it yourself.</p>
+    </div>
+    <div class="seal-grid">
+      <div class="slip rise" id="slip">
+        <div class="slip-head">
+          <b>Ethio Bean Connect</b>
+          <span class="mono" data-i18n="seal.slip">Lot record</span>
+        </div>
+        <dl>
+          <dt data-i18n="seal.f1">Origin</dt><dd>Guji, Oromia</dd>
+          <dt data-i18n="seal.f2">Grade</dt><dd>G1 Washed</dd>
+          <dt data-i18n="seal.f3">Quantity</dt><dd>30 MT</dd>
+          <dt data-i18n="seal.f4">Moisture</dt><dd>10.4 percent</dd>
+          <dt data-i18n="seal.f5">Origin record</dt><dd data-i18n="seal.f5v">Washing station level</dd>
+        </dl>
+        <div class="lotno"><span data-i18n="seal.lot">Lot number</span> <b id="lotno">&mdash;</b></div>
+      </div>
+      <div class="sealbox rise">
+        <button class="seal" id="sealbtn" aria-label="Press and hold to seal the lot">
+          <svg viewBox="0 0 150 150" aria-hidden="true">
+            <circle class="glow" cx="75" cy="75" r="62" pathLength="1"/>
+            <circle class="track" cx="75" cy="75" r="62"/>
+            <circle class="fill" cx="75" cy="75" r="62" pathLength="1"/>
+            <g class="mark">
+              <ellipse cx="75" cy="75" rx="15" ry="23" fill="currentColor" opacity=".9"/>
+              <path d="M75 52c-6.5 9 -6.5 37 0 46" stroke="#0E130F" stroke-width="3" fill="none"/>
+              <path d="M52 63c-7-4.4-11.4-11.8-10-19.2C49 46 54.7 51.8 56 59.4z" fill="currentColor" opacity=".75"/>
+            </g>
+          </svg>
+        </button>
+        <span class="seal-hint" id="sealhint" data-i18n="seal.hint">Press and hold the seal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+======== the press-and-hold script ========
+
+/* ============================================================
+   9. THE INTERACTIVE MOMENT: press and hold to seal
+   ============================================================ */
+var sealBtn  = document.getElementById('sealbtn');
+var slip     = document.getElementById('slip');
+var sealHint = document.getElementById('sealhint');
+var lotEl    = document.getElementById('lotno');
+var hold = 0, holding = false, holdRaf = null, sealed = false, holdLast = 0;
+var HOLD_MS = 900, RELEASE_MS = 550;   /* real time, so every refresh rate feels the same */
+
+function sealTo(v){ if (!sealBtn) return; hold = clamp(v,0,1); sealBtn.style.setProperty('--hold', hold.toFixed(3)); }
+function finishSeal(){
+  if (sealed) return;
+  sealed = true;
+  sealBtn.classList.add('done');
+  slip.classList.add('sealed');
+  lotEl.textContent = 'EBC-' + (new Date()).getFullYear() + '-' + String(Math.floor(Math.random()*8999)+1000);
+  sealHint.textContent = t('seal.done');
+  sealHint.classList.add('seal-done');
+}
+/* it used to be dead after one use. Anyone who found it got exactly one go. */
+function resetSeal(){
+  sealed = false; holding = false; hold = 0; holdLast = 0;
+  sealTo(0);
+  sealBtn.classList.remove('done');
+  slip.classList.remove('sealed');
+  lotEl.textContent = '—';   /* placeholder glyph, matches the &mdash; in the markup */
+  sealHint.textContent = t('seal.hint');
+  sealHint.classList.remove('seal-done');
+}
+function holdLoop(now){
+  var dt = Math.min(100, now - (holdLast || now));
+  holdLast = now;
+  hold += holding ? (dt / HOLD_MS) : -(dt / RELEASE_MS);
+  sealTo(hold);
+  if (hold >= 1){ finishSeal(); holdRaf = null; holdLast = 0; return; }
+  if (hold <= 0 && !holding){ holdRaf = null; holdLast = 0; return; }
+  holdRaf = requestAnimationFrame(holdLoop);
+}
+function startHold(e){
+  if (sealed){ if (e && e.cancelable) e.preventDefault(); resetSeal(); return; }
+  if (e && e.cancelable) e.preventDefault();
+  holding = true;
+  if (holdRaf === null) holdRaf = requestAnimationFrame(holdLoop);
+}
+function endHold(){ holding = false; if (holdRaf === null && hold > 0) holdRaf = requestAnimationFrame(holdLoop); }
+sealBtn.addEventListener('mousedown', startHold);
+sealBtn.addEventListener('touchstart', startHold, {passive:false});
+addEventListener('mouseup', endHold);
+addEventListener('touchend', endHold);
+sealBtn.addEventListener('mouseleave', endHold);
+sealBtn.addEventListener('keydown', function(e){ if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); startHold(); } });
+sealBtn.addEventListener('keyup', function(e){ if (e.key === ' ' || e.key === 'Enter') endHold(); });
+
+======== its one plate override ========
+
+.plate .slip{--slip-bg:#E7EDE9}
+
+
+======== the phone layout rule ========
+
+.seal-grid,.form-grid{grid-template-columns:1fr;gap:2.4rem}
+
+======== the English wording ========
+
+I18N.en['seal.done']   = 'Sealed. Press again to seal another.';
+
+
+======== the Amharic wording ========
+
+    "seal.h":"የታሸገ ጭነት ይህን ይመስላል።",
+    "seal.lede":"ተመርምሮ እስኪታሸግ ድረስ ምንም ነገር ወደ ላኪ አይደርስም። ማህተሙን ተጭነው በመያዝ እርስዎ ያድርጉት።",
+    "seal.slip":"የጭነት መዝገብ","seal.f1":"መገኛ","seal.f2":"ደረጃ","seal.f3":"መጠን","seal.f4":"እርጥበት",
+    "seal.f5":"የመገኛ መዝገብ","seal.f5v":"የማጠቢያ ጣቢያ ደረጃ","seal.lot":"የጭነት ቁጥር",
+    "seal.hint":"ማህተሙን ተጭነው ይያዙ","seal.done":"ታሽጓል። ሌላ ለማተም እንደገና ይጫኑ።",
+
+======== its stylesheet ========
+
+/* THE SEAL (interactive moment) */
+.seal-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.4rem;align-items:center;margin-top:3rem}
+.slip{
+  position:relative;background:var(--slip-bg);color:var(--slip-ink);border-radius:6px;padding:2rem 1.9rem 2.2rem;
+  box-shadow:0 30px 70px rgba(0,0,0,.5);
+}
+.slip::before{
+  content:"";position:absolute;left:0;right:0;top:-1px;height:8px;
+  background:radial-gradient(circle at 5px 0,transparent 5px,var(--slip-bg) 5px);
+  background-size:12px 8px;background-position:0 -4px;
+}
+.slip .slip-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(27,33,25,.18);padding-bottom:.9rem}
+.slip .slip-head .mono{color:var(--slip-ink-2)}
+.slip .slip-head b{font-family:var(--f-display);font-size:var(--t-body);letter-spacing:.04em;text-transform:uppercase}
+.slip dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.05rem 1.4rem;margin-top:1.1rem}
+.slip dt{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.03em;color:var(--slip-ink-2);padding:.55rem 0}
+.slip dd{margin:0;padding:.55rem 0;font-weight:600;text-align:right;
+  opacity:.18;transform:translateX(6px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.slip.sealed dd{opacity:1;transform:none}
+.slip.sealed dd:nth-of-type(1){transition-delay:0ms}
+.slip.sealed dd:nth-of-type(2){transition-delay:110ms}
+.slip.sealed dd:nth-of-type(3){transition-delay:220ms}
+.slip.sealed dd:nth-of-type(4){transition-delay:330ms}
+.slip.sealed dd:nth-of-type(5){transition-delay:440ms}
+.slip .lotno{margin-top:1.3rem;padding-top:1.1rem;border-top:1px dashed var(--slip-rule);display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:var(--t-xs);color:var(--slip-ink-2)}
+.slip .lotno b{color:var(--slip-ink);letter-spacing:.1em;opacity:0;transition:opacity .6s var(--ease) .55s}
+.slip.sealed .lotno b{opacity:1}
+
+.sealbox{display:flex;flex-direction:column;align-items:flex-start;gap:1.3rem}
+.seal{
+  position:relative;width:150px;height:150px;border:0;background:transparent;cursor:pointer;padding:0;
+  touch-action:manipulation;
+}
+.seal svg{width:100%;height:100%;overflow:visible}
+/* the ring was #2B3A2C on the canvas: 1.56:1, under the 3:1 floor for a UI
+   boundary, so nobody could see there was a control here at all */
+.seal .track{fill:none;stroke:var(--border-strong);stroke-width:2}
+.seal .fill{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hold,0));transform:rotate(-90deg);transform-origin:50% 50%}
+.seal .mark{fill:var(--accent);opacity:calc(.62 + .38*var(--hold,0));transition:opacity .2s linear}
+.seal .glow{fill:none;stroke:var(--green);stroke-width:9;opacity:calc(var(--hold,0)*.22);filter:blur(8px);
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hold,0));transform:rotate(-90deg);transform-origin:50% 50%}
+/* the bean is fill="currentColor" and this is a <button>, so without an explicit
+   colour currentColor resolves to the UA's button text (black) and the mark
+   never picks up the accent at all */
+.seal{color:var(--accent-ink);transition:transform .3s var(--ease)}
+.seal .mark ellipse,.seal .mark path[fill]{fill:var(--accent-ink)}
+.seal .mark path[stroke]{stroke:var(--canvas)}
+.seal:hover{transform:translateY(-2px)}
+.seal:active{transform:scale(.985)}
+/* a resting pulse, so the control announces itself instead of hiding */
+.seal .track{animation:sealIdle 3.6s var(--ease-soft) infinite;animation-delay:-1.2s}
+@keyframes sealIdle{0%,100%{opacity:.55}50%{opacity:1}}
+.slip.sealed ~ * .seal .track,.seal.done .track{animation:none;opacity:1}
+.seal-hint{font-family:var(--f-body);font-size:var(--t-body);letter-spacing:0;color:var(--text-primary);max-width:22ch}
+.seal-done{color:var(--green)}
+
+======== the drifting dust stylesheet ========
+
+/* whisper particles */
+.motes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.mote{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--bean);opacity:.16;animation:moteDrift linear infinite}
+@keyframes moteDrift{
+  from{transform:translate3d(0,20px,0)}
+  to{transform:translate3d(14px,-140px,0)}
+}
+
+======== the drifting dust script ========
+
+/* ============================================================
+   11. WHISPER PARTICLES
+   ============================================================ */
+(function(){
+  var host = document.getElementById('motes');
+  if (!host) return;
+  var r = rng(11), html = '';
+  for (var i=0;i<16;i++){
+    html += '<i class="mote" style="left:' + (r()*100).toFixed(1) + '%;top:' + (r()*100).toFixed(1) + '%;'
+         +  'animation-duration:' + (16 + r()*16).toFixed(1) + 's;animation-delay:-' + (r()*18).toFixed(1) + 's;'
+         +  'opacity:' + (0.08 + r()*0.12).toFixed(2) + '"></i>';
+  }
+  host.innerHTML = html;
+})();
+
+======== its four colour tokens ========
+
+  --slip-bg:#E7EDE9;         /* the lot slip is now a cooler card than the page */
+  --slip-ink:#15201A;
+  --slip-ink-2:#556059;
+  --slip-rule:rgba(21,32,26,.24);
+
+
+======== its reduced-motion rules ========
+
+  .slip dd{opacity:1 !important;transform:none !important}
+  .slip .lotno b{opacity:1 !important}
+
+
+======== a sentence describing the dust ========
+
+   plus slow motes like dust over a drying bed. Held at low alpha on

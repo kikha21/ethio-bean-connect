@@ -92,10 +92,6 @@ document.documentElement.className+=" js";</script>
   --chrome:rgba(241,244,242,.92);
   --chrome-solid:rgba(251,252,251,.98);
   --field-focus:#FFFFFF;
-  --slip-bg:#E7EDE9;         /* the lot slip is now a cooler card than the page */
-  --slip-ink:#15201A;
-  --slip-ink-2:#556059;
-  --slip-rule:rgba(21,32,26,.24);
 
   /* anything sitting ON the hero photograph stays light whatever the page
      theme does, because the scrims underneath it are always dark */
@@ -148,7 +144,7 @@ html{scrollbar-color:var(--border-strong) var(--canvas);scrollbar-width:thin}
 ::-webkit-scrollbar-thumb:hover{background:var(--border-strong)}
 a{text-underline-offset:.18em;text-decoration-thickness:1px}
 /* prices and quantities line up column-wise instead of dancing */
-td.p,.mono,.slip dd,.lotno{font-variant-numeric:tabular-nums}
+td.p,.mono{font-variant-numeric:tabular-nums}
 
 .skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:var(--on-accent);padding:.7rem 1.1rem;font-weight:600;border-radius:0 0 8px 0}
 .skip:focus{left:0}
@@ -165,7 +161,7 @@ html[lang="am"] h1,html[lang="am"] h2,html[lang="am"] h3,html[lang="am"] .brand 
 html[lang="am"] body,html[lang="am"] input,html[lang="am"] select,html[lang="am"] textarea{
   font-family:"Noto Sans Ethiopic",var(--f-body);
 }
-html[lang="am"] .mono,html[lang="am"] .lb,html[lang="am"] th,html[lang="am"] .slip dt{
+html[lang="am"] .mono,html[lang="am"] .lb,html[lang="am"] th{
   letter-spacing:.02em;text-transform:none;
 }
 .shell{width:var(--shell);margin-inline:auto}
@@ -449,8 +445,6 @@ section[id],#main,#top{scroll-margin-top:96px}
 .plate .h2{color:var(--on-media)}
 .plate .btn-ghost{border-color:var(--border-strong);color:var(--on-media)}
 .plate .wall{background:var(--panel)}
-/* the lot slip stays paper even on a plate: it is a physical document */
-.plate .slip{--slip-bg:#E7EDE9}
 
 /* Narrow screens cover-crop a 16:9 photo to its CENTRE, which throws away the
    dark left third these images were composed around, and the horizontal scrim
@@ -774,63 +768,6 @@ td.p.ask{color:var(--text-secondary)}
    tell the craft floor refuses outright. */
 .season{margin-top:2.4rem;padding:1.5rem 1.7rem;border:1px solid var(--panel-edge);
   background:var(--bean-muted);border-radius:14px;color:var(--text-secondary);max-width:64ch}
-
-/* THE SEAL (interactive moment) */
-.seal-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.4rem;align-items:center;margin-top:3rem}
-.slip{
-  position:relative;background:var(--slip-bg);color:var(--slip-ink);border-radius:6px;padding:2rem 1.9rem 2.2rem;
-  box-shadow:0 30px 70px rgba(0,0,0,.5);
-}
-.slip::before{
-  content:"";position:absolute;left:0;right:0;top:-1px;height:8px;
-  background:radial-gradient(circle at 5px 0,transparent 5px,var(--slip-bg) 5px);
-  background-size:12px 8px;background-position:0 -4px;
-}
-.slip .slip-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(27,33,25,.18);padding-bottom:.9rem}
-.slip .slip-head .mono{color:var(--slip-ink-2)}
-.slip .slip-head b{font-family:var(--f-display);font-size:var(--t-body);letter-spacing:.04em;text-transform:uppercase}
-.slip dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.05rem 1.4rem;margin-top:1.1rem}
-.slip dt{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.03em;color:var(--slip-ink-2);padding:.55rem 0}
-.slip dd{margin:0;padding:.55rem 0;font-weight:600;text-align:right;
-  opacity:.18;transform:translateX(6px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
-.slip.sealed dd{opacity:1;transform:none}
-.slip.sealed dd:nth-of-type(1){transition-delay:0ms}
-.slip.sealed dd:nth-of-type(2){transition-delay:110ms}
-.slip.sealed dd:nth-of-type(3){transition-delay:220ms}
-.slip.sealed dd:nth-of-type(4){transition-delay:330ms}
-.slip.sealed dd:nth-of-type(5){transition-delay:440ms}
-.slip .lotno{margin-top:1.3rem;padding-top:1.1rem;border-top:1px dashed var(--slip-rule);display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:var(--t-xs);color:var(--slip-ink-2)}
-.slip .lotno b{color:var(--slip-ink);letter-spacing:.1em;opacity:0;transition:opacity .6s var(--ease) .55s}
-.slip.sealed .lotno b{opacity:1}
-
-.sealbox{display:flex;flex-direction:column;align-items:flex-start;gap:1.3rem}
-.seal{
-  position:relative;width:150px;height:150px;border:0;background:transparent;cursor:pointer;padding:0;
-  touch-action:manipulation;
-}
-.seal svg{width:100%;height:100%;overflow:visible}
-/* the ring was #2B3A2C on the canvas: 1.56:1, under the 3:1 floor for a UI
-   boundary, so nobody could see there was a control here at all */
-.seal .track{fill:none;stroke:var(--border-strong);stroke-width:2}
-.seal .fill{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;
-  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hold,0));transform:rotate(-90deg);transform-origin:50% 50%}
-.seal .mark{fill:var(--accent);opacity:calc(.62 + .38*var(--hold,0));transition:opacity .2s linear}
-.seal .glow{fill:none;stroke:var(--green);stroke-width:9;opacity:calc(var(--hold,0)*.22);filter:blur(8px);
-  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hold,0));transform:rotate(-90deg);transform-origin:50% 50%}
-/* the bean is fill="currentColor" and this is a <button>, so without an explicit
-   colour currentColor resolves to the UA's button text (black) and the mark
-   never picks up the accent at all */
-.seal{color:var(--accent-ink);transition:transform .3s var(--ease)}
-.seal .mark ellipse,.seal .mark path[fill]{fill:var(--accent-ink)}
-.seal .mark path[stroke]{stroke:var(--canvas)}
-.seal:hover{transform:translateY(-2px)}
-.seal:active{transform:scale(.985)}
-/* a resting pulse, so the control announces itself instead of hiding */
-.seal .track{animation:sealIdle 3.6s var(--ease-soft) infinite;animation-delay:-1.2s}
-@keyframes sealIdle{0%,100%{opacity:.55}50%{opacity:1}}
-.slip.sealed ~ * .seal .track,.seal.done .track{animation:none;opacity:1}
-.seal-hint{font-family:var(--f-body);font-size:var(--t-body);letter-spacing:0;color:var(--text-primary);max-width:22ch}
-.seal-done{color:var(--green)}
 
 /* CHECKS */
 .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:3rem}
@@ -1182,20 +1119,12 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
   .mobile-cta.on ~ .launcher .launch-btn{display:none}
 }
 
-/* whisper particles */
-.motes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.mote{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--bean);opacity:.16;animation:moteDrift linear infinite}
-@keyframes moteDrift{
-  from{transform:translate3d(0,20px,0)}
-  to{transform:translate3d(14px,-140px,0)}
-}
-
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width:1024px){
   .walls,.steps{grid-template-columns:repeat(2,1fr)}
-  .seal-grid,.form-grid{grid-template-columns:1fr;gap:2.4rem}
+  .form-grid{grid-template-columns:1fr;gap:2.4rem}
   .foot-grid{grid-template-columns:1fr 1fr;gap:2.4rem}
 }
 @media (max-width:1180px){
@@ -1290,8 +1219,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
     transition-duration:.001ms !important;transition-delay:0s !important;
   }
   .rise{opacity:1 !important;transform:none !important}
-  .slip dd{opacity:1 !important;transform:none !important}
-  .slip .lotno b{opacity:1 !important}
   .thread-path,.thread-glow{stroke-dashoffset:0 !important}
   .wall::after{transform:scaleX(1) !important}
   html{scroll-behavior:auto}
@@ -1320,6 +1247,8 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
     <a href="#how" data-i18n="nav.how">How it works</a>
     <a href="#checks" data-i18n="nav.checks">What we check</a>
     <a href="#faq" data-i18n="nav.faq">Questions</a>
+    <a href="/signin" id="navin" data-i18n="nav.in" hidden>Sign in</a>
+    <a href="/my" id="navme" data-i18n="nav.me" hidden>Profile</a>
     <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your coffee</a>
   </div>
   <a class="nav-quick" href="#board" data-i18n="nav.board">Marketplace</a>
@@ -1587,48 +1516,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
       <article class="origin rise"><span class="dot"></span><div><h3>Harar</h3><div class="meta">Eastern highlands &nbsp;&middot;&nbsp; 1,500 to 2,100 m</div><p class="flavour">Blueberry and wine, dry processed by tradition. Not for every buyer.</p></div><span class="grade">Natural, little G1</span></article>
     </div>
     <p class="season rise" data-i18n="origins.season">This season the south is down and the west is having a bumper year. If your usual origin is short, we will tell you where the volume actually is.</p>
-  </div>
-</section>
-
-<!-- ================= THE SEAL ================= -->
-<section id="seal">
-  <div class="motes" id="motes" aria-hidden="true"></div>
-  <div class="shell">
-    <div class="rise">
-      <h2 class="h2" data-i18n="seal.h">This is what a sealed lot looks like.</h2>
-      <p class="lede" data-i18n="seal.lede">Nothing reaches an exporter until it has been checked and sealed. Press and hold the seal to do it yourself.</p>
-    </div>
-    <div class="seal-grid">
-      <div class="slip rise" id="slip">
-        <div class="slip-head">
-          <b>Ethio Bean Connect</b>
-          <span class="mono" data-i18n="seal.slip">Lot record</span>
-        </div>
-        <dl>
-          <dt data-i18n="seal.f1">Origin</dt><dd>Guji, Oromia</dd>
-          <dt data-i18n="seal.f2">Grade</dt><dd>G1 Washed</dd>
-          <dt data-i18n="seal.f3">Quantity</dt><dd>30 MT</dd>
-          <dt data-i18n="seal.f4">Moisture</dt><dd>10.4 percent</dd>
-          <dt data-i18n="seal.f5">Origin record</dt><dd data-i18n="seal.f5v">Washing station level</dd>
-        </dl>
-        <div class="lotno"><span data-i18n="seal.lot">Lot number</span> <b id="lotno">&mdash;</b></div>
-      </div>
-      <div class="sealbox rise">
-        <button class="seal" id="sealbtn" aria-label="Press and hold to seal the lot">
-          <svg viewBox="0 0 150 150" aria-hidden="true">
-            <circle class="glow" cx="75" cy="75" r="62" pathLength="1"/>
-            <circle class="track" cx="75" cy="75" r="62"/>
-            <circle class="fill" cx="75" cy="75" r="62" pathLength="1"/>
-            <g class="mark">
-              <ellipse cx="75" cy="75" rx="15" ry="23" fill="currentColor" opacity=".9"/>
-              <path d="M75 52c-6.5 9 -6.5 37 0 46" stroke="#0E130F" stroke-width="3" fill="none"/>
-              <path d="M52 63c-7-4.4-11.4-11.8-10-19.2C49 46 54.7 51.8 56 59.4z" fill="currentColor" opacity=".75"/>
-            </g>
-          </svg>
-        </button>
-        <span class="seal-hint" id="sealhint" data-i18n="seal.hint">Press and hold the seal</span>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -1999,11 +1886,6 @@ var I18N = {
     "market.ask":"ይጠይቁን",
     "origins.h":"እያንዳንዱ መገኛ በእውነት የሚሰጠው።",
     "origins.season":"በዚህ ወቅት ደቡቡ ቀንሷል፣ ምዕራቡ ደግሞ የተትረፈረፈ ምርት አለው። የተለመደው መገኛዎ ካጠረ፣ መጠኑ የት እንዳለ እንነግርዎታለን።",
-    "seal.h":"የታሸገ ጭነት ይህን ይመስላል።",
-    "seal.lede":"ተመርምሮ እስኪታሸግ ድረስ ምንም ነገር ወደ ላኪ አይደርስም። ማህተሙን ተጭነው በመያዝ እርስዎ ያድርጉት።",
-    "seal.slip":"የጭነት መዝገብ","seal.f1":"መገኛ","seal.f2":"ደረጃ","seal.f3":"መጠን","seal.f4":"እርጥበት",
-    "seal.f5":"የመገኛ መዝገብ","seal.f5v":"የማጠቢያ ጣቢያ ደረጃ","seal.lot":"የጭነት ቁጥር",
-    "seal.hint":"ማህተሙን ተጭነው ይያዙ","seal.done":"ታሽጓል። ሌላ ለማተም እንደገና ይጫኑ።",
     "checks.h":"ሳይመረመር ከዚህ የሚወጣ የለም።",
     "checks.1h":"ደረጃ እና የወንፊት መጠን","checks.1p":"በስልክ በሚሰጥ ቃል ሳይሆን በደረጃ ማረጋገጫ ሰነድ ይነበባል።",
     "checks.2h":"እርጥበት","checks.2p":"ጭነቱ ከመቅረቡ በፊት ይለካል፣ ማንም ወደብ ላይ እንዳያውቀው።",
@@ -2091,6 +1973,8 @@ I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
 I18N.en['f.gateH'] = "You need an account to post";
 I18N.en['f.gateP'] = "It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.";
 I18N.en['f.gateJoin'] = "Create an account";
+I18N.en['nav.in'] = "Sign in";
+I18N.en['nav.me'] = "Profile";
 I18N.en['f.gateIn'] = "Sign in";
 I18N.en['f.postingAs'] = "Posting as";
 I18N.en['f.okchat'] = "Chat with us about this";
@@ -2154,7 +2038,6 @@ I18N.en['e.other']     = 'Type it in here, and we will add it to the list.';
 I18N.en['e.email']     = 'That does not look like an email address. Check for a missing @ or a typo.';
 I18N.en['e.phone']     = 'Please give a number we can actually reach you on, with the country code.';
 I18N.en['e.summary']   = 'There are {n} things to fix before this can send:';
-I18N.en['seal.done']   = 'Sealed. Press again to seal another.';
 
 function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k; }
 
@@ -2542,7 +2425,6 @@ function pinToFinalStates(){
   [].forEach.call(document.querySelectorAll('.rise'), function(el){ el.classList.add('in'); });
   [].forEach.call(document.querySelectorAll('[data-stagger], section .shell > *'), function(el){ el.classList.add('in','settled'); });
   wrap.style.setProperty('--draw', 1);
-  sealTo(1); finishSeal();
 }
 function unpinFinalStates(){
   lastDraw = -1; drawThread();
@@ -2872,60 +2754,6 @@ function renderOrigins(){
   host.innerHTML = html;
 }
 renderOrigins();
-
-/* ============================================================
-   9. THE INTERACTIVE MOMENT: press and hold to seal
-   ============================================================ */
-var sealBtn  = document.getElementById('sealbtn');
-var slip     = document.getElementById('slip');
-var sealHint = document.getElementById('sealhint');
-var lotEl    = document.getElementById('lotno');
-var hold = 0, holding = false, holdRaf = null, sealed = false, holdLast = 0;
-var HOLD_MS = 900, RELEASE_MS = 550;   /* real time, so every refresh rate feels the same */
-
-function sealTo(v){ if (!sealBtn) return; hold = clamp(v,0,1); sealBtn.style.setProperty('--hold', hold.toFixed(3)); }
-function finishSeal(){
-  if (sealed) return;
-  sealed = true;
-  sealBtn.classList.add('done');
-  slip.classList.add('sealed');
-  lotEl.textContent = 'EBC-' + (new Date()).getFullYear() + '-' + String(Math.floor(Math.random()*8999)+1000);
-  sealHint.textContent = t('seal.done');
-  sealHint.classList.add('seal-done');
-}
-/* it used to be dead after one use. Anyone who found it got exactly one go. */
-function resetSeal(){
-  sealed = false; holding = false; hold = 0; holdLast = 0;
-  sealTo(0);
-  sealBtn.classList.remove('done');
-  slip.classList.remove('sealed');
-  lotEl.textContent = '—';   /* placeholder glyph, matches the &mdash; in the markup */
-  sealHint.textContent = t('seal.hint');
-  sealHint.classList.remove('seal-done');
-}
-function holdLoop(now){
-  var dt = Math.min(100, now - (holdLast || now));
-  holdLast = now;
-  hold += holding ? (dt / HOLD_MS) : -(dt / RELEASE_MS);
-  sealTo(hold);
-  if (hold >= 1){ finishSeal(); holdRaf = null; holdLast = 0; return; }
-  if (hold <= 0 && !holding){ holdRaf = null; holdLast = 0; return; }
-  holdRaf = requestAnimationFrame(holdLoop);
-}
-function startHold(e){
-  if (sealed){ if (e && e.cancelable) e.preventDefault(); resetSeal(); return; }
-  if (e && e.cancelable) e.preventDefault();
-  holding = true;
-  if (holdRaf === null) holdRaf = requestAnimationFrame(holdLoop);
-}
-function endHold(){ holding = false; if (holdRaf === null && hold > 0) holdRaf = requestAnimationFrame(holdLoop); }
-sealBtn.addEventListener('mousedown', startHold);
-sealBtn.addEventListener('touchstart', startHold, {passive:false});
-addEventListener('mouseup', endHold);
-addEventListener('touchend', endHold);
-sealBtn.addEventListener('mouseleave', endHold);
-sealBtn.addEventListener('keydown', function(e){ if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); startHold(); } });
-sealBtn.addEventListener('keyup', function(e){ if (e.key === ' ' || e.key === 'Enter') endHold(); });
 
 /* ============================================================
    10. THE FORM
@@ -3321,7 +3149,7 @@ function renderFooterContact(){
 /* ============================================================
    10c. THE MOVING GROUND
    Light fields drifting across the page, in the brand's three colours,
-   plus slow motes like dust over a drying bed. Held at low alpha on
+   Held at low alpha on
    purpose: this must not move the luminance under body text.
    ============================================================ */
 (function(){
@@ -3502,7 +3330,16 @@ function renderFooterContact(){
     return rows;
   }
 
+  /* The bar is the only place somebody looks for their own account, so it
+     has to say which state they are in: signed out it offers the way in,
+     signed in it offers the way to their profile. The word stays the same
+     whoever is looking, so it can be translated like everything else. */
+  var navMe = document.getElementById('navme');
+  var navIn = document.getElementById('navin');
+
   function signedIn(me){
+    if (navMe) navMe.hidden = false;
+    if (navIn) navIn.hidden = true;
     gate.hidden = true;
     ownedRows().forEach(function(r){ r.hidden = true; });
     OWNED.forEach(function(n){ if (form.elements[n]) form.elements[n].removeAttribute('required'); });
@@ -3522,6 +3359,8 @@ function renderFooterContact(){
   }
 
   function signedOut(){
+    if (navMe) navMe.hidden = true;
+    if (navIn) navIn.hidden = false;
     gate.hidden = false;
     if (as) as.hidden = true;
     /* the form stays readable, but sending is not offered */
@@ -3837,21 +3676,6 @@ function renderFooterContact(){
     if (b) b.setAttribute('aria-expanded', 'false');
     window.__ebcChatClose();
   });
-})();
-
-/* ============================================================
-   11. WHISPER PARTICLES
-   ============================================================ */
-(function(){
-  var host = document.getElementById('motes');
-  if (!host) return;
-  var r = rng(11), html = '';
-  for (var i=0;i<16;i++){
-    html += '<i class="mote" style="left:' + (r()*100).toFixed(1) + '%;top:' + (r()*100).toFixed(1) + '%;'
-         +  'animation-duration:' + (16 + r()*16).toFixed(1) + 's;animation-delay:-' + (r()*18).toFixed(1) + 's;'
-         +  'opacity:' + (0.08 + r()*0.12).toFixed(2) + '"></i>';
-  }
-  host.innerHTML = html;
 })();
 
 /* ============================================================

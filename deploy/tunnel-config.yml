@@ -1,0 +1,21 @@
+# Ethio Bean Connect - the named tunnel.
+#
+# A quick tunnel gets a new random name every restart, which is why every
+# link handed out so far has died. A named tunnel is registered once
+# against your own domain, so the address survives restarts, reboots and
+# internet outages. The credentials file below is what proves this machine
+# is allowed to serve that name; it is created by "cloudflared tunnel
+# create" and must never be shared or committed.
+
+tunnel: TUNNEL_ID_GOES_HERE
+credentials-file: CREDENTIALS_PATH_GOES_HERE
+
+ingress:
+  # the site itself
+  - hostname: ethiobeanconnect.com
+    service: http://localhost:4400
+  # www, so a customer typing it out of habit still arrives
+  - hostname: www.ethiobeanconnect.com
+    service: http://localhost:4400
+  # anything else that reaches this tunnel is refused rather than guessed at
+  - service: http_status:404
