@@ -3556,7 +3556,7 @@ function renderFooterContact(){
     clearErr();
     var file = input.files && input.files[0];
     if (!file){ carried = null; prev.hidden = true; return; }
-    if (!/^image//.test(file.type)) return fail(t('f.photoBad'));
+    if (!/^image\//.test(file.type)) return fail(t('f.photoBad'));
 
     shrink(file).then(function(dataUrl){
       if (dataUrl.length * 0.75 > MAX_BYTES) return fail(t('f.photoBig'));

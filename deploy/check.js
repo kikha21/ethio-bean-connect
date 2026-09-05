@@ -55,6 +55,34 @@ for (const rel of [
   fs.existsSync(path.join(root, rel)) ? ok('present: ' + rel) : no('missing: ' + rel);
 }
 
+/* 3b. The site's scripts live inside index.html, so --check never saw
+      them. A single bad character in there takes the whole page down: the
+      class that reveals content is set by that script, so a parse error
+      leaves a black screen rather than a broken feature. That happened,
+      and it reached a browser because nothing here was looking. */
+const html = fs.readFileSync(path.join(root, 'ethio-bean-connect/index.html'), 'utf8');
+/* built with RegExp rather than written as literals: a backslash typed
+   into this file is exactly the thing that keeps getting lost */
+/* The backslashes are built at runtime, not typed. Written as literals
+   they are swallowed by the surrounding string, the pattern silently
+   becomes something that matches nothing, and the check passes by
+   looking at no scripts at all. */
+const BS = String.fromCharCode(92);
+const scriptRe = new RegExp('<script([^>]*)>([' + BS + 's' + BS + 'S]*?)<' + BS + '/script>', 'g');
+const hasSrc = new RegExp(BS + 'bsrc=');
+const isData = new RegExp('type=[' + String.fromCharCode(34, 39) + '](application|text' + BS + '/template)');
+let sm, checked = 0, broke = 0;
+while ((sm = scriptRe.exec(html)) !== null) {
+  const attrs = sm[1] || '';
+  if (hasSrc.test(attrs)) continue;      // fetched separately, not inline
+  if (isData.test(attrs)) continue;      // JSON-LD and templates are not javascript
+  checked++;
+  const line = html.slice(0, sm.index).split(String.fromCharCode(10)).length;
+  try { new Function(sm[2]); }
+  catch (e) { broke++; no('index.html script at line ' + line + ' does not parse: ' + e.message); }
+}
+if (!broke) ok(checked + ' inline script' + (checked === 1 ? '' : 's') + ' in index.html parse');
+
 /* 4. loading the modules is where a bad require or a syntax-valid but
       broken file actually shows itself. Done against a scratch database so
       a check can never touch real customer data. */
