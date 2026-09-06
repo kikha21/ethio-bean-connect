@@ -154,7 +154,12 @@ function boardCards(en) {
     if (q.main)     chips.push(`<span class="chip">${escHtml(q.main)}</span>`);
     if (q.alt)      chips.push(`<span class="chip soft">${escHtml(q.alt)}</span>`);
     if (r.harvest)  chips.push(`<span class="chip">${escHtml(r.harvest)}</span>`);
-    if (SUPPLY[r.supply])
+    /* Only export lots carry this. It says whether the coffee is already in
+       an Addis warehouse or still at the farm, which is a question about an
+       export journey; on a local lot it would be answering something nobody
+       asked. Old local rows may still hold a value, so this checks the board
+       rather than trusting the column to be empty. */
+    if (r.market !== 'local' && SUPPLY[r.supply])
       chips.push(`<span class="chip where ${escHtml(r.supply)}" title="${escAttr(SUPPLY[r.supply].note)}" ` +
                  `data-i18n="supply.${escHtml(r.supply)}">` +
                  `${escHtml(T('supply.' + r.supply, SUPPLY[r.supply].short))}</span>`);

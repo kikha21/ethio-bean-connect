@@ -79,13 +79,29 @@ function validateLot(f, member) {
 }
 
 /* everything about the coffee, shared by both paths */
+/* Which board a lot belongs on, decided once.
+
+   This was written out separately in guessMarket and in each of the two
+   validators, and a fourth copy was about to go in for the supply field.
+   Three copies of a rule drift: one gets a new coffee type and the others
+   do not, and then a lot is validated as local and filed as export. */
+function isLocalLot(type, grade) {
+  return /local market grade/i.test(String(type || '')) ||
+         /^ungraded$/i.test(String(grade || '').trim());
+}
+
 function lotFields(f, out) {
   const need = (k, v) => { if (!v) out.errors[k] = 'This is needed.'; return v; };
   out.type   = need('type', pick(f, 'type'));
   out.origin = need('origin', pick(f, 'origin'));
   out.grade  = need('grade', pick(f, 'grade'));
   out.supply = SUPPLY[f.supply] ? f.supply : '';
-  if (out.mode === 'have' && !out.supply) out.errors.supply = 'This is needed.';
+  /* Horizontal and vertical describe an export journey: already in an
+     Addis warehouse, or still at the farm. Local and reject coffee is
+     not moving that way, so the question does not apply and asking it
+     would only invite an answer that means nothing. */
+  if (isLocalLot(out.type, out.grade)) out.supply = '';
+  else if (out.mode === 'have' && !out.supply) out.errors.supply = 'This is needed.';
   if (out.mode !== 'have') out.supply = '';
   out.quantity_val  = clean(f.quantity, CAP.quantity).replace(/[^\d.,]/g, '');
   out.quantity_unit = QTY_UNIT_KEYS.indexOf(f.quantity_unit) === -1 ? 'bag85' : f.quantity_unit;
@@ -116,7 +132,12 @@ function validateAll(f) {
   /* someone offering coffee must say where it is; someone asking for
      coffee has no warehouse to declare */
   out.supply = SUPPLY[f.supply] ? f.supply : '';
-  if (mode === 'have' && !out.supply) out.errors.supply = 'This is needed.';
+  /* Horizontal and vertical describe an export journey: already in an
+     Addis warehouse, or still at the farm. Local and reject coffee is
+     not moving that way, so the question does not apply and asking it
+     would only invite an answer that means nothing. */
+  if (isLocalLot(out.type, out.grade)) out.supply = '';
+  else if (mode === 'have' && !out.supply) out.errors.supply = 'This is needed.';
   if (mode !== 'have') out.supply = '';
 
   out.quantity_val  = clean(f.quantity, CAP.quantity).replace(/[^\d.,]/g, '');
@@ -133,9 +154,7 @@ function validateAll(f) {
 /* a lot below export grade belongs on the other board. This is only the
    opening guess: the admin sets the board for real when reviewing. */
 function guessMarket(v) {
-  if (/local market grade/i.test(v.type)) return 'local';
-  if (/^ungraded$/i.test(v.grade)) return 'local';
-  return 'export';
+  return isLocalLot(v.type, v.grade) ? 'local' : 'export';
 }
 
 /* A post arriving is the thing most worth being told about: it is a lot

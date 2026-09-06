@@ -2850,7 +2850,13 @@ function setMode(m){
   /* a buyer stating what they need has no warehouse to declare */
   var srow = document.getElementById('supplyrow');
   var ssel = document.querySelector('select[name="supply"]');
-  if (srow) srow.hidden = (mode !== 'have');
+  /* Two reasons to put this away, and one place that decides. A buyer
+     stating what they need has no warehouse to declare, and local coffee
+     is not making the export journey the question is about. Both are
+     asked here rather than in two modules that would fight over the
+     same row - which is exactly what happened when they did. */
+  if (srow) srow.hidden = (mode !== 'have') ||
+                          (typeof window.EBC_LOCAL_LOT === 'function' && window.EBC_LOCAL_LOT());
   /* coffee still at the farm comes in 85 kg bags; once it is in Addis it is
      packed either way, so only the vertical case is decided for them */
   var qu = document.querySelector('select[name="quantity_unit"]');
@@ -3511,12 +3517,29 @@ function renderFooterContact(){
            /^ungraded$/i.test(grade);
   }
 
+  /* Two fields hang off the same question, so they are decided in one
+     place. Horizontal and vertical describe an export journey - already in
+     an Addis warehouse, or still at the farm - and local coffee is not
+     making that journey, so the question is put away rather than left on
+     screen for somebody to answer meaninglessly. */
+  var ssel2 = form.elements.supply;
+
   function sync(){
     var on = isLocal();
     row.hidden = !on;
+    /* setMode owns that row; this only tells it to look again */
+    /* setMode owns that row; this only asks it to look again. The current
+       mode is read off the tabs rather than from the variable, which lives
+       in another scope: reaching for it threw, and took this whole module
+       down with it. */
+    var needTab = document.getElementById("tab-need");
+    var nowMode = (needTab && needTab.getAttribute("aria-selected") === "true") ? "need" : "have";
+    if (typeof setMode === "function") setMode(nowMode);
+    /* a value left behind in a hidden field would travel with the post */
+    if (on && ssel2) ssel2.value = "";
     /* a picture chosen and then switched away from must not travel with an
        export lot, or it is stored where nobody will ever look at it */
-    if (!on && carried){ carried = null; input.value = ''; prev.hidden = true; clearErr(); }
+    if (!on && carried){ carried = null; input.value = ""; prev.hidden = true; clearErr(); }
   }
 
   ['type','grade','type_other'].forEach(function(n){
@@ -3571,6 +3594,10 @@ function renderFooterContact(){
   });
 
   /* the form sends urlencoded fields, so the picture rides along as one */
+  /* the one place that decides which board a lot is bound for, so the
+     supply row and the picture field cannot disagree about it */
+  window.EBC_LOCAL_LOT = isLocal;
+
   window.EBC_PHOTO = function(){ return isLocal() ? carried : null; };
 })();
 
