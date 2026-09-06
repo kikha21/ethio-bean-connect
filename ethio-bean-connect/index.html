@@ -3527,7 +3527,6 @@ function renderFooterContact(){
   function sync(){
     var on = isLocal();
     row.hidden = !on;
-    /* setMode owns that row; this only tells it to look again */
     /* setMode owns that row; this only asks it to look again. The current
        mode is read off the tabs rather than from the variable, which lives
        in another scope: reaching for it threw, and took this whole module
