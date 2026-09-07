@@ -2929,7 +2929,13 @@ var ACCOUNT_KNOWS = [];
 /* supply is required, but only for someone posting coffee they have */
 function requiredNow(){
   var list = REQUIRED.filter(function(n){ return ACCOUNT_KNOWS.indexOf(n) === -1; });
-  return mode === 'have' ? list.concat('supply') : list;
+  /* Local coffee is never asked where it is, so it must not be demanded
+     either. Asking for something the supplier cannot see on screen is the
+     worst kind of refusal: the form says three things are wrong and only
+     shows two, and there is nothing they can do about the third. */
+  var localNow = (typeof window.EBC_LOCAL_LOT === 'function') && window.EBC_LOCAL_LOT();
+  if (mode !== 'have' || localNow) return list;
+  return list.concat('supply');
 }
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 var errSummary = document.getElementById('errsummary');
