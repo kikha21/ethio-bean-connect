@@ -146,7 +146,7 @@ function change(user, current, next, again, keepSessionId, ip) {
    returns the link so it can be passed on by whatever they already use.
    The same one-shot, one-hour rules apply. */
 function issue(userId, actor, ip, siteUrl) {
-  const user = db.prepare("SELECT * FROM users WHERE id = ? AND role = 'member'").get(userId);
+  const user = db.prepare("SELECT * FROM users WHERE id = ? AND role IN ('member','helper')").get(userId);
   if (!user) return { ok: false };
   db.prepare('UPDATE resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL').run(nowIso(), user.id);
   const token = crypto.randomBytes(32).toString('hex');

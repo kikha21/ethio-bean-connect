@@ -155,12 +155,12 @@ function all(filter) {
   return db.prepare(
     "SELECT u.*, (SELECT COUNT(*) FROM listings WHERE posted_by=u.id) AS posts," +
     " (SELECT COUNT(*) FROM listings WHERE posted_by=u.id AND status='pending') AS waiting" +
-    " FROM users u WHERE u.role IN ('member','super_admin')" + where + ' ORDER BY u.created_at DESC'
+    " FROM users u WHERE u.role IN ('member','helper','super_admin')" + where + ' ORDER BY u.created_at DESC'
   ).all();
 }
 
 function setStanding(id, f, actor, ip) {
-  const u = db.prepare("SELECT * FROM users WHERE id=? AND role='member'").get(id);
+  const u = db.prepare("SELECT * FROM users WHERE id=? AND role IN ('member','helper')").get(id);
   if (!u) return { ok: false };
   const tier = TIERS[f.tier] ? f.tier : 'unverified';
   const rating = (f.rating === '' || f.rating == null) ? null : (RATINGS[Number(f.rating)] ? Number(f.rating) : null);
@@ -194,21 +194,25 @@ function setRole(id, makeAdmin, actor, ip) {
   if (String(u.id) === String(actor.id) && !makeAdmin) {
     return { ok: false, message: 'You cannot remove your own admin. Ask the other admin to do it.' };
   }
-  if (!makeAdmin) {
-    const others = db.prepare("SELECT COUNT(*) n FROM users WHERE role = 'super_admin' AND id <> ?").get(u.id).n;
-    if (others === 0) return { ok: false, message: 'That is the only admin left. Make somebody else an admin first.' };
+  /* taking help away from a helper cannot strand anybody: the owner is
+     still there by definition, and an owner is not demoted by this at all. */
+  if (!makeAdmin && u.role === 'super_admin') {
+    return { ok: false, message: 'That is the owner of this account, not a helper.' };
   }
 
-  const role = makeAdmin ? 'super_admin' : 'member';
+  /* helper, never super_admin. The owner role is not handed out by a
+     button: it is the account that set this up, and there is no screen
+     that should be able to create a second one by accident. */
+  const role = makeAdmin ? 'helper' : 'member';
   if (u.role === role) return { ok: true, message: 'Nothing to change.' };
 
   db.prepare('UPDATE users SET role = ? WHERE id = ?').run(role, u.id);
   /* every session they hold is ended, so the new powers begin at a fresh
      sign-in rather than halfway through a page they already had open */
   db.prepare('DELETE FROM sessions WHERE user_id = ?').run(u.id);
-  log(actor, makeAdmin ? 'made an admin' : 'admin removed', u.company || u.name, u.email, ip);
+  log(actor, makeAdmin ? 'made a helper' : 'helper removed', u.company || u.name, u.email, ip);
   return { ok: true, message: makeAdmin
-    ? (u.company || u.name) + ' is an admin now. They must sign in again.'
+    ? (u.company || u.name) + ' can help run the board now. They must sign in again.'
     : (u.company || u.name) + ' is a member again. They must sign in again.' };
 }
 
