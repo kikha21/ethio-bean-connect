@@ -489,6 +489,15 @@ const server = http.createServer(async (req, res) => {
           return redirect(res, '/admin/settings', { 'Set-Cookie': flashCookie('ok', 'Saved. The footer, chat button and form all updated.') });
         }
         if (p === '/admin/members') {
+          /* Making somebody an admin, or taking it back. members.setRole refuses
+             the two ways this locks everybody out - your own admin, and the last
+             one standing - so this only has to carry the answer back. */
+          if (f.do === 'role') {
+            const out = members.setRole(f.id, f.admin === '1', user, ipOf(req));
+            return redirect(res, '/admin/members',
+              { 'Set-Cookie': flashCookie(out.ok ? 'ok' : 'bad', out.message) });
+          }
+
           if (f.do === 'reset') {
             const site = (db.prepare("SELECT value FROM settings WHERE key='site_url'").get() || {}).value ||
                          ('http://localhost:' + PORT);

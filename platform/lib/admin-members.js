@@ -62,6 +62,17 @@ function page(user, flash, filter, resetLink) {
           '<button class="btn btn-ghost btn-sm" type="submit" ' +
             'title="Make a link so they can set a new password">Password link</button>' +
         '</form>' +
+        '<form method="post" action="/admin/members" style="display:inline">' +
+          '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
+          '<input type="hidden" name="id" value="' + m.id + '">' +
+          '<input type="hidden" name="do" value="role">' +
+          '<input type="hidden" name="admin" value="' + (m.role === 'super_admin' ? '0' : '1') + '">' +
+          '<button class="btn btn-ghost btn-sm" type="submit" onclick="return confirm(' +
+            esc(JSON.stringify(m.role === 'super_admin'
+              ? 'Take admin away from ' + (m.company || m.name) + '?'
+              : 'Make ' + (m.company || m.name) + ' an admin? They will see every member’s phone number and email, and can edit or remove any lot.')) +
+          ')">' + (m.role === 'super_admin' ? 'Remove admin' : 'Make admin') + '</button>' +
+        '</form>' +
       '</td></tr>';
   }).join('');
 

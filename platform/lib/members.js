@@ -136,7 +136,7 @@ function all(filter) {
   return db.prepare(
     "SELECT u.*, (SELECT COUNT(*) FROM listings WHERE posted_by=u.id) AS posts," +
     " (SELECT COUNT(*) FROM listings WHERE posted_by=u.id AND status='pending') AS waiting" +
-    " FROM users u WHERE u.role='member'" + where + ' ORDER BY u.created_at DESC'
+    " FROM users u WHERE u.role IN ('member','super_admin')" + where + ' ORDER BY u.created_at DESC'
   ).all();
 }
 
@@ -157,6 +157,42 @@ function setStanding(id, f, actor, ip) {
   return { ok: true };
 }
 
+/* Handing over the keys.
+
+   An admin is not a senior member: they see every member's phone number
+   and email, can edit or remove any lot, change what the site says, and
+   make other admins. There is no smaller version of it here, so this is
+   all or nothing and worth being deliberate about.
+
+   Two things are refused rather than trusted to care. Nobody can take
+   their own admin away, because the usual way to lose a site is to do
+   that and then find nobody else can let you back in. And the last admin
+   cannot be demoted by anyone, for the same reason from the other side. */
+function setRole(id, makeAdmin, actor, ip) {
+  const u = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
+  if (!u) return { ok: false, message: 'That account no longer exists.' };
+
+  if (String(u.id) === String(actor.id) && !makeAdmin) {
+    return { ok: false, message: 'You cannot remove your own admin. Ask the other admin to do it.' };
+  }
+  if (!makeAdmin) {
+    const others = db.prepare("SELECT COUNT(*) n FROM users WHERE role = 'super_admin' AND id <> ?").get(u.id).n;
+    if (others === 0) return { ok: false, message: 'That is the only admin left. Make somebody else an admin first.' };
+  }
+
+  const role = makeAdmin ? 'super_admin' : 'member';
+  if (u.role === role) return { ok: true, message: 'Nothing to change.' };
+
+  db.prepare('UPDATE users SET role = ? WHERE id = ?').run(role, u.id);
+  /* every session they hold is ended, so the new powers begin at a fresh
+     sign-in rather than halfway through a page they already had open */
+  db.prepare('DELETE FROM sessions WHERE user_id = ?').run(u.id);
+  log(actor, makeAdmin ? 'made an admin' : 'admin removed', u.company || u.name, u.email, ip);
+  return { ok: true, message: makeAdmin
+    ? (u.company || u.name) + ' is an admin now. They must sign in again.'
+    : (u.company || u.name) + ' is a member again. They must sign in again.' };
+}
+
 module.exports = {
-  join, update, validate, isMember, isAdmin, postsOf, standing, all, setStanding, emailTaken
+  join, update, validate, isMember, isAdmin, postsOf, standing, all, setStanding, emailTaken, setRole
 };
