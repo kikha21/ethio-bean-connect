@@ -224,7 +224,6 @@ html[lang="am"] .mono,html[lang="am"] .lb,html[lang="am"] th{
 .nav-links a:not(.btn):hover{color:var(--text-primary)}
 .nav-links a:not(.btn):hover::after{transform:scaleX(1)}
 
-
 /* only ever visible once the links collapse into the burger */
 .nav-quick{display:none}
 .lang{display:flex;gap:0;border:1px solid var(--border-strong);border-radius:999px;overflow:hidden;flex:0 0 auto}
@@ -734,7 +733,6 @@ html.js #postform.needs-account > *:not(.post-gate){display:none}
 .lot-deals{color:var(--text-secondary);margin-left:.15rem}
 .lot-deals::before{content:"·";margin-right:.35rem}
 
-
 .lot-foot{margin-top:auto;padding-top:.95rem;border-top:1px solid var(--panel-edge);display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
 .tier{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.04em;color:var(--text-secondary)}
 .tier svg{width:15px;height:15px;flex:0 0 15px}
@@ -784,7 +782,6 @@ html.js #postform.needs-account > *:not(.post-gate){display:none}
   color:var(--text-secondary);font-size:var(--t-xs);line-height:1.6;max-width:68ch
 }
 .board-anon svg{width:16px;height:16px;flex:0 0 16px;margin-top:.16rem;color:var(--accent-ink)}
-
 
 /* ORIGINS */
 .origins{margin-top:3rem;display:grid;gap:0}
@@ -1072,7 +1069,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 .launch-btn .x{display:none}
 .launcher.open .launch-btn .c{display:none}
 .launcher.open .launch-btn .x{display:block}
-
 
 /* ============================================================
    THE CHAT WINDOW
@@ -1492,6 +1488,45 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
   </div>
 </section>
 
+<!-- ================= MARKET ================= -->
+<section id="market">
+  <div class="shell">
+    <div class="market-head rise">
+      <div>
+        <h2 class="h2" data-i18n="market.h">Market price</h2>
+      </div>
+      <div class="updated"><span data-i18n="market.updated">Last updated</span> <b id="mkt-date">&mdash;</b></div>
+    </div>
+    <div class="tablewrap rise">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="market.th1">Origin</th>
+            <th data-i18n="market.th2">Grade</th>
+            <th data-i18n="market.th3">Process</th>
+            <th><span data-i18n="market.th4">Level</span> <span class="th-unit" data-i18n="market.thUnit">Faresula / kg</span></th>
+            <th data-i18n="market.th5">Updated</th>
+          </tr>
+        </thead>
+        <!-- real rows, so the table is readable without scripting. JS replaces
+             this wholesale on load and on a language change. -->
+        <tbody id="mkt-body">
+          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="market-note rise" data-i18n="market.note">These are indicative levels, not a quote. Every lot is priced on its own cup, grade and moisture. Ask us and we will confirm the same day.</p>
+  </div>
+</section>
+
 <section id="walls">
   <div class="shell">
     <div class="rise">
@@ -1554,45 +1589,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
         <p data-i18n="how.4p">You agree the price. We stay in it until the coffee moves.</p>
       </article>
     </div>
-  </div>
-</section>
-
-<!-- ================= MARKET ================= -->
-<section id="market">
-  <div class="shell">
-    <div class="market-head rise">
-      <div>
-        <h2 class="h2" data-i18n="market.h">Market price</h2>
-      </div>
-      <div class="updated"><span data-i18n="market.updated">Last updated</span> <b id="mkt-date">&mdash;</b></div>
-    </div>
-    <div class="tablewrap rise">
-      <table>
-        <thead>
-          <tr>
-            <th data-i18n="market.th1">Origin</th>
-            <th data-i18n="market.th2">Grade</th>
-            <th data-i18n="market.th3">Process</th>
-            <th><span data-i18n="market.th4">Level</span> <span class="th-unit" data-i18n="market.thUnit">Faresula / kg</span></th>
-            <th data-i18n="market.th5">Updated</th>
-          </tr>
-        </thead>
-        <!-- real rows, so the table is readable without scripting. JS replaces
-             this wholesale on load and on a language change. -->
-        <tbody id="mkt-body">
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="market-note rise" data-i18n="market.note">These are indicative levels, not a quote. Every lot is priced on its own cup, grade and moisture. Ask us and we will confirm the same day.</p>
   </div>
 </section>
 
@@ -1805,7 +1801,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
           </div>
           <label><span class="lb"><span id="lbl-notes" data-i18n="f.notes">Anything else we should know</span> <span class="opt" data-i18n="f.opt">optional</span></span>
             <textarea name="notes"></textarea></label>
-
 
           <div class="err-summary" id="errsummary" role="alert"></div>
 
@@ -2054,7 +2049,6 @@ var I18N = {
     "e.phone":"በእውነት ልናገኝዎት የምንችልበትን ቁጥር ከአገር ኮድ ጋር ይስጡን።",
     "e.summary":"ይህ ከመላኩ በፊት {n} ነገሮች መስተካከል አለባቸው፦",
     "f.note":"ይህ ዋትስአፕን ዝርዝርዎ ተሞልቶ፣ ወደ እኛ ለመላክ ዝግጁ ሆኖ ይከፍታል።",
-    
     
     "chat.wa":"በዋትስአፕ ያውሩን","chat.call":"ይደውሉልን","chat.email":"ኢሜይል ይላኩ",
     "foot.tag":"የኢትዮጵያ ቡና አቅራቢዎችንና ላኪዎችን እናገናኛለን።",
@@ -3067,7 +3061,6 @@ function setMode(m){
   b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
 });
 setMode('have');
-
 
 var form = document.getElementById('postform');
 var success = document.getElementById('success');
