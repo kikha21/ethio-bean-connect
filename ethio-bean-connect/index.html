@@ -552,6 +552,13 @@ td.p.ask{color:var(--text-secondary)}
    where somebody has just seen what other people are offering and decided
    to join them - not in a bar they scrolled past before they knew what
    this was. On a narrow screen it goes full width under the heading. */
+/* The form is not something to scroll into. It waits behind the button in
+   the marketplace, where somebody has just decided they want it.
+
+   Folded only when scripting is alive: the class on <html> is set by the
+   page script, so a reader with no javascript - or one whose script failed
+   - still gets the form rather than a page with no way to post at all. */
+html.js #post.folded{display:none}
 .board-cta{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 @media (max-width:720px){
   .board-cta{width:100%;margin-top:.4rem}
@@ -640,6 +647,16 @@ td.p.ask{color:var(--text-secondary)}
 }
 .board-group-empty[hidden]{display:none}
 .board-empty[hidden]{display:none}
+/* Not a link and not a primary action: it is a way of asking for more of
+   what is already there, so it reads as part of the list rather than
+   competing with the lots above it. */
+.board-more{grid-column:1/-1;justify-self:center;margin-top:.6rem;
+  padding:.8rem 1.5rem;border:1px dashed var(--edge-ui);border-radius:999px;
+  background:transparent;color:var(--text-secondary);cursor:pointer;
+  font-family:var(--f-body);font-size:var(--t-body);min-height:44px;
+  transition:border-color .3s var(--ease),color .3s var(--ease)}
+.board-more:hover{border-color:var(--accent);color:var(--text-primary)}
+.board-more[hidden]{display:none}
 .board-empty{margin-top:1.6rem}
 
 .board-grid{display:grid;gap:1rem;grid-template-columns:1fr}
@@ -1536,7 +1553,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
   <div class="shell">
     <div class="market-head rise">
       <div>
-        <h2 class="h2" data-i18n="market.h">What lots are moving at.</h2>
+        <h2 class="h2" data-i18n="market.h">Market price</h2>
       </div>
       <div class="updated"><span data-i18n="market.updated">Last updated</span> <b id="mkt-date">&mdash;</b></div>
     </div>
@@ -1633,7 +1650,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
 </section>
 
 <!-- ================= THE FORM ================= -->
-<section id="post" class="plate plate--post">
+<section id="post" class="plate plate--post folded">
   <div class="shell">
     <div class="rise">
       <h2 class="h2" id="posth" data-i18n="post.h">Post your coffee.</h2>
@@ -2199,6 +2216,7 @@ I18N.en['nav.board']         = "Marketplace";
 I18N.en['board.h']           = "Marketplace";
 I18N.en['board.lede']        = "Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.";
 I18N.en['board.open']        = "open";
+I18N.en['board.more']  = 'Show the other {n}';
 I18N.en['board.all']         = "Everything";
 I18N.en['board.offers']      = "Coffee for sale";
 I18N.en['board.needs']       = "Coffee wanted";
@@ -2792,6 +2810,17 @@ function qtyPhrase(){
   var kind    = 'all';
   var market  = 'export';
 
+  /* Ten lots is a long scroll before a visitor reaches anything else, and
+     the first few are the newest. Three are shown and the rest wait behind
+     a button that says how many there are, so nobody has to guess whether
+     pressing it is worth it.
+
+     Held per market, because the two boards are separate lists: opening the
+     export one should not also open local behind a tab nobody has pressed. */
+  var CAP = 3;
+  var opened = {};
+  var moreBtns = {};
+
   function cardsIn(g){ return [].slice.call(g.querySelectorAll('.lot')); }
 
   /* the searchable text is built once per card and cached, so typing does
@@ -2821,8 +2850,10 @@ function qtyPhrase(){
         var sideOk = (kind === 'all') || (c.getAttribute('data-kind') === kind);
         var textOk = !q || haystack(c).indexOf(q) !== -1;
         var on = sideOk && textOk;
-        c.hidden = !on;
+        /* counted before the cap, so the tab still says how many match */
         if (on) shown++;
+        var capped = !opened[m] && shown > CAP;
+        c.hidden = !on || capped;
       });
       heldAll += cards.length;
       if (m === market){ shownHere = shown; heldHere = cards.length; }
@@ -2830,6 +2861,27 @@ function qtyPhrase(){
       g.hidden = (m !== market);
       var none = g.querySelector('.board-group-empty');
       if (none) none.hidden = shown > 0;
+
+      /* the button that lets the rest through, made once and then kept in
+         step: it says how many are still held back, and it goes away when
+         there is nothing behind it - after a search that narrows to two, or
+         once it has been pressed. */
+      var more = moreBtns[m];
+      if (!more) {
+        more = document.createElement("button");
+        more.type = "button";
+        more.className = "board-more";
+        more.addEventListener("click", function(){ opened[m] = true; apply(); });
+        g.appendChild(more);
+        moreBtns[m] = more;
+      }
+      var held = shown - CAP;
+      if (opened[m] || held <= 0) {
+        more.hidden = true;
+      } else {
+        more.hidden = false;
+        more.textContent = t("board.more").replace("{n}", String(held));
+      }
 
       var tab = mkbar ? mkbar.querySelector('[data-market="' + m + '"] [data-count]') : null;
       if (tab) tab.textContent = String(shown);
@@ -3480,6 +3532,9 @@ function renderFooterContact(){
   if (!form || !post) return;
 
   function reveal(){
+    /* unfold before anything measures it: a display:none section has no
+       height, so scrolling to it would land on the wrong place */
+    post.classList.remove("folded");
     /* the entrance observer may not have reached this section yet, and a
        form that fades in under the cursor is worse than one already there */
     [].forEach.call(post.querySelectorAll('.rise'), function(el){
@@ -3528,6 +3583,15 @@ function renderFooterContact(){
     e.preventDefault();
     jump();
   });
+
+  /* Somebody can arrive at the form without pressing anything: a link
+     that ends in #post, a bookmark, the back button. Folded, they would
+     land on a page that appears to have nothing on it. */
+  function openIfAsked(){
+    if (location.hash === "#post") jump();
+  }
+  openIfAsked();
+  window.addEventListener("hashchange", openIfAsked);
 })();
 
 /* ============================================================
