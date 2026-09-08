@@ -548,6 +548,15 @@ td.p.ask{color:var(--text-secondary)}
    ============================================================ */
 .board-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.4rem}
 .board-count{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.07em;text-transform:uppercase;color:var(--text-secondary);white-space:nowrap}
+/* The only way into the form now. It sits with the board because that is
+   where somebody has just seen what other people are offering and decided
+   to join them - not in a bar they scrolled past before they knew what
+   this was. On a narrow screen it goes full width under the heading. */
+.board-cta{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+@media (max-width:720px){
+  .board-cta{width:100%;margin-top:.4rem}
+  .board-cta .btn{flex:1 1 auto;justify-content:center}
+}
 
 .board-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.9rem}
 .board-filters button{
@@ -1166,7 +1175,8 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
     border-top:1px solid var(--panel-edge);
     transform:translateY(115%);transition:transform .45s var(--ease);
   }
-  .mobile-cta{display:flex;gap:.6rem;align-items:center}
+  /* only the chat button remains here, so it no longer needs to share */
+  .mobile-cta{display:flex;justify-content:flex-end}
   .mobile-cta.on{transform:none}
   .mobile-cta .btn{flex:1 1 auto}
   .mc-chat{
@@ -1313,7 +1323,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
     <a href="#faq" data-i18n="nav.faq">Questions</a>
     <a href="/signin" id="navin" data-i18n="nav.in" hidden>Sign in</a>
     <a href="/my" id="navme" data-i18n="nav.me" hidden>Profile</a>
-    <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your coffee</a>
   </div>
   <a class="nav-quick" href="#board" data-i18n="nav.board">Marketplace</a>
   <div class="lang" role="group" aria-label="Language">
@@ -1345,10 +1354,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
       <div class="band e-rise" data-a="0.72" data-b="1" data-seed="31">
         <h2 data-split data-i18n="hero.b3">Every lot has a buyer.</h2>
         <p class="sub" data-i18n="hero.b3sub">We find them. You keep trading.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your coffee</a>
-          <a class="btn btn-ghost" href="#post" data-tab="need" data-i18n="cta.need">Looking for coffee instead?</a>
-        </div>
       </div>
     </div>
 
@@ -1368,10 +1373,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
     <div class="sh-inner shell">
       <h1 data-i18n="hero.b3">Every lot has a buyer.</h1>
       <p class="sub" data-i18n="static.sub">Ethio Bean Connect puts Ethiopian coffee suppliers in front of the exporters who need their lots.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your coffee</a>
-        <a class="btn btn-ghost" href="#post" data-tab="need" data-i18n="cta.need">Looking for coffee instead?</a>
-      </div>
     </div>
   </div>
 </section>
@@ -1394,6 +1395,10 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
         <p class="lede" data-i18n="board.lede">Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.</p>
       </div>
       <div class="board-count"><b id="board-count">0</b> <span data-i18n="board.open">open</span></div>
+      <div class="board-cta">
+        <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your coffee</a>
+        <a class="btn btn-ghost" href="#post" data-tab="need" data-i18n="cta.need">Looking for coffee instead?</a>
+      </div>
     </div>
 
     <div class="board-markets rise" id="board-markets" role="tablist" aria-label="Which market">
@@ -1825,7 +1830,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
           <li><a href="#how" data-i18n="nav.how">How it works</a></li>
           <li><a href="#checks" data-i18n="nav.checks">What we check</a></li>
           <li><a href="#faq" data-i18n="nav.faq">Questions</a></li>
-          <li><a href="#post" data-i18n="cta.post">Post your coffee</a></li>
         </ul>
       </div>
       <div>
@@ -1852,7 +1856,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
       <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.6-.7L3 21l1.9-4.9A8.3 8.3 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/>
     </svg>
   </button>
-  <a class="btn btn-primary" href="#post" data-i18n="cta.post">Post your coffee</a>
 </div>
 
 <div class="launcher" id="launcher" hidden>
