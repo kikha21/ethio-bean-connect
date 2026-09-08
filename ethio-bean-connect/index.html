@@ -559,6 +559,15 @@ td.p.ask{color:var(--text-secondary)}
    page script, so a reader with no javascript - or one whose script failed
    - still gets the form rather than a page with no way to post at all. */
 html.js #post.folded{display:none}
+/* Asking somebody to fill in nine fields and then telling them they need
+   an account is the wrong order: the work is done and thrown away. With
+   no account the form is not shown at all - just the two buttons that
+   lead to one.
+
+   Behind html.js for the same reason as the fold: without scripting we
+   cannot know who is reading, and a visitor who really is signed in must
+   not be shown a locked page. The server refuses either way. */
+html.js #postform.needs-account > *:not(.post-gate){display:none}
 .board-cta{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 @media (max-width:720px){
   .board-cta{width:100%;margin-top:.4rem}
@@ -2181,6 +2190,7 @@ I18N.en['board.sampleAlt'] = "Sample of this coffee";
 I18N.en['nav.in'] = "Sign in";
 I18N.en['nav.me'] = "Profile";
 I18N.en['f.gateIn'] = "Sign in";
+I18N.en['f.adminView'] = "You are signed in as the admin. This is the form a supplier sees; put lots up from the admin screen instead.";
 I18N.en['f.postingAs'] = "Posting as";
 I18N.en['f.okchat'] = "Chat with us about this";
 I18N.en['f.okchatMsg'] = "This is about my post";
@@ -3627,6 +3637,7 @@ function renderFooterContact(){
   var navIn = document.getElementById('navin');
 
   function signedIn(me){
+    form.classList.remove("needs-account");
     if (navMe) navMe.hidden = false;
     if (navIn) navIn.hidden = true;
     gate.hidden = true;
@@ -3647,19 +3658,37 @@ function renderFooterContact(){
     }
   }
 
+  /* The admin has an account, so the gate does not apply to them, but a lot
+     they sent would have no member behind it - which is exactly the orphan
+     row we had to clean off the board. They see what a supplier sees and
+     send nothing. */
+  function asAdmin(){
+    if (navMe) navMe.hidden = false;
+    if (navIn) navIn.hidden = true;
+    form.classList.remove("needs-account");
+    gate.hidden = true;
+    var send = form.querySelector("button[type=submit]");
+    if (send) send.disabled = true;
+    if (as) {
+      as.hidden = false;
+      as.textContent = t("f.adminView");
+    }
+  }
+
   function signedOut(){
     if (navMe) navMe.hidden = true;
     if (navIn) navIn.hidden = false;
     gate.hidden = false;
     if (as) as.hidden = true;
-    /* the form stays readable, but sending is not offered */
+    /* the fields are put away rather than left to be filled in vain */
+    form.classList.add("needs-account");
     var send = form.querySelector('button[type=submit]');
     if (send) send.disabled = true;
   }
 
   fetch('/me', {headers:{'Accept':'application/json'}})
     .then(function(r){ return r.json(); })
-    .then(function(me){ (me && me.in && !me.admin) ? signedIn(me) : signedOut(); })
+    .then(function(me){ me && me.in ? (me.admin ? asAdmin() : signedIn(me)) : signedOut(); })
     .catch(function(){ /* offline: leave the form as it is rather than blocking it */ });
 })();
 

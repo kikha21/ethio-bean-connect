@@ -621,11 +621,16 @@ const server = http.createServer(async (req, res) => {
     /* who is reading, so the form can ask for the coffee and not for the
        four things the account already knows */
     if (p === '/me') {
+      /* Who is reading is not a cacheable fact. With no header a browser is
+         free to keep this, and it does: a visitor who arrives signed out gets
+         {in:false} stored, signs in, comes back to the page and is told they
+         have no account - because the page never asks again. The whole gate
+         hangs off this answer, so it must be the current one. */
       const who = auth.userForSession(cookies(req).ebc_session);
       return send(res, 200, 'application/json; charset=utf-8', JSON.stringify(
         who ? { in: true, admin: members.isAdmin(who), name: who.name,
                 company: who.company, side: who.side }
-            : { in: false }));
+            : { in: false }), { 'Cache-Control': 'no-store, private' });
     }
 
     /* ---- suppliers and exporters: their own way in ---- */
