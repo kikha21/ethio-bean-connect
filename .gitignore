@@ -2,7 +2,12 @@ node_modules/
 platform/data/*.db
 platform/data/*.db-wal
 platform/data/*.db-shm
+# Connection churn from cloudflared, rewritten every few seconds while a
+# tunnel is up. It is a diagnostic to read when the site is unreachable,
+# never a record of anything, and it buried 806 lines of noise in a diff
+# that was otherwise empty.
 review/platform.log
+review/tunnel.log
 _impeccable/
 
 # The seed database. It is a real snapshot: names, phone numbers and email
