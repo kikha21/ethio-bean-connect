@@ -2135,14 +2135,8 @@ var I18N = {
       "nav.board":"የገበያ ቦታ",
       "nav.in":"ግባ",
       "nav.me":"መገለጫ",
-      "rating.bronze":"ነሐስ",
-      "rating.gold":"ወርቅ",
-      "rating.silver":"ብር",
       "supply.horizontal":"አግድም",
       "supply.vertical":"ቁመት",
-      "tier.trusted":"የታመነ",
-      "tier.unverified":"ያልተረጋገጠ",
-      "tier.verified":"የተረጋገጠ"
   }
 };
 /* build the English dictionary from the markup itself, so it is never out of sync */
@@ -2691,7 +2685,7 @@ function marketAge(iso){
   if (isNaN(d)) return {text:iso, stale:false};
   var days = Math.floor((Date.now() - d.getTime()) / 86400000);
   return {
-    text: d.toLocaleDateString(lang === "am" ? "am-ET" : "en-GB", {day:"numeric", month:"short"}),
+    text: d.toLocaleDateString("en-GB", {day:"numeric", month:"short"}),
     stale: days >= STALE_DAYS
   };
 }
@@ -2718,7 +2712,7 @@ function renderMarket(){
   if (d) {
     var dt = new Date(marketData.updated + 'T00:00:00');
     d.textContent = isNaN(dt) ? marketData.updated
-      : dt.toLocaleDateString(lang === 'am' ? 'am-ET' : 'en-GB', {day:'numeric', month:'short', year:'numeric'});
+      : dt.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
   }
 }
 renderMarket();
