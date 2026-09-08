@@ -21,7 +21,7 @@ function when(iso) {
   return isNaN(d) ? esc(iso) : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-function page(user, flash, filter, resetLink) {
+function page(user, flash, filter, resetLink, invites, inviteLink) {
   const rows = members.all(filter);
   const n = f => members.all(f).length;
 
@@ -35,7 +35,7 @@ function page(user, flash, filter, resetLink) {
       ? '<span class="badge ' + (RATINGS[st.rating].key === 'gold' ? 'ex' : 'draft') + '">' +
         esc(RATINGS[st.rating].label) + '</span>' : '';
     return '<tr>' +
-      '<td><b>' + esc(m.company || m.name) + '</b><br><span class="dim">' + esc(m.name) + '</span></td>' +
+      '<td><b>' + esc(m.company || m.name) + '</b>' + (m.role === 'super_admin' ? ' <span class="badge ex">Owner</span>' : m.role === 'helper' ? ' <span class="badge new">Helper</span>' : '') + '<br><span class="dim">' + esc(m.name) + '</span></td>' +
       '<td><span class="kind ' + (m.side === 'buyer' ? 'need' : 'offer') + '">' +
         esc(m.side === 'seller' ? 'Sells' : m.side === 'buyer' ? 'Buys' : 'Both') + '</span></td>' +
       '<td class="private">' + esc(m.email) + '<br><span class="dim">' + esc(m.phone) +
@@ -66,12 +66,12 @@ function page(user, flash, filter, resetLink) {
           '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
           '<input type="hidden" name="id" value="' + m.id + '">' +
           '<input type="hidden" name="do" value="role">' +
-          '<input type="hidden" name="admin" value="' + (m.role === 'super_admin' ? '0' : '1') + '">' +
+          '<input type="hidden" name="admin" value="' + (m.role === 'helper' ? '0' : '1') + '">' +
           '<button class="btn btn-ghost btn-sm" type="submit" onclick="return confirm(' +
-            esc(JSON.stringify(m.role === 'super_admin'
-              ? 'Take admin away from ' + (m.company || m.name) + '?'
-              : 'Make ' + (m.company || m.name) + ' an admin? They will see every member’s phone number and email, and can edit or remove any lot.')) +
-          ')">' + (m.role === 'super_admin' ? 'Remove admin' : 'Make admin') + '</button>' +
+            esc(JSON.stringify(m.role === 'helper'
+              ? 'Stop ' + (m.company || m.name) + ' helping? They lose the admin straight away.'
+              : 'Let ' + (m.company || m.name) + ' help run the board? They will be able to answer the chat, look after the lots and keep the prices. They will NOT see the member list or the settings.')) +
+          ')">' + (m.role === 'helper' ? 'Stop helping' : 'Let them help') + '</button>' +
         '</form>' +
       '</td></tr>';
   }).join('');
@@ -95,6 +95,32 @@ function page(user, flash, filter, resetLink) {
       (resetLink ? '<div class="flash ok"><b>A link for ' + esc(resetLink.who) + '.</b> ' +
         'Send it to them however you already talk. It works once and stops working in an hour.' +
         '<br><code class="resetlink">' + esc(resetLink.link) + '</code></div>' : '') +
+      /* Two ways to hand out the work: pick somebody already here, or
+         send a link to somebody who is not. The second is for the person
+         you have on WhatsApp and not on the board. */
+      '<div class="card" style="margin-bottom:1.2rem">' +
+        '<b>Somebody to help run the board</b>' +
+        '<p class="lede" style="margin:.4rem 0 .9rem">A helper can answer the chat, look after the lots and keep the market prices. ' +
+        'They cannot see this member list, change the site text or the contact details, and cannot appoint anybody. ' +
+        'Use the button on a row for somebody already here, or send a link to somebody who is not.</p>' +
+        '<form method="post" action="/admin/members" class="standing-form">' +
+          '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
+          '<input type="hidden" name="do" value="invite">' +
+          '<input type="text" name="note" placeholder="Who is it for? For your own notes" size="30">' +
+          '<button class="btn btn-primary btn-sm" type="submit">Make an invitation link</button>' +
+        '</form>' +
+        (inviteLink ? '<div class="flash ok" style="margin-top:.9rem"><b>Send this to them.</b> ' +
+          'It works once and stops working in two days.<br><code class="resetlink">' + esc(inviteLink) + '</code></div>' : '') +
+        ((invites && invites.length) ? '<p class="dim" style="margin:.9rem 0 .3rem">Waiting to be accepted:</p>' +
+          invites.map(function(i){
+            return '<form method="post" action="/admin/members" style="display:block;margin:.3rem 0">' +
+              '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
+              '<input type="hidden" name="do" value="uninvite">' +
+              '<input type="hidden" name="id" value="' + i.id + '">' +
+              '<span class="dim mono">' + esc(i.note || '(no name)') + ' · until ' + when(i.expires_at) + '</span> ' +
+              '<button class="btn btn-ghost btn-sm" type="submit">Cancel it</button></form>';
+          }).join('') : '') +
+      '</div>' +
       '<div class="pills">' + tab('', 'Everyone', n('')) + tab('seller', 'Sellers', n('seller')) +
         tab('buyer', 'Buyers', n('buyer')) + tab('unverified', 'Not yet verified', n('unverified')) +
       '</div>' + table

@@ -14,6 +14,7 @@ const publicPost = require('./lib/public-post');
 const chat = require('./lib/chat');
 const members = require('./lib/members');
 const reset = require('./lib/reset');
+const invite = require('./lib/invite');
 const photo = require('./lib/photo');
 const mail = require('./lib/mail');
 const memberPages = require('./lib/member-pages');
@@ -340,6 +341,7 @@ ${ok
 }
 
 let lastResetLink = null;
+let lastInviteLink = null;
 
 const server = http.createServer(async (req, res) => {
   let url;
@@ -396,6 +398,15 @@ const server = http.createServer(async (req, res) => {
     if (p.startsWith('/admin')) {
       if (!hasAdmin()) return redirect(res, '/setup');
       if (!user) return redirect(res, '/admin/login');
+
+      /* A helper is stopped here, at the address, not by leaving the link out
+         of the menu. Hiding a page is decoration: the address is guessable and
+         the form posts to it either way. Checked on GET and POST alike, before
+         anything reads the body. */
+      if (!members.mayReach(user, p)) {
+        return redirect(res, '/admin', { 'Set-Cookie': flashCookie('bad',
+          'That part is for the owner of this account. Ask them if you need it.') });
+      }
       const flash = takeFlash(req, res);
 
       if (req.method === 'POST') {
@@ -492,6 +503,18 @@ const server = http.createServer(async (req, res) => {
           /* Making somebody an admin, or taking it back. members.setRole refuses
              the two ways this locks everybody out - your own admin, and the last
              one standing - so this only has to carry the answer back. */
+          if (f.do === 'invite') {
+            const site = (db.prepare("SELECT value FROM settings WHERE key='site_url'").get() || {}).value ||
+                         ('http://localhost:' + PORT);
+            const made = invite.make(user, f.note, site, ipOf(req));
+            lastInviteLink = { link: made.link, at: Date.now() };
+            return redirect(res, '/admin/members');
+          }
+          if (f.do === 'uninvite') {
+            const out = invite.cancel(f.id, user, ipOf(req));
+            return redirect(res, '/admin/members',
+              { 'Set-Cookie': flashCookie(out.ok ? 'ok' : 'bad', out.message) });
+          }
           if (f.do === 'role') {
             const out = members.setRole(f.id, f.admin === '1', user, ipOf(req));
             return redirect(res, '/admin/members',
@@ -575,7 +598,11 @@ const server = http.createServer(async (req, res) => {
         /* shown once, to whoever asked for it, and only for a few minutes */
         const link = (lastResetLink && Date.now() - lastResetLink.at < 300e3) ? lastResetLink : null;
         lastResetLink = null;
-        return html(res, 200, adminMembers.page(user, flash, url.searchParams.get('show') || '', link));
+        /* the link is long, so it goes in the page rather than a cookie, and
+           it is shown once then forgotten */
+        const inviteLink = (lastInviteLink && Date.now() - lastInviteLink.at < 300e3) ? lastInviteLink.link : null;
+        lastInviteLink = null;
+        return html(res, 200, adminMembers.page(user, flash, url.searchParams.get('show') || '', link, invite.outstanding(), inviteLink));
       }
       if (p === '/admin/chat')
         return html(res, 200, adminChat.page(user, flash, url.searchParams.get('id'),
@@ -683,6 +710,25 @@ const server = http.createServer(async (req, res) => {
          not something a form should be willing to tell a stranger */
       if (out.adminLink) invalidate();
       return html(res, 200, memberPages.forgotPage(true, ''));
+    }
+
+    /* An invitation to help run the board. Opening it only shows the page;
+       accepting is the POST behind the button, so a link preview cannot
+       spend somebody's invitation before they have read it. */
+    if (p === '/invite') {
+      const who = auth.userForSession(cookies(req).ebc_session);
+      if (req.method !== 'POST') {
+        const token = String(url.searchParams.get('t') || '');
+        if (!invite.check(token)) return html(res, 200, memberPages.invitePage("dead"));
+        if (!who) return html(res, 200, memberPages.invitePage("needAccount"));
+        return html(res, 200, memberPages.invitePage("ready", who, token));
+      }
+      const f = await body(req);
+      const out = invite.accept(f.t, who, ipOf(req));
+      if (out.needAccount) return html(res, 200, memberPages.invitePage("needAccount"));
+      if (!out.ok) return html(res, 200, memberPages.invitePage("dead"));
+      return redirect(res, '/signin', { 'Set-Cookie': flashCookie('ok',
+        'You can help run the board now. Sign in again to begin.') });
     }
 
     if (p === '/reset') {

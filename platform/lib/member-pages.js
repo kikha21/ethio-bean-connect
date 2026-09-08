@@ -270,4 +270,37 @@ function resetPage(token, errors, dead) {
   });
 }
 
-module.exports = { joinPage, signinPage, myPage, forgotPage, resetPage, page, esc };
+/* ---------------- an invitation to help run the board ---------------- */
+/* Accepting is a POST behind a button, never the act of opening the link.
+   These are sent on WhatsApp, and WhatsApp fetches a link to draw its
+   preview card - a GET that changed anything would be spent by the
+   preview before the person ever saw it. */
+function invitePage(state, user, token) {
+  if (state === "dead") {
+    return page({ title: "Invitation", body:
+      '<h1>That invitation is finished</h1>' +
+      '<p class="lede">It has been used already, or it has expired. Ask for another one.</p>' +
+      '<p class="foot"><a href="/">Back to the site</a></p>' });
+  }
+  if (state === "needAccount") {
+    return page({ title: "Invitation", body:
+      '<h1>You have been invited to help</h1>' +
+      '<p class="lede">You will be able to answer the chat, look after the lots on the board and keep the market prices. ' +
+      'First you need an account, then open this link again.</p>' +
+      '<div class="card"><a class="btn btn-primary" href="/join">Create an account</a> ' +
+      '<a class="btn btn-ghost" href="/signin">Sign in</a></div>' +
+      '<p class="foot">Come back to the same link once you are in.</p>' });
+  }
+  return page({ title: "Invitation", body:
+    '<h1>Help run the board</h1>' +
+    '<p class="lede">Signed in as <b>' + esc(user.company || user.name) + '</b>. ' +
+    'Accepting lets you answer the chat, look after the lots and keep the market prices. ' +
+    'It does not give you the member list or the site settings.</p>' +
+    '<form method="post" action="/invite"><div class="card">' +
+    '<input type="hidden" name="t" value="' + esc(token) + '">' +
+    '<button class="btn btn-primary" type="submit">Accept</button>' +
+    '</div></form>' +
+    '<p class="foot">You will be asked to sign in again afterwards.</p>' });
+}
+
+module.exports = { joinPage, invitePage, signinPage, myPage, forgotPage, resetPage, page, esc };

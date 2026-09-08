@@ -108,7 +108,26 @@ function update(id, f, ip) {
 }
 
 const isMember = u => !!u && u.role === 'member';
-const isAdmin  = u => !!u && u.role === 'super_admin';
+/* Two kinds of admin.
+
+   The owner is the account that set this up: they hold the member list,
+   the words on the site, the contact details and the power to appoint.
+
+   A helper runs the board day to day - the chat, the lots, the prices.
+   That is the work there is a lot of, and it is the work that does not
+   need somebody's phone number or the ability to lock the owner out.
+
+   isAdmin answers "may they into the admin at all". isOwner answers "may
+   they do the things that cannot be undone by the person they were done
+   to". Anything dangerous asks the second one. */
+const isOwner  = u => !!u && u.role === 'super_admin';
+const isHelper = u => !!u && u.role === 'helper';
+const isAdmin  = u => isOwner(u) || isHelper(u);
+
+/* what a helper may not reach, by address */
+const OWNER_ONLY = ['/admin/members', '/admin/content', '/admin/settings', '/admin/activity'];
+const mayReach = (u, path) =>
+  isOwner(u) || (isHelper(u) && !OWNER_ONLY.some(p => path === p || path.indexOf(p + '/') === 0));
 
 /* what a member has put up, newest first */
 function postsOf(id) {
@@ -194,5 +213,5 @@ function setRole(id, makeAdmin, actor, ip) {
 }
 
 module.exports = {
-  join, update, validate, isMember, isAdmin, postsOf, standing, all, setStanding, emailTaken, setRole
+  join, update, validate, isMember, isAdmin, postsOf, standing, all, setStanding, emailTaken, setRole, isOwner, isHelper, mayReach, OWNER_ONLY
 };

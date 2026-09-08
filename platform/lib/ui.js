@@ -194,6 +194,10 @@ label.check span{font-weight:600;font-size:.93rem}
 
 function layout({ title, user, active, body, flash }) {
   /* the badge is read here rather than passed in, so every page shows it */
+  /* the four owner-only tabs are left out for a helper, so they are not
+     shown doors that will turn them away */
+  const owner = user && user.role === 'super_admin';
+  
   let waiting = 0;
   try { waiting = require('./chat').waiting(); } catch (e) {}
   const tab = (href, label, id) =>
@@ -211,11 +215,11 @@ ${user ? `<header class="top"><div class="shell">
     ${tab('/admin', 'Overview', 'home')}
     ${tab('/admin/chat', 'Chat', 'chat')}${waiting ? `<span class="navdot">${waiting}</span>` : ''}
     ${tab('/admin/marketplace', 'Marketplace', 'board')}
-    ${tab('/admin/members', 'Members', 'members')}
+    ${owner ? `${tab('/admin/members', 'Members', 'members')}` : ""}
     ${tab('/admin/prices', 'Market prices', 'prices')}
-    ${tab('/admin/content', 'Site text', 'content')}
-    ${tab('/admin/settings', 'Contact details', 'settings')}
-    ${tab('/admin/activity', 'Activity', 'activity')}
+    ${owner ? `${tab('/admin/content', 'Site text', 'content')}` : ""}
+    ${owner ? `${tab('/admin/settings', 'Contact details', 'settings')}` : ""}
+    ${owner ? `${tab('/admin/activity', 'Activity', 'activity')}` : ""}
   </nav>
   <span class="who"><a href="/" target="_blank" rel="noopener">View site</a>
   <form method="post" action="/admin/logout" style="display:inline">
