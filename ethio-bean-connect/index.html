@@ -3679,6 +3679,15 @@ function renderFooterContact(){
   });
   sync();
 
+  /* A browser puts the old values back into a form when the page is
+     reloaded, and it does it after this script has already run. Deciding
+     once at startup therefore reads empty fields and hides the picture row,
+     while the type select says Local right there on screen. Asked again
+     after the restore, and again when the page is brought back from the
+     back button, which restores the same way. */
+  window.addEventListener("load", sync);
+  window.addEventListener("pageshow", sync);
+
   function shrink(file){
     return new Promise(function(resolve, reject){
       var url = URL.createObjectURL(file);
