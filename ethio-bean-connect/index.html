@@ -789,6 +789,26 @@ td.p.ask{color:var(--text-secondary)}
   margin-right:.8rem;padding:.45rem .9rem;border:0;border-radius:7px;
   background:var(--accent);color:var(--accent-ink);font-family:var(--f-body);
   font-weight:600;cursor:pointer}
+/* Two ways to the same picture, given equal weight. A supplier at a
+   washing station has the beans in front of them and the camera is the
+   short road; one who photographed them earlier wants the gallery. */
+.shot-pick{display:flex;gap:.6rem;flex-wrap:wrap}
+.shot-btn{display:inline-flex;align-items:center;gap:.5rem;
+  padding:.75rem 1.1rem;border:1px dashed var(--border-strong);border-radius:12px;
+  background:transparent;color:var(--text-primary);font-family:var(--f-body);
+  font-size:var(--t-body);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.shot-btn svg{width:19px;height:19px;flex:0 0 auto;color:var(--accent)}
+.shot-btn:hover{border-color:var(--accent);background:rgba(255,255,255,.04)}
+.shot-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shot-btn[hidden]{display:none}
+/* Whether to offer the camera is a question about the device, and a
+   device can answer differently later - a tablet gains a mouse, a phone
+   is rotated, a browser reports late. Reading it once in script gets it
+   wrong in all three cases, so the stylesheet decides and keeps deciding.
+   On a laptop capture is ignored and this button would open the same file
+   dialog as the other, so it is not offered there. */
+.shot-btn--cam{display:none}
+@media (pointer: coarse){ .shot-btn--cam{display:inline-flex} }
 .shot-err{display:block;margin-top:.5rem;color:var(--danger,#C4443A);font-size:var(--t-xs)}
 .shot-preview{margin-top:.8rem;position:relative;max-width:280px}
 .shot-preview img{width:100%;border-radius:10px;display:block;
@@ -1726,7 +1746,24 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
           </div>
           <div class="row shot-row" id="shotrow" hidden>
             <label><span class="lb"><span data-i18n="f.photo">A picture of your sample</span> <span class="opt" data-i18n="f.opt">optional</span></span>
-              <input type="file" name="photofile" id="photofile" accept="image/jpeg,image/png,image/webp">
+              <div class="shot-pick">
+                <button type="button" class="shot-btn shot-btn--cam" id="shotcam">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M3 8.5h3.2l1.4-2h7.8l1.4 2H20a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"/>
+                    <circle cx="12" cy="13" r="3.4"/></svg>
+                  <span data-i18n="f.photoTake">Take a picture</span>
+                </button>
+                <button type="button" class="shot-btn" id="shotpick">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M4 5.5h5l1.6 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1z"/></svg>
+                  <span data-i18n="f.photoPick">Choose a picture</span>
+                </button>
+              </div>
+              <!-- Two inputs rather than one. capture tells a phone to open its camera
+                   straight away instead of the gallery, and it cannot be switched on and
+                   off on a single input reliably once a browser has read it. -->
+              <input type="file" name="photofile" id="photofile" accept="image/jpeg,image/png,image/webp" hidden>
+              <input type="file" name="photocam" id="photocam" accept="image/*" capture="environment" hidden>
               <span class="fhint" data-i18n="f.photoHint">Local coffee has no grading certificate, so a buyer in Addis judges it by eye. One clear photograph of the beans in daylight does more than any description. It is made smaller on your phone before sending, so it will not eat your data.</span>
               <span class="shot-err" id="shoterr" hidden></span>
               <div class="shot-preview" id="shotpreview" hidden>
@@ -2030,6 +2067,8 @@ I18N.en['f.gateH'] = "You need an account to post";
 I18N.en['f.gateP'] = "It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.";
 I18N.en['f.gateJoin'] = "Create an account";
 I18N.en['market.th5'] = "Updated";
+I18N.en['f.photoTake']   = "Take a picture";
+I18N.en['f.photoPick']   = "Choose a picture";
 I18N.en['f.photo'] = "A picture of your sample";
 I18N.en['f.photoHint'] = "Local coffee has no grading certificate, so a buyer in Addis judges it by eye. One clear photograph of the beans in daylight does more than any description. It is made smaller on your phone before sending, so it will not eat your data.";
 I18N.en['f.photoRemove'] = "Remove";
@@ -3084,6 +3123,7 @@ form.addEventListener('submit', function(e){
      four-megabyte photograph. What goes instead is the small one the
      browser redrew, and only when this lot is bound for the local board. */
   data.delete('photofile');
+    data.delete('photocam');
   var shot = (typeof window.EBC_PHOTO === 'function') ? window.EBC_PHOTO() : null;
   if (shot) data.set('photo', shot);
   var body = [];
@@ -3580,19 +3620,35 @@ function renderFooterContact(){
     });
   }
 
-  input.addEventListener('change', function(){
+  /* One picture, two ways of choosing it. The camera input opens the phone
+     camera and the other opens the gallery, but what happens to the file
+     afterwards must not differ, or one route would quietly skip the size
+     check the other enforces. */
+  function accept(file){
     clearErr();
-    var file = input.files && input.files[0];
     if (!file){ carried = null; prev.hidden = true; return; }
-    if (!/^image\//.test(file.type)) return fail(t('f.photoBad'));
-
+    if (!/^image\//.test(file.type)) return fail(t("f.photoBad"));
     shrink(file).then(function(dataUrl){
-      if (dataUrl.length * 0.75 > MAX_BYTES) return fail(t('f.photoBig'));
+      if (dataUrl.length * 0.75 > MAX_BYTES) return fail(t("f.photoBig"));
       carried = dataUrl;
       img.src = dataUrl;
       prev.hidden = false;
-    }).catch(function(){ fail(t('f.photoBad')); });
-  });
+    }).catch(function(){ fail(t("f.photoBad")); });
+  }
+
+  var cam  = document.getElementById("photocam");
+  var bPick = document.getElementById("shotpick");
+  var bCam  = document.getElementById("shotcam");
+
+  /* which device gets the camera button is decided in the stylesheet */
+
+  if (bPick) bPick.addEventListener("click", function(){ input.click(); });
+  if (bCam)  bCam.addEventListener("click",  function(){ cam.click(); });
+
+  /* whichever was used last wins, and the other is emptied so a stale file
+     cannot be picked up later */
+  input.addEventListener("change", function(){ if (cam) cam.value = ""; accept(input.files && input.files[0]); });
+  if (cam) cam.addEventListener("change", function(){ input.value = ""; accept(cam.files && cam.files[0]); });
 
   if (drop) drop.addEventListener('click', function(){
     carried = null; input.value = ''; prev.hidden = true; clearErr();
