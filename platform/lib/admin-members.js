@@ -62,17 +62,27 @@ function page(user, flash, filter, resetLink, invites, inviteLink) {
           '<button class="btn btn-ghost btn-sm" type="submit" ' +
             'title="Make a link so they can set a new password">Password link</button>' +
         '</form>' +
+        /* not on the owner's own row: they cannot be made a helper and cannot
+           be demoted here, so the button could only ever refuse */
+        (m.role === 'super_admin' ? '' :
         '<form method="post" action="/admin/members" style="display:inline">' +
           '<input type="hidden" name="csrf" value="' + esc(user.csrf) + '">' +
           '<input type="hidden" name="id" value="' + m.id + '">' +
           '<input type="hidden" name="do" value="role">' +
           '<input type="hidden" name="admin" value="' + (m.role === 'helper' ? '0' : '1') + '">' +
-          '<button class="btn btn-ghost btn-sm" type="submit" onclick="return confirm(' +
-            esc(JSON.stringify(m.role === 'helper'
-              ? 'Stop ' + (m.company || m.name) + ' helping? They lose the admin straight away.'
-              : 'Let ' + (m.company || m.name) + ' help run the board? They will be able to answer the chat, look after the lots and keep the prices. They will NOT see the member list or the settings.')) +
-          ')">' + (m.role === 'helper' ? 'Stop helping' : 'Let them help') + '</button>' +
-        '</form>' +
+          /* Asks twice, in the page, rather than through confirm(). A browser stops
+             showing native dialogs the moment somebody ticks "prevent this page from
+             creating more dialogs", and some phone browsers never show them at all -
+             and confirm() then returns false forever, so the form never submits and
+             the button is silently dead with nothing to explain it. That is what
+             happened. This cannot be suppressed by anything. */
+          '<button class="btn btn-ghost btn-sm rolebtn" type="submit"' +
+            ' data-ask="' + esc(m.role === 'helper'
+                ? 'Stop ' + (m.company || m.name) + ' helping?'
+                : 'Let ' + (m.company || m.name) + ' help? They get the chat, the lots and the prices.') + '">' +
+          (m.role === 'helper' ? 'Stop helping' : 'Let them help') + '</button>' +
+        '</form>'
+        ) +
       '</td></tr>';
   }).join('');
 
@@ -123,7 +133,26 @@ function page(user, flash, filter, resetLink, invites, inviteLink) {
       '</div>' +
       '<div class="pills">' + tab('', 'Everyone', n('')) + tab('seller', 'Sellers', n('seller')) +
         tab('buyer', 'Buyers', n('buyer')) + tab('unverified', 'Not yet verified', n('unverified')) +
-      '</div>' + table
+      '</div>' + table +
+      '<script>' +
+      /* First press turns the button into the question. Second press sends it.
+         Anywhere else on the page puts it back, so a stray click cannot leave
+         a loaded button sitting there. */
+      '(function(){' +
+      '  var armed=null;' +
+      '  function disarm(){ if(!armed) return; armed.textContent=armed.dataset.was; armed.classList.remove("arm"); armed=null; }' +
+      '  document.addEventListener("click", function(e){' +
+      '    var b = e.target.closest && e.target.closest(".rolebtn");' +
+      '    if(!b){ disarm(); return; }' +
+      '    if(b===armed) return;' +
+      '    e.preventDefault();' +
+      '    disarm();' +
+      '    armed=b; b.dataset.was=b.textContent;' +
+      '    b.textContent=b.dataset.ask+"  Press again";' +
+      '    b.classList.add("arm");' +
+      '  }, true);' +
+      '})();' +
+      '</script>' +''
   });
 }
 

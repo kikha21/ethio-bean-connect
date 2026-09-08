@@ -76,6 +76,8 @@ textarea{resize:vertical;min-height:76px}
 .btn-primary:hover{background:var(--gold-ink);color:#fff}
 .btn-ghost{border-color:var(--strong);color:var(--ink);background:transparent}
 .btn-ghost:hover{border-color:var(--gold-ink);color:var(--gold-ink)}
+/* an armed button, so it is obvious the next press does something */
+.rolebtn.arm{border-color:var(--accent,#C9A24A);color:var(--accent,#C9A24A);font-weight:600}
 .btn-sm{font-size:.86rem;padding:.35rem .8rem}
 
 table{width:100%;border-collapse:collapse;font-size:.94rem}
