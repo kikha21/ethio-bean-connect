@@ -5,7 +5,15 @@
    A supplier fills the form and the lot lands in the database as a
    pending post. Nobody re-types it out of a WhatsApp message, and
    nothing they send reaches the public board until it has been looked
-   at: every submission arrives unpublished, with status 'pending'.
+   at: a submission goes on the board as it arrives. Nobody waits for us
+      to be awake, which is the whole point - a supplier posting at ten at
+      night is not helped by a board that updates in the morning.
+
+      What still protects the board: an account is required, so nothing is
+      anonymous; the notes are stripped of phone numbers and addresses when
+      they are rendered, not when they are approved, so that guard does not
+      depend on anyone pressing anything; and the admin can edit or take a
+      lot down at any time.
 
    This is the one endpoint a stranger can write to, so it is the one
    place that has to assume bad faith: rate limits per address, a
@@ -216,7 +224,7 @@ function submit(f, ip, member) {
     ' quantity_val, quantity_unit, price, price_unit, currency, harvest, notes,' +
     ' poster_name, poster_org, poster_phone, poster_email, poster_region,' +
     ' tier, rating, deals, posted_by, photo, status, published, is_example, sort, created_at)' +
-    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,?,?,?,?,?,?,'pending',0,0,0,?)"
+    " VALUES (?,?,?,?,?,?,?,?,?,NULL,'kg','ETB','',?,?,?,?,?,?,?,?,?,?,?,'live',1,0,0,?)"
   ).run(ref, kind, market, v.supply, v.origin, v.grade, v.type,
         v.quantity_val, v.quantity_unit, v.notes,
         v.name, v.company, v.phone, v.email, v.region || '',
