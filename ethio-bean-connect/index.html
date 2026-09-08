@@ -962,6 +962,15 @@ option{background-color:var(--canvas);color:var(--text-primary)}
 /* Somebody who is not signed in should be told before they fill anything
    in, not after. The gate covers the form rather than hiding it, so they
    can still read what is being asked. */
+/* Warm rather than alarming. This is not an error and the supplier has
+   done nothing wrong yet; it is the one thing worth saying before they
+   start typing, so it reads as a word from us rather than a red box. */
+.post-warn{border:1px solid var(--accent);border-radius:14px;
+  padding:1.1rem 1.2rem;margin-bottom:1.4rem;background:var(--accent-wash,rgba(201,162,74,.07))}
+.post-warn b{display:block;font-family:var(--f-display);font-size:var(--t-lg);margin-bottom:.4rem}
+.post-warn p{margin:0 0 .9rem;color:var(--text-secondary);font-size:var(--t-body);max-width:56ch}
+.post-warn[hidden]{display:none}
+
 .post-gate{
   border:1px solid var(--accent-ink);border-radius:14px;padding:1.2rem 1.3rem;
   background:var(--accent-wash);display:grid;gap:.5rem;justify-items:start;margin-bottom:1.2rem
@@ -1695,6 +1704,11 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
             <a class="btn btn-primary" href="/join" data-i18n="f.gateJoin">Create an account</a>
             <a class="btn btn-ghost" href="/signin" data-i18n="f.gateIn">Sign in</a>
           </div>
+          <div class="post-warn" id="postwarn" hidden>
+            <b data-i18n="f.warnH">Post coffee you actually have</b>
+            <p data-i18n="f.warnP">Put a lot up when the coffee is in your hands or your store and you can show a sample. An exporter who travels to see coffee that is not there does not come back, and it is our name on the board.</p>
+            <button type="button" class="btn btn-ghost" id="postwarnok" data-i18n="f.warnOk">I understand</button>
+          </div>
           <p class="post-as" id="postas" hidden></p>
           <p class="req-note" data-i18n="f.reqnote">Every field is required unless it says optional.</p>
           <div class="row">
@@ -2158,6 +2172,9 @@ I18N.en['f.okh'] = "Posted.";
 I18N.en['f.okref'] = "Your reference is";
 I18N.en['f.okp'] = "We check every post before it goes on the board, and we come back to you within a working day. Your name is never shown.";
 I18N.en['f.editagain'] = "Post another";
+I18N.en['f.warnH']  = "Post coffee you actually have";
+I18N.en['f.warnP']  = "Put a lot up when the coffee is in your hands or your store and you can show a sample. An exporter who travels to see coffee that is not there does not come back, and it is our name on the board.";
+I18N.en['f.warnOk'] = "I understand";
 I18N.en['f.note'] = "This goes straight onto our board. Your name is never shown on it.";
 I18N.en['f.send'] = "Post it";
 I18N.en['f.sending'] = "Posting…";
@@ -3535,10 +3552,33 @@ function renderFooterContact(){
   var post = document.getElementById('post');
   if (!form || !post) return;
 
+  /* Said once, to somebody about to post for the first time. Said every
+     time it becomes wallpaper and stops being read, which is worse than
+     not saying it: the supplier scrolls past a warning they have learned
+     to ignore. Kept in the browser rather than the account, because it is
+     a thing this person has read, not a fact about their business. */
+  var WARN_KEY = "ebc-post-warned";
+  function warnOnce(){
+    var box = document.getElementById("postwarn");
+    if (!box) return;
+    var seen = false;
+    try { seen = localStorage.getItem(WARN_KEY) === "1"; } catch (e) {}
+    if (seen) return;
+    box.hidden = false;
+    var ok = document.getElementById("postwarnok");
+    if (ok) ok.addEventListener("click", function(){
+      box.hidden = true;
+      /* a browser that refuses to remember shows it again next time,
+         which is the harmless way for this to fail */
+      try { localStorage.setItem(WARN_KEY, "1"); } catch (e) {}
+    });
+  }
+
   function reveal(){
     /* unfold before anything measures it: a display:none section has no
        height, so scrolling to it would land on the wrong place */
     post.classList.remove("folded");
+    warnOnce();
     /* the entrance observer may not have reached this section yet, and a
        form that fades in under the cursor is worse than one already there */
     [].forEach.call(post.querySelectorAll('.rise'), function(el){
