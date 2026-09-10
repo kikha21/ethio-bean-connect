@@ -20,3 +20,4 @@ deploy/seed/*.db
 # Sample photographs suppliers upload. They belong on the server's disk,
 # beside the database, not in the repository.
 platform/data/uploads/
+.env
