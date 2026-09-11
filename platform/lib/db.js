@@ -393,33 +393,33 @@ function seedExamples() {
   if (db.prepare('SELECT COUNT(*) n FROM users').get().n > 0) return { seeded: false };
   if (db.prepare('SELECT COUNT(*) n FROM listings').get().n > 0) return { seeded: false };
   const ins = db.prepare(
-    `INSERT INTO listings (ref, kind, origin, grade, process, quantity_val, quantity_unit, price, price_unit,
-       currency, harvest, notes, poster_name, poster_org, poster_phone, poster_region,
-       tier, rating, deals, status, is_example, published, market, sort, created_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'live',1,0,?,?,?)`
+    `INSERT INTO listings (ref, kind, origin, grade, process, quantity, price, currency, harvest, notes,
+       poster_name, poster_org, poster_phone, poster_region, tier, rating, deals,
+       status, is_example, published, market, sort, created_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'live',1,0,?,?,?)`
   );
   const rows = [
-    ['offer','Yirgacheffe','G1','Washed','350','bag85','6.40','kg','USD','2025/26',
+    ['offer','Yirgacheffe','G1','Washed','350 bags (85 kg)','USD 6.40 per kg','USD','2025/26',
      'Screen 15+, cup score 86. Warehouse in Addis, ready to move.',
      'Abebe Tadesse','Kochere Farmers Union','+251 91 234 5678','Gedeo','trusted',3,11],
-    ['offer','Guji','G1','Natural','200','bag85','8500','faresula','ETB','2025/26',
+    ['offer','Guji','G1','Natural','200 bags (85 kg)','ETB 8500 per Faresula','ETB','2025/26',
      'Lot from Hambela. Cup score 87.5, jasmine and peach. Priced at farmgate.',
      'Meseret Bekele','Hambela Estate','+251 92 111 2233','Guji','verified',2,3],
-    ['offer','Sidamo','G2','Washed','750','bag60',null,'kg','USD','2025/26',
+    ['offer','Sidamo','G2','Washed','750 bags (60 kg)','Price on application','USD','2025/26',
      'Bulk lot, price on application. Sample available on request.',
      'Tesfaye Alemu','Bensa Coffee Supply','+251 91 887 6655','Sidama','verified',2,2],
-    ['need','Yirgacheffe','G1','Washed','2','container',null,'kg','USD','2025/26',
+    ['need','Yirgacheffe','G1','Washed','2 containers','Price negotiable','USD','2025/26',
      'Buyer in Trieste. Washed G1 only, EU MRL compliant.',
      'Marco Fenaroli','Adriatica Caffe SRL','+39 040 555 1212','Italy','trusted',3,7],
-    ['need','Guji','G1','Natural','120','bag85',null,'kg','USD','2025/26',
+    ['need','Guji','G1','Natural','120 bags (85 kg)','Competitive pricing','USD','2025/26',
      'Roaster in Seoul looking for a single natural lot, cup 86+.',
      'Ji-woo Park','Seongsu Roasters','+82 10 5555 8888','South Korea','verified',2,1],
-    ['need','Limu','G2','Washed','300','bag60',null,'kg','USD','2025/26',
+    ['need','Limu','G2','Washed','300 bags (60 kg)','Fair market price','USD','2025/26',
      'Blender needs steady volume, repeat contract if the first lot lands well.',
      'Sarah Whitfield','Northbridge Trading','+44 7700 900123','United Kingdom','unverified',null,0]
   ];
   const now = nowIso();
-  rows.forEach((r, i) => ins.run(nextRef(r[0]), ...r, r[18] || 'export', i, now));
+  rows.forEach((r, i) => ins.run(nextRef(r[0]), ...r, 'export', i, now));
   return { seeded: true, n: rows.length };
 }
 
