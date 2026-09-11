@@ -119,14 +119,19 @@ CREATE TABLE IF NOT EXISTS listings (
   id            INTEGER PRIMARY KEY,
   ref           TEXT NOT NULL UNIQUE,
   kind          TEXT NOT NULL DEFAULT 'offer',
+  market        TEXT NOT NULL DEFAULT 'export',
+  supply        TEXT NOT NULL DEFAULT 'horizontal',
   origin        TEXT NOT NULL DEFAULT '',
   grade         TEXT NOT NULL DEFAULT '',
   process       TEXT NOT NULL DEFAULT '',
-  quantity      TEXT NOT NULL DEFAULT '',
+  quantity_val  TEXT NOT NULL DEFAULT '',
+  quantity_unit TEXT NOT NULL DEFAULT 'bag85',
   price         TEXT,
+  price_unit    TEXT NOT NULL DEFAULT 'kg',
   currency      TEXT NOT NULL DEFAULT 'USD',
   harvest       TEXT NOT NULL DEFAULT '',
   notes         TEXT NOT NULL DEFAULT '',
+  photo         TEXT,
 
   poster_name   TEXT NOT NULL DEFAULT '',
   poster_org    TEXT NOT NULL DEFAULT '',
@@ -409,11 +414,22 @@ function seedExamples() {
 const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
-/* older databases predate this column */
+/* Automatic migration: add missing columns to listings table if they don't exist */
 const listingCols = db.prepare('PRAGMA table_info(listings)').all().map(c => c.name);
-if (listingCols.indexOf('photo') === -1) {
-  db.exec('ALTER TABLE listings ADD COLUMN photo TEXT');
-}
+const migrations = [
+  { col: 'photo', sql: 'ALTER TABLE listings ADD COLUMN photo TEXT' },
+  { col: 'market', sql: 'ALTER TABLE listings ADD COLUMN market TEXT NOT NULL DEFAULT "export"' },
+  { col: 'supply', sql: 'ALTER TABLE listings ADD COLUMN supply TEXT NOT NULL DEFAULT "horizontal"' },
+  { col: 'quantity_val', sql: 'ALTER TABLE listings ADD COLUMN quantity_val TEXT NOT NULL DEFAULT ""' },
+  { col: 'quantity_unit', sql: 'ALTER TABLE listings ADD COLUMN quantity_unit TEXT NOT NULL DEFAULT "bag85"' },
+  { col: 'price_unit', sql: 'ALTER TABLE listings ADD COLUMN price_unit TEXT NOT NULL DEFAULT "kg"' }
+];
+migrations.forEach(m => {
+  if (listingCols.indexOf(m.col) === -1) {
+    db.exec(m.sql);
+    console.log(`  migrated: added ${m.col} column to listings`);
+  }
+});
 
 function log(actor, action, subject, detail, ip) {
   db.prepare(
