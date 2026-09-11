@@ -1,0 +1,30 @@
+# fly.toml app configuration file for ethio-bean-connect
+
+app = 'ethio-bean-connect'
+primary_region = 'iad'
+
+[env]
+  PORT = '8080'
+  EBC_DATA_DIR = '/data'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+  [http_service.concurrency]
+    type = 'connections'
+    hard_limit = 50
+    soft_limit = 40
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[mounts]
+  source = 'ethiobean_data'
+  destination = '/data'

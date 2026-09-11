@@ -20,7 +20,7 @@ const mail = require('./lib/mail');
 const memberPages = require('./lib/member-pages');
 const push = require('./lib/push');
 
-const PORT = Number(process.env.PORT || 4400);
+const PORT = Number(process.env.PORT || 8080);
 
 const TYPES = {
   '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8',

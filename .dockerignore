@@ -1,0 +1,14 @@
+.git
+.claude
+node_modules
+*.log
+backup-scripts
+deploy/seed/*.db
+_skill
+_impeccable
+*.zip
+review
+design-package.md
+serve.js
+ethiobean logo and banner.jpg
+.env
