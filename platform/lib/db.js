@@ -40,10 +40,16 @@ CREATE TABLE IF NOT EXISTS users (
   id            INTEGER PRIMARY KEY,
   email         TEXT NOT NULL UNIQUE,
   name          TEXT NOT NULL DEFAULT '',
+  company       TEXT NOT NULL DEFAULT '',
+  phone         TEXT NOT NULL DEFAULT '',
+  region        TEXT NOT NULL DEFAULT '',
+  side          TEXT NOT NULL DEFAULT '',
   password_hash TEXT NOT NULL,
   password_salt TEXT NOT NULL,
   role          TEXT NOT NULL DEFAULT 'super_admin',
   status        TEXT NOT NULL DEFAULT 'active',
+  tier          TEXT NOT NULL DEFAULT 'unverified',
+  deals         INTEGER NOT NULL DEFAULT 0,
   created_at    TEXT NOT NULL,
   last_login_at TEXT
 );
@@ -138,6 +144,7 @@ CREATE TABLE IF NOT EXISTS listings (
   poster_phone  TEXT NOT NULL DEFAULT '',
   poster_email  TEXT NOT NULL DEFAULT '',
   poster_region TEXT NOT NULL DEFAULT '',
+  posted_by     INTEGER REFERENCES users(id),
 
   tier          TEXT NOT NULL DEFAULT 'unverified',
   rating        INTEGER,
@@ -414,20 +421,40 @@ function seedExamples() {
 const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
-/* Automatic migration: add missing columns to listings table if they don't exist */
+/* Automatic migration: add missing columns if they don't exist */
+
+// Listings table migrations
 const listingCols = db.prepare('PRAGMA table_info(listings)').all().map(c => c.name);
-const migrations = [
+const listingMigrations = [
   { col: 'photo', sql: 'ALTER TABLE listings ADD COLUMN photo TEXT' },
   { col: 'market', sql: 'ALTER TABLE listings ADD COLUMN market TEXT NOT NULL DEFAULT "export"' },
   { col: 'supply', sql: 'ALTER TABLE listings ADD COLUMN supply TEXT NOT NULL DEFAULT "horizontal"' },
   { col: 'quantity_val', sql: 'ALTER TABLE listings ADD COLUMN quantity_val TEXT NOT NULL DEFAULT ""' },
   { col: 'quantity_unit', sql: 'ALTER TABLE listings ADD COLUMN quantity_unit TEXT NOT NULL DEFAULT "bag85"' },
-  { col: 'price_unit', sql: 'ALTER TABLE listings ADD COLUMN price_unit TEXT NOT NULL DEFAULT "kg"' }
+  { col: 'price_unit', sql: 'ALTER TABLE listings ADD COLUMN price_unit TEXT NOT NULL DEFAULT "kg"' },
+  { col: 'posted_by', sql: 'ALTER TABLE listings ADD COLUMN posted_by INTEGER REFERENCES users(id)' }
 ];
-migrations.forEach(m => {
+listingMigrations.forEach(m => {
   if (listingCols.indexOf(m.col) === -1) {
     db.exec(m.sql);
     console.log(`  migrated: added ${m.col} column to listings`);
+  }
+});
+
+// Users table migrations
+const userCols = db.prepare('PRAGMA table_info(users)').all().map(c => c.name);
+const userMigrations = [
+  { col: 'company', sql: 'ALTER TABLE users ADD COLUMN company TEXT NOT NULL DEFAULT ""' },
+  { col: 'phone', sql: 'ALTER TABLE users ADD COLUMN phone TEXT NOT NULL DEFAULT ""' },
+  { col: 'region', sql: 'ALTER TABLE users ADD COLUMN region TEXT NOT NULL DEFAULT ""' },
+  { col: 'side', sql: 'ALTER TABLE users ADD COLUMN side TEXT NOT NULL DEFAULT ""' },
+  { col: 'tier', sql: 'ALTER TABLE users ADD COLUMN tier TEXT NOT NULL DEFAULT "unverified"' },
+  { col: 'deals', sql: 'ALTER TABLE users ADD COLUMN deals INTEGER NOT NULL DEFAULT 0' }
+];
+userMigrations.forEach(m => {
+  if (userCols.indexOf(m.col) === -1) {
+    db.exec(m.sql);
+    console.log(`  migrated: added ${m.col} column to users`);
   }
 });
 
