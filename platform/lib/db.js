@@ -374,20 +374,9 @@ function seed() {
     ['market_price_unit','kg',                                            'Prices are quoted per', 'kg, or Faresula for the local trade. 1 Faresula = 17 kg.', 8]
   ].forEach(r => insSetting.run(...r));
 
-  const insPrice = db.prepare(
-    'INSERT INTO market_prices (origin, grade, process, price, published, sort) VALUES (?,?,?,?,1,?)'
-  );
-  [
-    ['Yirgacheffe', 'G1', 'Washed',  null],
-    ['Yirgacheffe', 'G1', 'Natural', null],
-    ['Guji',        'G1', 'Washed',  null],
-    ['Guji',        'G1', 'Natural', null],
-    ['Sidamo',      'G2', 'Washed',  null],
-    ['Limu',        'G2', 'Washed',  null],
-    ['Jimma',       'G4', 'Natural', null],
-    ['Nekemte',     'G4', 'Natural', null],
-    ['Harar',       'G4', 'Natural', null]
-  ].forEach((r, i) => insPrice.run(r[0], r[1], r[2], r[3], i));
+  /* Market price rows are no longer seeded empty: the admin adds real
+     prices through /admin/prices, and empty rows just show "On request"
+     on the site which is not useful. */
 
   return { seeded: true, strings: pairs.length };
 }
@@ -463,6 +452,17 @@ const convoCols = db.prepare('PRAGMA table_info(conversations)').all().map(c => 
 if (convoCols.indexOf('side') === -1) {
   db.exec('ALTER TABLE conversations ADD COLUMN side TEXT NOT NULL DEFAULT ""');
   console.log('  migrated: added side column to conversations');
+}
+
+/* Remove any market price rows that have no price set. These show as
+   "On request" on the site and are not useful — the admin adds real
+   prices through /admin/prices. Runs on every server start so the
+   live database stays clean. */
+const emptyPrices = db.prepare(
+  "DELETE FROM market_prices WHERE price IS NULL OR TRIM(price) = ''"
+).run();
+if (emptyPrices.changes > 0) {
+  console.log(`  cleaned up ${emptyPrices.changes} empty market price rows`);
 }
 
 function log(actor, action, subject, detail, ip) {
