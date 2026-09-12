@@ -2694,21 +2694,18 @@ function marketAge(iso){
 function renderMarket(){
   var body = document.getElementById('mkt-body');
   if (!body || !marketData) return;
-  if (!marketData.rows.length){
+  var priced = (marketData.rows || []).filter(function(r){ return r.price != null && r.price !== ''; });
+  if (!priced.length){
     body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-secondary);font-style:italic">Prices will be listed here shortly.</td></tr>';
     var d = document.getElementById('mkt-date');
     if (d) d.textContent = '—';
     return;
   }
-  var ask = (lang === 'am') ? (I18N.am['market.ask'] || 'On request') : 'On request';
   var html = '';
-  marketData.rows.forEach(function(r){
+  priced.forEach(function(r){
     var g1 = /^G1$/.test(r.grade) ? ' g1' : '';
-    var price = (r.price === null || r.price === undefined)
-      ? '<td class="p ask">' + ask + '</td>'
-      : '<td class="p">' + marketData.currency + ' ' + marketPair(r.price, marketData.unit) + '</td>';
-    var a = (r.price === null || r.price === undefined)
-          ? {text:"—", stale:false} : marketAge(r.updated);
+    var price = '<td class="p">' + marketData.currency + ' ' + marketPair(r.price, marketData.unit) + '</td>';
+    var a = marketAge(r.updated);
     var when = '<td class="when' + (a.stale ? ' stale' : '') + '">' + a.text + '</td>';
     html += '<tr><td class="o">' + r.origin + '</td>'
           + '<td><span class="chip' + g1 + '">' + r.grade + '</span></td>'
