@@ -1521,15 +1521,7 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
         <!-- real rows, so the table is readable without scripting. JS replaces
              this wholesale on load and on a language change. -->
         <tbody id="mkt-body">
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
+          <!-- populated by renderMarket() from assets/market.json -->
         </tbody>
       </table>
     </div>
@@ -2666,18 +2658,8 @@ function unpinFinalStates(){
 /* the page is complete without the fetch: this is the shipped default,
    and assets/market.json overrides it whenever it can be read */
 var marketData = {
-  updated:"2026-08-31", currency:"USD", unit:"kg",
-  rows:[
-    {origin:"Yirgacheffe", grade:"G1", process:"Washed",  price:null, updated:""},
-    {origin:"Yirgacheffe", grade:"G1", process:"Natural", price:null, updated:""},
-    {origin:"Guji",        grade:"G1", process:"Washed",  price:null, updated:""},
-    {origin:"Guji",        grade:"G1", process:"Natural", price:null, updated:""},
-    {origin:"Sidamo",      grade:"G2", process:"Washed",  price:null, updated:""},
-    {origin:"Limu",        grade:"G2", process:"Washed",  price:null, updated:""},
-    {origin:"Jimma",       grade:"G4", process:"Natural", price:null, updated:""},
-    {origin:"Nekemte",     grade:"G4", process:"Natural", price:null, updated:""},
-    {origin:"Harar",       grade:"G4", process:"Natural", price:null, updated:""}
-  ]
+  updated:"", currency:"USD", unit:"kg",
+  rows:[]
 };
 /* A price is quoted per Faresula in the local trade and per kg by the
    buyer, so the table gives both: Faresula first, then kg. Whichever
@@ -2712,6 +2694,12 @@ function marketAge(iso){
 function renderMarket(){
   var body = document.getElementById('mkt-body');
   if (!body || !marketData) return;
+  if (!marketData.rows.length){
+    body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-secondary);font-style:italic">Prices will be listed here shortly.</td></tr>';
+    var d = document.getElementById('mkt-date');
+    if (d) d.textContent = '—';
+    return;
+  }
   var ask = (lang === 'am') ? (I18N.am['market.ask'] || 'On request') : 'On request';
   var html = '';
   marketData.rows.forEach(function(r){
