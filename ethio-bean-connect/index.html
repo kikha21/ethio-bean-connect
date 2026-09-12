@@ -377,6 +377,8 @@ html:not(.js) .static-hero{display:block}
    drifting ground was never visible anywhere. The base colour comes from body. */
 .body-wrap{position:relative;z-index:2;background:transparent}
 section{position:relative;padding:clamp(4.5rem,9vw,8rem) 0}
+/* reduce vertical padding on the marketplace board to prevent excessive blank space */
+section#board{padding:clamp(3rem,6vw,5rem) 0}
 /* anchor targets must clear the fixed nav */
 section[id],#main,#top{scroll-margin-top:96px}
 /* The alternating bands DARKEN the ground by a fixed amount rather than
