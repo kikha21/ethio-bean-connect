@@ -447,11 +447,14 @@ userMigrations.forEach(m => {
   }
 });
 
-// Conversations table migrations (chat system)
-const convoCols = db.prepare('PRAGMA table_info(conversations)').all().map(c => c.name);
-if (convoCols.indexOf('side') === -1) {
-  db.exec('ALTER TABLE conversations ADD COLUMN side TEXT NOT NULL DEFAULT ""');
-  console.log('  migrated: added side column to conversations');
+// Conversations table migrations (chat system — table created by chat.js, may not exist yet)
+const convoTable = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='conversations'").get();
+if (convoTable) {
+  const convoCols = db.prepare('PRAGMA table_info(conversations)').all().map(c => c.name);
+  if (convoCols.indexOf('side') === -1) {
+    db.exec('ALTER TABLE conversations ADD COLUMN side TEXT NOT NULL DEFAULT ""');
+    console.log('  migrated: added side column to conversations');
+  }
 }
 
 /* Remove any market price rows that have no price set. These show as
