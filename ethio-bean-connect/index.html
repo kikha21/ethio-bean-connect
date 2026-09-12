@@ -521,26 +521,9 @@ html:not(.js) .plate--post{background-image:url('assets/sec-post.jpg')}
 .step h3{font-size:var(--t-lg);margin:.6rem 0 .55rem}
 .step p{color:var(--text-secondary);font-size:var(--t-body)}
 
-/* MARKET */
-.market-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.4rem}
-.updated{font-family:var(--f-mono);font-size:var(--t-xs);color:var(--text-secondary);letter-spacing:.03em;border:1px solid var(--panel-edge);border-radius:999px;padding:.46rem 1rem;white-space:nowrap}
-.updated b{color:var(--accent-ink);font-weight:500}
-.tablewrap{margin-top:2.4rem;overflow-x:auto;border:1px solid var(--panel-edge);border-radius:16px;background:var(--panel)}
-table{width:100%;border-collapse:collapse;min-width:600px}
-th,td{text-align:left;padding:1rem 1.3rem;border-bottom:1px solid var(--panel-edge);font-size:var(--t-body)}
-th{font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.05em;color:var(--text-secondary);font-weight:400}
-tbody tr{transition:background .3s var(--ease)}
-tbody tr:hover{background:var(--accent-muted)}
-tbody tr:last-child td{border-bottom:0}
-td.o{font-weight:600}
+/* grading chips on the marketplace board */
 .chip{display:inline-block;font-family:var(--f-mono);font-size:var(--t-xs);letter-spacing:.04em;padding:.24rem .6rem;border-radius:6px;border:1px solid var(--panel-edge);color:var(--text-secondary)}
 .chip.g1{border-color:rgba(47,125,50,.42);color:var(--green-deep);background:var(--green-muted)}
-td.p{font-family:var(--f-mono);font-size:var(--t-body)}
-td.p.ask{color:var(--text-secondary)}
-.th-unit{display:block;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.05em;color:var(--text-secondary);text-transform:none;font-weight:400;margin-top:.15rem}
-.p .kg{color:var(--text-secondary)}
-.p .sep{color:var(--text-secondary);margin:0 .3rem}
-.market-note{margin-top:1.3rem;color:var(--text-secondary);font-size:var(--t-body);max-width:64ch}
 /* ============================================================
    THE BOARD — live lots offered, live lots wanted
    Cards are slips off the same ledger as the price table above:
@@ -1283,23 +1266,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
   .origin{grid-template-columns:auto 1fr;gap:1rem}
   .origin .grade{grid-column:2;margin-top:.5rem}
   .q summary,.q .a{padding-right:2.2rem}
-
-  /* the table becomes cards. A horizontal scroller hid the price column
-     entirely at this width, which is the one column the section exists for. */
-  .tablewrap{border:0;background:transparent;overflow:visible;border-radius:0}
-  table{min-width:0;display:block}
-  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  tbody{display:grid;gap:.75rem}
-  tbody tr{
-    display:grid;grid-template-columns:1fr auto;gap:.35rem .9rem;align-items:baseline;
-    padding:1.05rem 1.15rem;border:1px solid var(--panel-edge);border-radius:14px;background:var(--panel);
-  }
-  tbody tr:hover{background:var(--panel)}
-  tbody td{border:0;padding:0}
-  td.o{grid-column:1;grid-row:1;font-size:var(--t-body)}
-  tbody td:nth-child(2){grid-column:2;grid-row:1;justify-self:end}
-  tbody td:nth-child(3){grid-column:1;grid-row:2;color:var(--text-secondary);font-size:var(--t-body)}
-  td.p{grid-column:2;grid-row:2;justify-self:end}
   footer{padding-bottom:6rem}
 }
 @media (max-height:560px){.cue,.ring{display:none}}
@@ -1349,7 +1315,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
   </a>
   <div class="nav-links" id="navlinks">
     <a href="#board" data-i18n="nav.board">Marketplace</a>
-    <a href="#market" data-i18n="nav.market">Market price</a>
     <a href="#how" data-i18n="nav.how">How it works</a>
     <a href="#checks" data-i18n="nav.checks">What we check</a>
     <a href="#origins" data-i18n="nav.origins">Origins</a>
@@ -1495,45 +1460,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
       </svg>
       <span data-i18n="board.anon">No names appear on the board. Every post carries a reference only, and enquiries come through us, so neither side can be approached behind the other's back.</span>
     </p>
-  </div>
-</section>
-
-<!-- ================= MARKET ================= -->
-<section id="market">
-  <div class="shell">
-    <div class="market-head rise">
-      <div>
-        <h2 class="h2" data-i18n="market.h">Market price</h2>
-      </div>
-      <div class="updated"><span data-i18n="market.updated">Last updated</span> <b id="mkt-date">&mdash;</b></div>
-    </div>
-    <div class="tablewrap rise">
-      <table>
-        <thead>
-          <tr>
-            <th data-i18n="market.th1">Origin</th>
-            <th data-i18n="market.th2">Grade</th>
-            <th data-i18n="market.th3">Process</th>
-            <th><span data-i18n="market.th4">Level</span> <span class="th-unit" data-i18n="market.thUnit">Faresula / kg</span></th>
-            <th data-i18n="market.th5">Updated</th>
-          </tr>
-        </thead>
-        <!-- real rows, so the table is readable without scripting. JS replaces
-             this wholesale on load and on a language change. -->
-        <tbody id="mkt-body">
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Yirgacheffe</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Guji</td><td><span class="chip g1">G1</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Sidamo</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Limu</td><td><span class="chip">G2</span></td><td>Washed</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Jimma</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Nekemte</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-          <tr><td class="o">Harar</td><td><span class="chip">G4</span></td><td>Natural</td><td class="p ask">On request</td><td class="when">—</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="market-note rise" data-i18n="market.note">These are indicative levels, not a quote. Every lot is priced on its own cup, grade and moisture. Ask us and we will confirm the same day.</p>
   </div>
 </section>
 
@@ -1869,7 +1795,6 @@ footer h3{font-family:var(--f-body);font-size:var(--t-xs);letter-spacing:.02em;c
       <div>
         <h3 data-i18n="foot.site">The site</h3>
         <ul class="foot-list">
-          <li><a href="#market" data-i18n="nav.market">Market price</a></li>
           <li><a href="#how" data-i18n="nav.how">How it works</a></li>
           <li><a href="#checks" data-i18n="nav.checks">What we check</a></li>
           <li><a href="#origins" data-i18n="nav.origins">Origins</a></li>
@@ -1996,7 +1921,7 @@ var I18N = {
   en:{},
   am:{
     "skip":"ወደ ይዘቱ ዝለል",
-    "nav.market":"ገበያ","nav.origins":"መገኛዎች","nav.how":"እንዴት እንደሚሰራ","nav.checks":"የምንመረምረው","nav.faq":"ጥያቄዎች",
+    "nav.origins":"መገኛዎች","nav.how":"እንዴት እንደሚሰራ","nav.checks":"የምንመረምረው","nav.faq":"ጥያቄዎች",
     "cta.post":"ቡናዎን ያስመዝግቡ","cta.need":"ቡና እየፈለጉ ነው?",
     
     "hero.b1":"ኢትዮጵያ ዓለም የሚፈልገውን ቡና ታመርታለች።",
@@ -2020,10 +1945,6 @@ var I18N = {
     "how.2h":"እኛ እንመረምረዋለን","how.2p":"ደረጃ፣ እርጥበት እና የመገኛ መዝገብ፣ ማንም ከማየቱ በፊት።",
     "how.3h":"እናገናኘዋለን","how.3p":"በትክክል የእርስዎን ጭነት የሚፈልጉ ላኪዎችን አስቀድመን እናውቃለን።",
     "how.4h":"ንግዱን ይፈጽማሉ","how.4p":"ዋጋውን እርስዎ ይስማማሉ። ቡናው እስኪንቀሳቀስ ድረስ አብረን እንቆያለን።",
-    "market.h":"ጭነቶች የሚንቀሳቀሱበት ዋጋ።","market.updated":"የተሻሻለው",
-    "market.th1":"መገኛ","market.th2":"ደረጃ","market.th3":"ዝግጅት","market.th4":"ዋጋ",
-    "market.note":"እነዚህ አመላካች ደረጃዎች እንጂ ዋጋ አይደሉም። እያንዳንዱ ጭነት በራሱ ጣዕም፣ ደረጃ እና እርጥበት ይተመናል። ይጠይቁን፣ በዚያኑ ቀን እናረጋግጣለን።",
-    "market.ask":"ይጠይቁን",
     "origins.h":"እያንዳንዱ መገኛ በእውነት የሚሰጠው።",
     "origins.season":"በዚህ ወቅት ደቡቡ ቀንሷል፣ ምዕራቡ ደግሞ የተትረፈረፈ ምርት አለው። የተለመደው መገኛዎ ካጠረ፣ መጠኑ የት እንዳለ እንነግርዎታለን።",
     "checks.h":"ሳይመረመር ከዚህ የሚወጣ የለም።",
@@ -2146,8 +2067,6 @@ var I18N = {
       "f.supplyH":"አግድም፣ በአዲስ አበባ",
       "f.supplyHint":"አግድም ማለት አስቀድሞ በአዲስ አበባ መጋዘን ውስጥ ሆኖ አሁን ሊንቀሳቀስ ይችላል ማለት ነው። ቁመት ማለት አሁንም በእርሻው ወይም በራስዎ መጋዘን ውስጥ ነው ማለት ነው።",
       "f.supplyV":"ቁመት፣ በእርሻ ወይም በአቅራቢው መጋዘን",
-      "market.th5":"የተዘመነበት",
-      "market.thUnit":"ፈረሱላ / ኪግ",
       "nav.board":"የገበያ ቦታ",
       "nav.in":"ግባ",
       "nav.me":"መገለጫ",
@@ -2168,8 +2087,6 @@ var I18N = {
 I18N.en['chat.wa']     = 'Chat on WhatsApp';
 I18N.en['chat.call']   = 'Call us';
 I18N.en['chat.email']  = 'Send an email';
-/* the marketplace board */
-I18N.en['market.thUnit']     = "Faresula / kg";
 I18N.en['f.okh'] = "Posted.";
 I18N.en['f.okref'] = "Your reference is";
 I18N.en['f.okp'] = "We check every post before it goes on the board, and we come back to you within a working day. Your name is never shown.";
@@ -2192,7 +2109,6 @@ I18N.en['chat.notifyFailed'] = "Your browser would not allow that.";
 I18N.en['f.gateH'] = "You need an account to post";
 I18N.en['f.gateP'] = "It takes a minute. It is what lets us come back to you about a lot, and it keeps your standing on everything you put up.";
 I18N.en['f.gateJoin'] = "Create an account";
-I18N.en['market.th5'] = "Updated";
 I18N.en['f.photoTake']   = "Take a picture";
 I18N.en['f.photoPick']   = "Choose a picture";
 I18N.en['f.photo'] = "A picture of your sample";
@@ -2235,7 +2151,6 @@ I18N.en['board.searchLabel'] = "Search the board";
 I18N.en['board.searchPh']    = "Origin, grade, reference";
 I18N.en['board.noMatch']     = "Nothing on the board matches that.";
 I18N.en['board.clearAll']    = "Clear the search";
-I18N.en['nav.market']       = "Market price";
 I18N.en['nav.board']         = "Marketplace";
 I18N.en['board.h']           = "Marketplace";
 I18N.en['board.lede']        = "Coffee looking for a buyer, and buyers looking for coffee. Quote the reference when you contact us and we will put the two sides together.";
@@ -2295,7 +2210,6 @@ function applyLang(next){
   });
   try { localStorage.setItem('ebc-lang', lang); } catch(e){}
   splitAll();          /* the hero words must be re-split in the new language */
-  renderMarket();      /* the market table carries translated labels */
   renderOrigins();
   if (typeof renderLauncher === 'function') renderLauncher();
   if (typeof renderFooterContact === 'function') renderFooterContact();
@@ -2661,85 +2575,6 @@ function unpinFinalStates(){
 }
 
 /* ============================================================
-   7. THE MARKET TABLE (real data, real date)
-   ============================================================ */
-/* the page is complete without the fetch: this is the shipped default,
-   and assets/market.json overrides it whenever it can be read */
-var marketData = {
-  updated:"2026-08-31", currency:"USD", unit:"kg",
-  rows:[
-    {origin:"Yirgacheffe", grade:"G1", process:"Washed",  price:null, updated:""},
-    {origin:"Yirgacheffe", grade:"G1", process:"Natural", price:null, updated:""},
-    {origin:"Guji",        grade:"G1", process:"Washed",  price:null, updated:""},
-    {origin:"Guji",        grade:"G1", process:"Natural", price:null, updated:""},
-    {origin:"Sidamo",      grade:"G2", process:"Washed",  price:null, updated:""},
-    {origin:"Limu",        grade:"G2", process:"Washed",  price:null, updated:""},
-    {origin:"Jimma",       grade:"G4", process:"Natural", price:null, updated:""},
-    {origin:"Nekemte",     grade:"G4", process:"Natural", price:null, updated:""},
-    {origin:"Harar",       grade:"G4", process:"Natural", price:null, updated:""}
-  ]
-};
-/* A price is quoted per Faresula in the local trade and per kg by the
-   buyer, so the table gives both: Faresula first, then kg. Whichever
-   one was typed in the admin, the other is derived. */
-function marketMoney(n){
-  return n >= 100 ? Number(n).toLocaleString('en-US', {maximumFractionDigits:0})
-                  : Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-}
-function marketPair(price, unit){
-  var v = Number(String(price).replace(/,/g, ''));
-  if (!isFinite(v) || v <= 0) return String(price);
-  var perKg = (unit === 'faresula') ? v / KG_PER_FARESULA : v;
-  var perFar = perKg * KG_PER_FARESULA;
-  return marketMoney(perFar) + '<span class="sep">/</span><span class="kg">' + marketMoney(perKg) + '</span>';
-}
-
-/* Kept identical to agedRow() in render.js, so the shipped table and the
-   redrawn one mark the same rows as stale. A date a reader has to work
-   out for themselves does nothing; an old one that looks old does. */
-var STALE_DAYS = 14;
-function marketAge(iso){
-  if (!iso) return {text:"—", stale:false};
-  var d = new Date(iso + "T00:00:00");
-  if (isNaN(d)) return {text:iso, stale:false};
-  var days = Math.floor((Date.now() - d.getTime()) / 86400000);
-  return {
-    text: d.toLocaleDateString("en-GB", {day:"numeric", month:"short"}),
-    stale: days >= STALE_DAYS
-  };
-}
-
-function renderMarket(){
-  var body = document.getElementById('mkt-body');
-  if (!body || !marketData) return;
-  var ask = (lang === 'am') ? (I18N.am['market.ask'] || 'On request') : 'On request';
-  var html = '';
-  marketData.rows.forEach(function(r){
-    var g1 = /^G1$/.test(r.grade) ? ' g1' : '';
-    var price = (r.price === null || r.price === undefined)
-      ? '<td class="p ask">' + ask + '</td>'
-      : '<td class="p">' + marketData.currency + ' ' + marketPair(r.price, marketData.unit) + '</td>';
-    var a = (r.price === null || r.price === undefined)
-          ? {text:"—", stale:false} : marketAge(r.updated);
-    var when = '<td class="when' + (a.stale ? ' stale' : '') + '">' + a.text + '</td>';
-    html += '<tr><td class="o">' + r.origin + '</td>'
-          + '<td><span class="chip' + g1 + '">' + r.grade + '</span></td>'
-          + '<td>' + r.process + '</td>' + price + when + '</tr>';
-  });
-  body.innerHTML = html;
-  var d = document.getElementById('mkt-date');
-  if (d) {
-    var dt = new Date(marketData.updated + 'T00:00:00');
-    d.textContent = isNaN(dt) ? marketData.updated
-      : dt.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-  }
-}
-renderMarket();
-fetch('assets/market.json').then(function(r){ return r.json(); })
-  .then(function(j){ if (j && j.rows){ marketData = j; renderMarket(); } })
-  .catch(function(){ /* the shipped default above already rendered */ });
-
-/* ============================================================
    6b. THE PLATE PHOTOGRAPHS
    ============================================================ */
 /* Fetched as each plate comes within a screen of the viewport, which
@@ -2770,7 +2605,6 @@ fetch('assets/market.json').then(function(r){ return r.json(); })
    1 Faresula = 17 kg, so 8,500 birr per Faresula is 500 birr per kg.
    It is offered against price only. Kept in step with platform/lib/db.js. */
 var UNIT_LABEL = {kg:'kg', faresula:'Faresula', quintal:'quintal', bag60:'60 kg bag', mt:'tonne', container:'container'};
-var KG_PER_FARESULA = 17;
 var UNITS = {
   kg:        {short:'kg',         kg:1},
   faresula:  {short:'Faresula',   kg:17},
