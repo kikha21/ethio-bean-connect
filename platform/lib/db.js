@@ -458,6 +458,13 @@ userMigrations.forEach(m => {
   }
 });
 
+// Conversations table migrations (chat system)
+const convoCols = db.prepare('PRAGMA table_info(conversations)').all().map(c => c.name);
+if (convoCols.indexOf('side') === -1) {
+  db.exec('ALTER TABLE conversations ADD COLUMN side TEXT NOT NULL DEFAULT ""');
+  console.log('  migrated: added side column to conversations');
+}
+
 function log(actor, action, subject, detail, ip) {
   db.prepare(
     'INSERT INTO activity_log (actor_id, actor_name, action, subject, detail, ip, created_at) VALUES (?,?,?,?,?,?,?)'

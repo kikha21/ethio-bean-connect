@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS conversations (
   name        TEXT NOT NULL DEFAULT '',
   contact     TEXT NOT NULL DEFAULT '',
   about       TEXT NOT NULL DEFAULT '',
+  side        TEXT NOT NULL DEFAULT '',
   status      TEXT NOT NULL DEFAULT 'open',
   unread_us   INTEGER NOT NULL DEFAULT 0,
   unread_them INTEGER NOT NULL DEFAULT 0,
